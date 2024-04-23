@@ -30,7 +30,7 @@ async function saveTeamMappings() {
 
     const teamByNameMap = {};
     teamsArray.forEach((team) => {
-      teamByIDMap[team.name] = team;
+      teamByNameMap[team.name] = team;
     });
 
     const mappings = {
