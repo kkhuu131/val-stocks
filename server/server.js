@@ -5,7 +5,9 @@ const {
   createStock,
   buyStock,
   sellStock,
+  updateStockAlgorithm,
 } = require("./controllers/stockController");
+const cron = require("node-cron");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -23,6 +25,37 @@ mongoose
   .catch((err) => {
     console.error("Error connecting to MongoDB:", err);
   });
+
+const cronSchedule = "* * * * *";
+
+async function updateStocks() {
+  const symbols = ["NRG, SEN"];
+  const timestamp = new Date();
+  timestamp.setSeconds(0);
+  timestamp.setMilliseconds(0);
+
+  const updatePromises = symbols.map(async (symbol) => {
+    try {
+      await updateStockAlgorithm(symbol, timestamp);
+      console.log("Stock update for ${symbol} completed successfully.");
+    } catch (error) {
+      console.error(`Error updating stock ${symbol}:`, error);
+    }
+  });
+
+  // Wait for all update operations to complete
+  await Promise.all(updatePromises);
+
+  console.log("All stock updates completed successfully.");
+}
+
+// cron.schedule(cronSchedule, async () => {
+//   try {
+//     await updateStocks();
+//   } catch (error) {
+//     console.error("Error updating stocks:", error);
+//   }
+// });
 
 // Route to create a new stock
 app.post("/create", async (req, res) => {
