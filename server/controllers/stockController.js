@@ -37,7 +37,7 @@ async function buyStock(symbol, amount = 0) {
     timestamp.setMilliseconds(0);
 
     // Find the stock price document for the specified symbol and timestamp
-    let stockPrice = await StockPrice.findOne({ symbol });
+    let stockPrice = await StockPrice.findOne({ symbol, timestamp });
 
     // If the stock price document doesn't exist, create it
     if (!stockPrice) {
