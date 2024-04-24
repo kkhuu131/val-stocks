@@ -25,29 +25,32 @@ async function createStock(symbol = "NRG", price = 100, volume = 10000) {
   }
 }
 
-async function modifyVolume(symbol, volumeChange) {
+async function buyStock(symbol, amount = 0) {
   try {
+    if (isNaN(amount)) {
+      throw new Error("Amount must be a valid number");
+    }
+
     // Round the current time to the nearest minute
     const timestamp = new Date();
     timestamp.setSeconds(0);
     timestamp.setMilliseconds(0);
 
     // Find the stock price document for the specified symbol and timestamp
-    let stockPrice = await StockPrice.findOne({ symbol, timestamp });
+    let stockPrice = await StockPrice.findOne({ symbol });
 
     // If the stock price document doesn't exist, create it
     if (!stockPrice) {
-      stockPrice = new StockPrice({ symbol, timestamp });
+      throw new Error("Stock does not exist");
     }
 
-    // Update the volume by adding the volumeChange
-    stockPrice.volume += volumeChange;
+    stockPrice.volume += amount;
 
     // Save the updated stock price document
     await stockPrice.save();
 
     console.log(
-      `Volume of stock ${symbol} at ${timestamp} modified by ${volumeChange}`
+      `Volume of stock ${symbol} at ${timestamp} modified by ${amount}`
     );
   } catch (error) {
     console.error("Error modifying volume:", error);
@@ -55,23 +58,4 @@ async function modifyVolume(symbol, volumeChange) {
   }
 }
 
-// Function to update an existing stock price
-async function updateStock(symbol, newPrice, newVolume) {
-  try {
-    // Find the stock price document by symbol
-    const stockPrice = await StockPrice.findOne({ symbol });
-    if (!stockPrice) {
-      throw new Error("Stock price not found");
-    }
-    // Update the price and volume
-    stockPrice.price = newPrice;
-    stockPrice.volume = newVolume;
-    // Save the updated document
-    await stockPrice.save();
-    return stockPrice;
-  } catch (error) {
-    throw error;
-  }
-}
-
-module.exports = { createStock };
+module.exports = { createStock, buyStock };

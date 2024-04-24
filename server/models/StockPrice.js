@@ -13,6 +13,8 @@ const stockPriceSchema = new mongoose.Schema({
   }, // Rounded timestamp to the nearest minute
 });
 
+stockPriceSchema.index({ timestamp: 1 });
+
 // Create the StockPrice model using the schema
 const StockPrice = mongoose.model("StockPrice", stockPriceSchema);
 

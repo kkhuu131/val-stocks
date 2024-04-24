@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const { createStock } = require("./controllers/stockController");
+const { createStock, buyStock } = require("./controllers/stockController");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -29,6 +29,19 @@ app.post("/create", async (req, res) => {
   } catch (error) {
     console.error("Error creating stock:", error);
     res.status(500).json({ error: "Failed to create stock" });
+  }
+});
+
+// Route to buy a stock
+app.post("/buy", async (req, res) => {
+  const { symbol, amount } = req.body;
+  try {
+    const newStock = await buyStock(symbol, amount);
+    res.status(201).json();
+  } catch (error) {
+    console.log("amount:" + amount);
+    console.error("Error buying stock:", error);
+    res.status(500).json({ error: "Failed to buy stock" });
   }
 });
 
