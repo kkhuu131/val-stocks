@@ -58,4 +58,37 @@ async function buyStock(symbol, amount = 0) {
   }
 }
 
-module.exports = { createStock, buyStock };
+async function sellStock(symbol, amount = 0) {
+  try {
+    if (isNaN(amount)) {
+      throw new Error("Amount must be a valid number");
+    }
+
+    // Round the current time to the nearest minute
+    const timestamp = new Date();
+    timestamp.setSeconds(0);
+    timestamp.setMilliseconds(0);
+
+    // Find the stock price document for the specified symbol and timestamp
+    let stockPrice = await StockPrice.findOne({ symbol, timestamp });
+
+    // If the stock price document doesn't exist, create it
+    if (!stockPrice) {
+      throw new Error("Stock does not exist");
+    }
+
+    stockPrice.volume -= amount;
+
+    // Save the updated stock price document
+    await stockPrice.save();
+
+    console.log(
+      `Volume of stock ${symbol} at ${timestamp} modified by -${amount}`
+    );
+  } catch (error) {
+    console.error("Error modifying volume:", error);
+    throw error;
+  }
+}
+
+module.exports = { createStock, buyStock, sellStock };
