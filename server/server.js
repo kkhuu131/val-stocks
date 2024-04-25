@@ -11,7 +11,6 @@ const {
 const cron = require("node-cron");
 const socketIo = require("socket.io");
 const http = require("http");
-const { StockPrice } = require("./models/StockPrice");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -31,7 +30,11 @@ mongoose
   });
 
 const server = http.createServer(app);
-const io = socketIo(server);
+const io = socketIo(server, {
+  cors: {
+    origin: "*",
+  },
+});
 
 io.on("connection", (socket) => {
   console.log("A user connected");
@@ -49,7 +52,7 @@ async function updateStocks() {
   timestamp.setMilliseconds(0);
 
   try {
-    await updateStockAlgorithm(timestamp);
+    await updateStockAlgorithm(io, timestamp);
     console.log("Stock update completed successfully.");
   } catch (error) {
     console.error(`Error updating stocks: `, error);
@@ -68,9 +71,9 @@ cron.schedule(cronSchedule, async () => {
 
 // Route to create a new stock
 app.post("/create", async (req, res) => {
-  const { symbol, price, volume } = req.body;
+  const { symbol, price, demand } = req.body;
   try {
-    const newStock = await createStock(symbol, price, volume);
+    const newStock = await createStock(symbol, price, demand);
     res.status(201).json(newStock);
   } catch (error) {
     console.error("Error creating stock:", error);
@@ -110,7 +113,6 @@ router.get("/:symbol", async (req, res) => {
   try {
     // Fetch stock data from the database
     stockData = await getStockData(symbol);
-    console.log(stockData);
     // Send the stock data as JSON response
     res.json(stockData);
   } catch (error) {

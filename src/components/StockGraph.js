@@ -2,11 +2,14 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Chart as ChartJS } from "chart.js/auto";
 import { Line } from "react-chartjs-2";
+import socketIOClient from "socket.io-client";
 
 const StockGraph = ({ symbol }) => {
   const [stockData, setStockData] = useState([]);
 
   useEffect(() => {
+    const socket = socketIOClient("http://localhost:5000");
+
     const fetchStockData = async () => {
       try {
         const response = await axios.get(
@@ -19,10 +22,30 @@ const StockGraph = ({ symbol }) => {
     };
 
     fetchStockData();
+
+    socket.on("newStockData", (newStockData) => {
+      if (newStockData.symbol === symbol) {
+        setStockData((prevStockData) => [...prevStockData, newStockData]);
+      }
+    });
+
+    // Clean up listener when component unmounts
+    return () => {
+      socket.off("newStockData");
+    };
   }, [symbol]);
 
+  const formatTimestamp = (timestamp) => {
+    const date = new Date(timestamp);
+    return date.toLocaleString("en-US", {
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    });
+  };
+
   const data = {
-    labels: stockData.map((dataPoint) => dataPoint.timestamp),
+    labels: stockData.map((dataPoint) => formatTimestamp(dataPoint.timestamp)),
     datasets: [
       {
         label: "Stock Price",

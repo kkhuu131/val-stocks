@@ -3,7 +3,7 @@ const CurrentStockPrice = require("../models/CurrentStockPrice");
 const mongoose = require("mongoose");
 
 // Function to create a new stock price
-async function createStock(symbol = "NRG", price = 100, volume = 10000) {
+async function createStock(symbol = "NRG", price = 100, demand = 0) {
   try {
     // Check if the stock already exists in the database
     const existingStock = await CurrentStockPrice.findOne({ symbol });
@@ -15,7 +15,7 @@ async function createStock(symbol = "NRG", price = 100, volume = 10000) {
     const newStockPrice = new CurrentStockPrice({
       symbol,
       price,
-      volume,
+      demand,
     });
 
     // Save the new stock price document to the database
@@ -41,7 +41,7 @@ async function getStockData(symbol = "NRG") {
 }
 
 // buySell: True for buy, False for sell
-async function modifyVolume(symbol, amount = 0, buySell) {
+async function modifyDemand(symbol, amount = 0, buySell) {
   try {
     if (isNaN(amount)) {
       throw new Error("Amount must be a valid number");
@@ -59,15 +59,15 @@ async function modifyVolume(symbol, amount = 0, buySell) {
       amount = -1 * amount;
     }
 
-    let result = Number(+currentStockPrice.volume) + Number(amount);
-    currentStockPrice.volume = result;
+    let result = Number(+currentStockPrice.demand) + Number(amount);
+    currentStockPrice.demand = result;
 
     // Save the updated stock price document
     await currentStockPrice.save();
 
-    console.log(`Volume of stock ${symbol} modified by ${amount}`);
+    console.log(`Demand of stock ${symbol} modified by ${amount}`);
   } catch (error) {
-    console.error("Error modifying volume:", error);
+    console.error("Error modifying demand:", error);
     throw error;
   }
 }
@@ -76,7 +76,7 @@ async function buyStock(symbol, amount = 0) {
   const session = await mongoose.startSession();
   session.startTransaction();
   try {
-    await modifyVolume(symbol, amount, true);
+    await modifyDemand(symbol, amount, true);
     await session.commitTransaction();
     session.endSession();
   } catch (error) {
@@ -91,7 +91,7 @@ async function sellStock(symbol, amount = 0) {
   const session = await mongoose.startSession();
   session.startTransaction();
   try {
-    await modifyVolume(symbol, amount, false);
+    await modifyDemand(symbol, amount, false);
     await session.commitTransaction();
     session.endSession();
   } catch (error) {
@@ -102,9 +102,9 @@ async function sellStock(symbol, amount = 0) {
   }
 }
 
-async function updateStockAlgorithm(timestamp) {
-  const randomnessWeight = 0.1;
-  const supplyDemandWeight = 1;
+async function updateStockAlgorithm(io, timestamp) {
+  const randomnessWeight = 0.01;
+  const demandWeight = 0.01;
 
   try {
     // Start a session for the transaction
@@ -116,39 +116,28 @@ async function updateStockAlgorithm(timestamp) {
 
     for (const stock of currentStocks) {
       // Update the price for each document
-      // Get last StockPrice
-      const mostRecentStockPrice = await StockPrice.findOne({
-        symbol: stock.symbol,
-      })
-        .sort({ timestamp: -1 }) // Sort in descending order of timestamp
-        .limit(1); // Limit the result to just one document
 
       // Save current stock price as a document in StockPrice
       const newArchivedStockPrice = new StockPrice({
         symbol: stock.symbol,
         price: stock.price,
-        volume: stock.volume,
+        demand: stock.demand,
         previousMinute,
       });
       await newArchivedStockPrice.save();
+      io.emit("newStockData", newArchivedStockPrice);
 
-      // Compare how volume changed % from minute-to-minute
-      let volumeChange = 0;
-      if (mostRecentStockPrice) {
-        volumeChange =
-          1.0 -
-          Number(mostRecentStockPrice.volume) /
-            Number(newArchivedStockPrice.volume);
-      }
+      // Compare how demand changed % from minute-to-minute
+      let demand = stock.demand;
 
       let randomness = Math.random() - 0.5;
 
-      const priceChange =
-        volumeChange * supplyDemandWeight + randomness * randomnessWeight;
+      const priceChange = demand * demandWeight + randomness * randomnessWeight;
 
       const newPrice = Number(stock.price) * Number(1 + priceChange);
 
       stock.price = newPrice;
+      stock.demand = 0;
 
       try {
         await stock.save();

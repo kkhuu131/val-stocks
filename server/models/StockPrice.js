@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const stockPriceSchema = new mongoose.Schema({
   symbol: { type: String, required: true }, // Symbol of the stock
   price: { type: Number, required: true }, // Price of the stock
-  volume: { type: Number, required: true }, // Volume of the stock
+  demand: { type: Number, required: true }, // Net demand of the stock
   timestamp: {
     type: Date,
     default: () => Math.floor(Date.now() / (1000 * 60)) * (1000 * 60),
