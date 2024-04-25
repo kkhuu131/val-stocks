@@ -1,17 +1,18 @@
 const StockPrice = require("../models/StockPrice");
+const CurrentStockPrice = require("../models/CurrentStockPrice");
 const mongoose = require("mongoose");
 
 // Function to create a new stock price
 async function createStock(symbol = "NRG", price = 100, volume = 10000) {
   try {
     // Check if the stock already exists in the database
-    const existingStock = await StockPrice.findOne({ symbol });
+    const existingStock = await CurrentStockPrice.findOne({ symbol });
     if (existingStock) {
       throw new Error("Stock already exists");
     }
 
     // Create a new stock price document
-    const newStockPrice = new StockPrice({
+    const newStockPrice = new CurrentStockPrice({
       symbol,
       price,
       volume,
@@ -33,16 +34,11 @@ async function modifyVolume(symbol, amount = 0, buySell) {
       throw new Error("Amount must be a valid number");
     }
 
-    // Round the current time to the nearest minute
-    const timestamp = new Date();
-    timestamp.setSeconds(0);
-    timestamp.setMilliseconds(0);
-
     // Find the stock price document for the specified symbol and timestamp
-    let stockPrice = await StockPrice.findOne({ symbol, timestamp });
+    let currentStockPrice = await CurrentStockPrice.findOne({ symbol });
 
     // If the stock price document doesn't exist, create it
-    if (!stockPrice) {
+    if (!currentStockPrice) {
       throw new Error("Stock does not exist");
     }
 
@@ -50,15 +46,13 @@ async function modifyVolume(symbol, amount = 0, buySell) {
       amount = -1 * amount;
     }
 
-    let result = Number(+stockPrice.volume) + Number(amount);
-    stockPrice.volume = result;
+    let result = Number(+currentStockPrice.volume) + Number(amount);
+    currentStockPrice.volume = result;
 
     // Save the updated stock price document
-    await stockPrice.save();
+    await currentStockPrice.save();
 
-    console.log(
-      `Volume of stock ${symbol} at ${timestamp} modified by ${amount}`
-    );
+    console.log(`Volume of stock ${symbol} modified by ${amount}`);
   } catch (error) {
     console.error("Error modifying volume:", error);
     throw error;
@@ -95,6 +89,7 @@ async function sellStock(symbol, amount = 0) {
   }
 }
 
+// timestamp should be the most up to date time
 async function updateStockAlgorithm(symbol, timestamp) {
   const session = await mongoose.startSession();
   session.startTransaction();
@@ -103,54 +98,50 @@ async function updateStockAlgorithm(symbol, timestamp) {
   const supplyDemandWeight = 1;
 
   try {
-    const twoMinutesAgo = new Date(timestamp - 2 * 60 * 1000);
-    const stockPriceTwoMinutesAgo = await StockPrice.findOne({
+    // Check if the stock exists
+    const currentStock = await CurrentStockPrice.findOne({
       symbol,
-      timestamp: twoMinutesAgo,
     });
 
-    const oneMinuteAgo = new Date(timestamp - 1 * 60 * 1000);
-    const stockPriceOneMinuteAgo = await StockPrice.findOne({
-      symbol,
-      timestamp: oneMinuteAgo,
-    });
+    if (!currentStock) {
+      await session.abortTransaction();
+      session.endSession();
+      return;
+    }
 
+    // Get last StockPrice
+    const mostRecentStockPrice = await StockPrice.findOne({ symbol })
+      .sort({ timestamp: -1 }) // Sort in descending order of timestamp
+      .limit(1); // Limit the result to just one document
+
+    // Save current stock price as a document in StockPrice
+    const previousMinute = new Date(timestamp - 60 * 1000);
+    const newArchivedStockPrice = new StockPrice({
+      symbol,
+      price: currentStock.price,
+      volume: currentStock.volume,
+      previousMinute,
+    });
+    await newArchivedStockPrice.save();
+
+    // Compare how volume changed % from minute-to-minute
     let volumeChange = 0;
-    if (stockPriceTwoMinutesAgo && stockPriceOneMinuteAgo) {
-      volumeChange = 1 - stockPriceOneMinuteAgo / stockPriceTwoMinutesAgo;
+    if (mostRecentStockPrice) {
+      volumeChange =
+        1.0 -
+        Number(mostRecentStockPrice.volume) /
+          Number(newArchivedStockPrice.volume);
     }
 
-    const randomness = Math.random() - 0.5;
+    let randomness = Math.random() - 0.5;
 
-    const pricePercentChange =
-      randomness * randomnessWeight + volumeChange * supplyDemandWeight;
+    const priceChange =
+      volumeChange * supplyDemandWeight + randomness * randomnessWeight;
 
-    const newPrice = stockPriceOneMinuteAgo.price * pricePercentChange;
-    let newVolume = 10000;
+    const newPrice = Number(currentStock.price) * Number(1 + priceChange);
 
-    if (stockPriceOneMinuteAgo) {
-      newVolume = stockPriceOneMinuteAgo.volume;
-    } else {
-      const mostRecentDocument = await StockPrice.findOne({ symbol })
-        .sort({ timestamp: -1 })
-        .limit(1);
-      if (mostRecentDocument) {
-        newVolume = mostRecentDocument.volume;
-      }
-    }
-
-    // Create a new stock price document
-    const newStockPrice = new StockPrice({
-      symbol,
-      newPrice,
-      newVolume,
-    });
-
-    // Save the new stock price document to the database
-    await newStockPrice.save();
-
-    await session.commitTransaction();
-    session.endSession();
+    currentStock.price = newPrice;
+    await currentStock.save();
   } catch (error) {
     console.error("Error updating stock:", error);
     await session.abortTransaction();

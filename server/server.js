@@ -29,7 +29,7 @@ mongoose
 const cronSchedule = "* * * * *";
 
 async function updateStocks() {
-  const symbols = ["NRG, SEN"];
+  const symbols = ["NRG"];
   const timestamp = new Date();
   timestamp.setSeconds(0);
   timestamp.setMilliseconds(0);
@@ -37,7 +37,7 @@ async function updateStocks() {
   const updatePromises = symbols.map(async (symbol) => {
     try {
       await updateStockAlgorithm(symbol, timestamp);
-      console.log("Stock update for ${symbol} completed successfully.");
+      console.log("Stock update for " + symbol + " completed successfully.");
     } catch (error) {
       console.error(`Error updating stock ${symbol}:`, error);
     }
@@ -49,13 +49,13 @@ async function updateStocks() {
   console.log("All stock updates completed successfully.");
 }
 
-// cron.schedule(cronSchedule, async () => {
-//   try {
-//     await updateStocks();
-//   } catch (error) {
-//     console.error("Error updating stocks:", error);
-//   }
-// });
+cron.schedule(cronSchedule, async () => {
+  try {
+    await updateStocks();
+  } catch (error) {
+    console.error("Error updating stocks:", error);
+  }
+});
 
 // Route to create a new stock
 app.post("/create", async (req, res) => {
