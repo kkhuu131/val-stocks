@@ -3,11 +3,15 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const {
   createStock,
+  getStockData,
   buyStock,
   sellStock,
   updateStockAlgorithm,
 } = require("./controllers/stockController");
 const cron = require("node-cron");
+const socketIo = require("socket.io");
+const http = require("http");
+const { StockPrice } = require("./models/StockPrice");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -26,25 +30,30 @@ mongoose
     console.error("Error connecting to MongoDB:", err);
   });
 
+const server = http.createServer(app);
+const io = socketIo(server);
+
+io.on("connection", (socket) => {
+  console.log("A user connected");
+
+  socket.on("disconnect", () => {
+    console.log("User disconnected.");
+  });
+});
+
 const cronSchedule = "* * * * *";
 
 async function updateStocks() {
-  const symbols = ["NRG"];
   const timestamp = new Date();
   timestamp.setSeconds(0);
   timestamp.setMilliseconds(0);
 
-  const updatePromises = symbols.map(async (symbol) => {
-    try {
-      await updateStockAlgorithm(symbol, timestamp);
-      console.log("Stock update for " + symbol + " completed successfully.");
-    } catch (error) {
-      console.error(`Error updating stock ${symbol}:`, error);
-    }
-  });
-
-  // Wait for all update operations to complete
-  await Promise.all(updatePromises);
+  try {
+    await updateStockAlgorithm(timestamp);
+    console.log("Stock update completed successfully.");
+  } catch (error) {
+    console.error(`Error updating stocks: `, error);
+  }
 
   console.log("All stock updates completed successfully.");
 }
@@ -93,7 +102,28 @@ app.post("/sell", async (req, res) => {
   }
 });
 
+const router = express.Router();
+
+// Route to fetch stock data
+router.get("/:symbol", async (req, res) => {
+  const symbol = req.params.symbol;
+  try {
+    // Fetch stock data from the database
+    stockData = await getStockData(symbol);
+    console.log(stockData);
+    // Send the stock data as JSON response
+    res.json(stockData);
+  } catch (error) {
+    console.error("Error fetching " + symbol + " stock data:", error);
+    res
+      .status(500)
+      .json({ error: "Failed to fetch " + symbol + " stock data" });
+  }
+});
+
+app.use("/stockData", router);
+
 // Start the server and listen for incoming requests
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

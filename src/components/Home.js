@@ -3,6 +3,7 @@ import { fetchMatches, fetchEvents, fetchTeams } from "../api";
 import StockForm from "./StockForm";
 import BuyForm from "./BuyForm";
 import SellForm from "./SellForm";
+import StockGraph from "./StockGraph";
 
 export default function Home() {
   return (
@@ -10,6 +11,7 @@ export default function Home() {
       <StockForm />
       <BuyForm />
       <SellForm />
+      <StockGraph symbol="NRG" />
     </div>
   );
 }

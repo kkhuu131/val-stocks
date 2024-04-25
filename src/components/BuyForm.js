@@ -1,4 +1,4 @@
-// BuySellForm.js (React component)
+// BuyForm.js (React component)
 import React, { useState } from "react";
 import axios from "axios";
 

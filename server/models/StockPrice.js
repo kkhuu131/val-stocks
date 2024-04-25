@@ -16,6 +16,10 @@ const stockPriceSchema = new mongoose.Schema({
 stockPriceSchema.index({ timestamp: 1 });
 
 // Create the StockPrice model using the schema
-const StockPrice = mongoose.model("StockPrice", stockPriceSchema);
+const StockPrice = mongoose.model(
+  "StockPrice",
+  stockPriceSchema,
+  "stockprices"
+);
 
 module.exports = StockPrice;

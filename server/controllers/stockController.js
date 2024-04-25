@@ -27,6 +27,19 @@ async function createStock(symbol = "NRG", price = 100, volume = 10000) {
   }
 }
 
+async function getStockData(symbol = "NRG") {
+  // Check if the stock already exists in the database
+  const stockData = await StockPrice.find({ symbol }).sort({
+    timestamp: 1,
+  });
+
+  if (stockData.length === 0) {
+    throw new Error("Stock data not found");
+  }
+
+  return stockData;
+}
+
 // buySell: True for buy, False for sell
 async function modifyVolume(symbol, amount = 0, buySell) {
   try {
@@ -89,65 +102,79 @@ async function sellStock(symbol, amount = 0) {
   }
 }
 
-// timestamp should be the most up to date time
-async function updateStockAlgorithm(symbol, timestamp) {
-  const session = await mongoose.startSession();
-  session.startTransaction();
-
+async function updateStockAlgorithm(timestamp) {
   const randomnessWeight = 0.1;
   const supplyDemandWeight = 1;
 
   try {
-    // Check if the stock exists
-    const currentStock = await CurrentStockPrice.findOne({
-      symbol,
-    });
+    // Start a session for the transaction
+    const session = await mongoose.startSession();
+    session.startTransaction();
 
-    if (!currentStock) {
-      await session.abortTransaction();
-      session.endSession();
-      return;
-    }
-
-    // Get last StockPrice
-    const mostRecentStockPrice = await StockPrice.findOne({ symbol })
-      .sort({ timestamp: -1 }) // Sort in descending order of timestamp
-      .limit(1); // Limit the result to just one document
-
-    // Save current stock price as a document in StockPrice
+    const currentStocks = await CurrentStockPrice.find({});
     const previousMinute = new Date(timestamp - 60 * 1000);
-    const newArchivedStockPrice = new StockPrice({
-      symbol,
-      price: currentStock.price,
-      volume: currentStock.volume,
-      previousMinute,
-    });
-    await newArchivedStockPrice.save();
 
-    // Compare how volume changed % from minute-to-minute
-    let volumeChange = 0;
-    if (mostRecentStockPrice) {
-      volumeChange =
-        1.0 -
-        Number(mostRecentStockPrice.volume) /
-          Number(newArchivedStockPrice.volume);
+    for (const stock of currentStocks) {
+      // Update the price for each document
+      // Get last StockPrice
+      const mostRecentStockPrice = await StockPrice.findOne({
+        symbol: stock.symbol,
+      })
+        .sort({ timestamp: -1 }) // Sort in descending order of timestamp
+        .limit(1); // Limit the result to just one document
+
+      // Save current stock price as a document in StockPrice
+      const newArchivedStockPrice = new StockPrice({
+        symbol: stock.symbol,
+        price: stock.price,
+        volume: stock.volume,
+        previousMinute,
+      });
+      await newArchivedStockPrice.save();
+
+      // Compare how volume changed % from minute-to-minute
+      let volumeChange = 0;
+      if (mostRecentStockPrice) {
+        volumeChange =
+          1.0 -
+          Number(mostRecentStockPrice.volume) /
+            Number(newArchivedStockPrice.volume);
+      }
+
+      let randomness = Math.random() - 0.5;
+
+      const priceChange =
+        volumeChange * supplyDemandWeight + randomness * randomnessWeight;
+
+      const newPrice = Number(stock.price) * Number(1 + priceChange);
+
+      stock.price = newPrice;
+
+      try {
+        await stock.save();
+        console.log(`Updated stock ${stock.symbol}`);
+      } catch (error) {
+        console.error(`Error updating stock ${stock.symbol}:`, error);
+        // Rollback the transaction if any error occurs
+        await session.abortTransaction();
+        session.endSession();
+        throw error;
+      }
     }
 
-    let randomness = Math.random() - 0.5;
-
-    const priceChange =
-      volumeChange * supplyDemandWeight + randomness * randomnessWeight;
-
-    const newPrice = Number(currentStock.price) * Number(1 + priceChange);
-
-    currentStock.price = newPrice;
-    await currentStock.save();
-  } catch (error) {
-    console.error("Error updating stock:", error);
-    await session.abortTransaction();
+    // Commit the transaction if all updates are successful
+    await session.commitTransaction();
     session.endSession();
-    throw error;
+    console.log("Transaction committed successfully.");
+  } catch (error) {
+    console.error("Error finding or updating stocks:", error);
   }
 }
 
-module.exports = { createStock, buyStock, sellStock, updateStockAlgorithm };
+module.exports = {
+  createStock,
+  getStockData,
+  buyStock,
+  sellStock,
+  updateStockAlgorithm,
+};
