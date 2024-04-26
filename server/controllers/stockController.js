@@ -27,11 +27,33 @@ async function createStock(symbol = "NRG", price = 100, demand = 0) {
   }
 }
 
+async function getAllStocks() {
+  // Check if the stock exists in the database
+  const stockData = await CurrentStockPrice.find();
+
+  if (stockData.length === 0) {
+    throw new Error("Stock data not found");
+  }
+
+  return stockData;
+}
+
 async function getStockData(symbol = "NRG") {
-  // Check if the stock already exists in the database
+  // Check if the stock exists in the database
   const stockData = await StockPrice.find({ symbol }).sort({
     timestamp: 1,
   });
+
+  if (stockData.length === 0) {
+    throw new Error("Stock data not found");
+  }
+
+  return stockData;
+}
+
+async function getCurrentStockData(symbol = "NRG") {
+  // Check if the stock exists in the database
+  const stockData = await CurrentStockPrice.findOne({ symbol });
 
   if (stockData.length === 0) {
     throw new Error("Stock data not found");
@@ -103,7 +125,7 @@ async function sellStock(symbol, amount = 0) {
 }
 
 async function updateStockAlgorithm(io, timestamp) {
-  const randomnessWeight = 0.01;
+  const randomnessWeight = 0.02;
   const demandWeight = 0.01;
 
   try {
@@ -117,16 +139,6 @@ async function updateStockAlgorithm(io, timestamp) {
     for (const stock of currentStocks) {
       // Update the price for each document
 
-      // Save current stock price as a document in StockPrice
-      const newArchivedStockPrice = new StockPrice({
-        symbol: stock.symbol,
-        price: stock.price,
-        demand: stock.demand,
-        previousMinute,
-      });
-      await newArchivedStockPrice.save();
-      io.emit("newStockData", newArchivedStockPrice);
-
       // Compare how demand changed % from minute-to-minute
       let demand = stock.demand;
 
@@ -137,6 +149,17 @@ async function updateStockAlgorithm(io, timestamp) {
       const newPrice = Number(stock.price) * Number(1 + priceChange);
 
       stock.price = newPrice;
+
+      // Save current stock price as a document in StockPrice
+      const newArchivedStockPrice = new StockPrice({
+        symbol: stock.symbol,
+        price: stock.price,
+        demand: stock.demand,
+        previousMinute,
+      });
+      await newArchivedStockPrice.save();
+      io.emit("newStockData", newArchivedStockPrice);
+
       stock.demand = 0;
 
       try {
@@ -163,6 +186,8 @@ async function updateStockAlgorithm(io, timestamp) {
 module.exports = {
   createStock,
   getStockData,
+  getCurrentStockData,
+  getAllStocks,
   buyStock,
   sellStock,
   updateStockAlgorithm,

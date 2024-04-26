@@ -4,6 +4,8 @@ const cors = require("cors");
 const {
   createStock,
   getStockData,
+  getCurrentStockData,
+  getAllStocks,
   buyStock,
   sellStock,
   updateStockAlgorithm,
@@ -105,14 +107,26 @@ app.post("/sell", async (req, res) => {
   }
 });
 
-const router = express.Router();
+// Route to get all current stocks
+app.get("/stocks", async (req, res) => {
+  try {
+    const stocks = await getAllStocks();
+    res.json(stocks);
+  } catch (error) {
+    console.error("Error getting all current stocks:", error);
+    res.status(500).json({ error: "Failed getting all current stocks" });
+  }
+});
+
+const stockRouter = express.Router();
 
 // Route to fetch stock data
-router.get("/:symbol", async (req, res) => {
+stockRouter.get("/:symbol", async (req, res) => {
   const symbol = req.params.symbol;
   try {
     // Fetch stock data from the database
     stockData = await getStockData(symbol);
+
     // Send the stock data as JSON response
     res.json(stockData);
   } catch (error) {
@@ -123,7 +137,28 @@ router.get("/:symbol", async (req, res) => {
   }
 });
 
-app.use("/stockData", router);
+app.use("/stockData", stockRouter);
+
+const currentStockRouter = express.Router();
+
+// Route to fetch stock data
+currentStockRouter.get("/:symbol", async (req, res) => {
+  const symbol = req.params.symbol;
+  try {
+    // Fetch stock data from the database
+    stockData = await getCurrentStockData(symbol);
+
+    // Send the stock data as JSON response
+    res.json(stockData);
+  } catch (error) {
+    console.error("Error fetching " + symbol + " stock data:", error);
+    res
+      .status(500)
+      .json({ error: "Failed to fetch " + symbol + " stock data" });
+  }
+});
+
+app.use("/currentStockData", currentStockRouter);
 
 // Start the server and listen for incoming requests
 server.listen(PORT, () => {
