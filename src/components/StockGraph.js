@@ -5,37 +5,7 @@ import { Line } from "react-chartjs-2";
 import socketIOClient from "socket.io-client";
 import teamData from "../teamMappings.json";
 
-const StockGraph = ({ symbol }) => {
-  const [stockData, setStockData] = useState([]);
-
-  useEffect(() => {
-    const socket = socketIOClient("http://localhost:5000");
-
-    const fetchStockData = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:5000/stockData/${symbol}`
-        );
-        setStockData(response.data);
-      } catch (error) {
-        console.error("Error fetching stock data:", error);
-      }
-    };
-
-    fetchStockData();
-
-    socket.on("newStockData", (newStockData) => {
-      if (newStockData.symbol === symbol) {
-        setStockData((prevStockData) => [...prevStockData, newStockData]);
-      }
-    });
-
-    // Clean up listener when component unmounts
-    return () => {
-      socket.off("newStockData");
-    };
-  }, [symbol]);
-
+const StockGraph = ({ symbol, stockData }) => {
   const formatTimestamp = (timestamp) => {
     const date = new Date(timestamp);
     return date.toLocaleString("en-US", {
@@ -75,12 +45,17 @@ const StockGraph = ({ symbol }) => {
         backgroundColor: "rgba(0,0,0,0)",
       },
     },
+    scales: {
+      x: {
+        grid: {
+          display: false,
+        },
+      },
+    },
   };
 
   return (
-    <div style={{ width: "60%", height: "auto" }}>
-      <h2>Stock Price Graph for {symbol}</h2>
-      <img src={teamData["teamBySymbolMap"][symbol].img} />
+    <div style={{ width: "1000px", height: "500px" }}>
       <Line data={data} options={options} />
     </div>
   );

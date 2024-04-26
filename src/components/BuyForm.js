@@ -2,8 +2,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const BuyForm = () => {
-  const [symbol, setSymbol] = useState("");
+const BuyForm = ({ symbol }) => {
   const [amount, setAmount] = useState(0);
 
   const handleSubmit = async (e) => {
@@ -15,7 +14,6 @@ const BuyForm = () => {
       });
       console.log("Stock bought:", response.data);
       // Reset form fields after successful submission
-      setSymbol("");
       setAmount(0);
     } catch (error) {
       console.error("Error buying stock:", error);
@@ -24,13 +22,6 @@ const BuyForm = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Stock Name"
-        value={symbol}
-        onChange={(e) => setSymbol(e.target.value)}
-        required
-      />
       <input
         type="number"
         placeholder="Enter amount"

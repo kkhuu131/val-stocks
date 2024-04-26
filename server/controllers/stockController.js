@@ -3,7 +3,7 @@ const CurrentStockPrice = require("../models/CurrentStockPrice");
 const mongoose = require("mongoose");
 
 // Function to create a new stock price
-async function createStock(symbol = "NRG", price = 100, demand = 0) {
+async function createStock(symbol = "NRG", price = 1000, demand = 0) {
   try {
     // Check if the stock already exists in the database
     const existingStock = await CurrentStockPrice.findOne({ symbol });
