@@ -58,11 +58,30 @@ const StockGraph = ({ symbol }) => {
     ],
   };
 
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: false,
+      },
+      title: {
+        display: false,
+      },
+    },
+    elements: {
+      point: {
+        borderWidth: 0,
+        radius: 10,
+        backgroundColor: "rgba(0,0,0,0)",
+      },
+    },
+  };
+
   return (
-    <div style={{ width: "70%", height: "auto" }}>
+    <div style={{ width: "60%", height: "auto" }}>
       <h2>Stock Price Graph for {symbol}</h2>
       <img src={teamData["teamBySymbolMap"][symbol].img} />
-      <Line data={data} />
+      <Line data={data} options={options} />
     </div>
   );
 };

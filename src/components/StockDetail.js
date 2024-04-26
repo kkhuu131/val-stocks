@@ -9,7 +9,7 @@ export default function StockDetail() {
   const { symbol } = useParams();
   return (
     <div>
-      <p>{symbol}</p>
+      <StockGraph symbol={symbol} />
       <StockForm />
       <BuyForm />
       <SellForm />
