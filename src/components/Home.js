@@ -4,14 +4,14 @@ import StockForm from "./StockForm";
 import BuyForm from "./BuyForm";
 import SellForm from "./SellForm";
 import StockGraph from "./StockGraph";
+import StockDisplayRow from "./StockDisplayRow";
+import SmallDisplayStockGraph from "./SmallDisplayStockGraph";
+import StockDisplayContainer from "./StockDisplayContainer";
 
 export default function Home() {
   return (
     <div>
-      <StockForm />
-      <BuyForm />
-      <SellForm />
-      <StockGraph symbol="NRG" />
+      <StockDisplayContainer />
     </div>
   );
 }

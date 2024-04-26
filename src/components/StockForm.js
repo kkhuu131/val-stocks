@@ -6,7 +6,6 @@ import axios from "axios";
 const StockForm = () => {
   const [symbol, setSymbol] = useState("");
   const [price, setPrice] = useState("");
-  const [volume, setVolume] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -14,13 +13,11 @@ const StockForm = () => {
       const response = await axios.post("http://localhost:5000/create", {
         symbol,
         price,
-        volume,
       });
       console.log("New stock created:", response.data);
       // Reset form fields after successful submission
       setSymbol("");
       setPrice("");
-      setVolume("");
     } catch (error) {
       console.error("Error creating stock:", error);
     }
@@ -40,13 +37,6 @@ const StockForm = () => {
         placeholder="Price"
         value={price}
         onChange={(e) => setPrice(e.target.value)}
-        required
-      />
-      <input
-        type="number"
-        placeholder="Volume"
-        value={volume}
-        onChange={(e) => setVolume(e.target.value)}
         required
       />
       <button type="submit">Create Stock</button>

@@ -1,22 +1,15 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  RouterProvider,
-  createBrowserRouter,
-} from "react-router-dom";
+import { Router, Route, Routes } from "react-router-dom";
 import Home from "./components/Home";
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Home />,
-  },
-]);
+import StockDetail from "./components/StockDetail";
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <Routes>
+      <Route path="/" element={<Home />}></Route>
+      <Route path="/stock/:symbol" element={<StockDetail />}></Route>
+    </Routes>
+  );
 }
 
 export default App;

@@ -17,6 +17,17 @@ const fetchTeams = async (page = 1, limit = "all", region = "all") => {
   }
 };
 
+// teamid: ID of the team to be consulted
+const fetchTeam = async (teamid) => {
+  try {
+    const response = await instance.get("/teams/" + teamid);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching team:", error);
+    throw error;
+  }
+};
+
 async function saveTeamMappings() {
   try {
     const teams = await fetchTeams();
@@ -24,18 +35,23 @@ async function saveTeamMappings() {
     const teamsArray = teams.data;
 
     const teamByIDMap = {};
-    teamsArray.forEach((team) => {
-      teamByIDMap[team.id] = team;
-    });
-
     const teamByNameMap = {};
-    teamsArray.forEach((team) => {
+    const teamBySymbolMap = {};
+
+    for (const team of teamsArray) {
+      const teamInfo = await fetchTeam(team.id);
+      team["symbol"] = teamInfo.data.info.tag;
+      console.log(team);
+
+      teamByIDMap[team.id] = team;
       teamByNameMap[team.name] = team;
-    });
+      teamBySymbolMap[team.symbol] = team;
+    }
 
     const mappings = {
       teamByIDMap: teamByIDMap,
       teamByNameMap: teamByNameMap,
+      teamBySymbolMap: teamBySymbolMap,
     };
 
     // Serialize mappings to JSON

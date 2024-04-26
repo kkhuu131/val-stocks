@@ -3,6 +3,7 @@ import axios from "axios";
 import { Chart as ChartJS } from "chart.js/auto";
 import { Line } from "react-chartjs-2";
 import socketIOClient from "socket.io-client";
+import teamData from "../teamMappings.json";
 
 const StockGraph = ({ symbol }) => {
   const [stockData, setStockData] = useState([]);
@@ -58,8 +59,9 @@ const StockGraph = ({ symbol }) => {
   };
 
   return (
-    <div>
+    <div style={{ width: "70%", height: "auto" }}>
       <h2>Stock Price Graph for {symbol}</h2>
+      <img src={teamData["teamBySymbolMap"][symbol].img} />
       <Line data={data} />
     </div>
   );
