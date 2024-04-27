@@ -18,7 +18,12 @@ const StockDetailContainer = ({ symbol }) => {
         const response = await axios.get(
           `http://localhost:5000/stockData/${symbol}`
         );
-        setStockData(response.data);
+        const stockDataResponse = response.data;
+        stockDataResponse.sort(
+          (a, b) => new Date(a.timestamp) - new Date(b.timestamp)
+        );
+        setStockData(stockDataResponse);
+
         const response2 = await axios.get(
           `http://localhost:5000/currentStockData/${symbol}`
         );
@@ -46,7 +51,29 @@ const StockDetailContainer = ({ symbol }) => {
   return (
     <div>
       <div>
-        <h1>{currStockData.price}</h1>
+        <div>
+          <h1>{currStockData.price && currStockData.price}</h1>
+        </div>
+        <div>
+          <h2>
+            {stockData[0] && (
+              <>
+                {(() => {
+                  const percentageChange =
+                    Math.round(
+                      (currStockData.price / stockData[0].price - 1) * 100 * 100
+                    ) / 100;
+                  return (
+                    <>
+                      {percentageChange > 0 && "+"}
+                      {String(percentageChange)}%
+                    </>
+                  );
+                })()}
+              </>
+            )}
+          </h2>
+        </div>
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
         <div

@@ -8,7 +8,6 @@ export default function StockDetail() {
   return (
     <div>
       <StockDetailContainer symbol={symbol} />
-      <StockForm />
     </div>
   );
 }

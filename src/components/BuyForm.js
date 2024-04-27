@@ -28,6 +28,8 @@ const BuyForm = ({ symbol }) => {
         value={amount}
         onChange={(e) => setAmount(e.target.value)}
         required
+        min="0"
+        step=".001"
       />
       <button type="submit">Buy Stock</button>
     </form>

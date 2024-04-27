@@ -11,6 +11,7 @@ import StockDisplayContainer from "./StockDisplayContainer";
 export default function Home() {
   return (
     <div>
+      <StockForm />
       <StockDisplayContainer />
     </div>
   );

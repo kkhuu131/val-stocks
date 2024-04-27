@@ -11,10 +11,12 @@ async function createStock(symbol = "NRG", price = 1000, demand = 0) {
       throw new Error("Stock already exists");
     }
 
+    const formattedPrice = Math.round((price + Number.EPSILON) * 100) / 100;
+
     // Create a new stock price document
     const newStockPrice = new CurrentStockPrice({
       symbol,
-      price,
+      formattedPrice,
       demand,
     });
 
@@ -146,7 +148,8 @@ async function updateStockAlgorithm(io, timestamp) {
 
       const priceChange = demand * demandWeight + randomness * randomnessWeight;
 
-      const newPrice = Number(stock.price) * Number(1 + priceChange);
+      let newPrice = Number(stock.price) * Number(1 + priceChange);
+      newPrice = Math.round((newPrice + Number.EPSILON) * 100) / 100;
 
       stock.price = newPrice;
 

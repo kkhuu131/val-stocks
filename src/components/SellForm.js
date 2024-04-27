@@ -28,6 +28,8 @@ const SellForm = ({ symbol }) => {
         value={amount}
         onChange={(e) => setAmount(e.target.value)}
         required
+        min="0"
+        step=".001"
       />
       <button type="submit">Sell Stock</button>
     </form>
