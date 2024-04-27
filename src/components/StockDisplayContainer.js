@@ -9,7 +9,9 @@ const StockDisplayContainer = () => {
     const fetchStocks = async () => {
       try {
         const response = await axios.get(`http://localhost:5000/stocks`);
-        setStocks(response.data);
+        const stockResponse = response.data;
+        stockResponse.sort((a, b) => new Date(b.price) - new Date(a.price));
+        setStocks(stockResponse);
       } catch (error) {
         console.error("Error fetching stocks data:", error);
       }
