@@ -13,7 +13,17 @@ const SmallDisplayStockGraph = ({ stockData }) => {
         label: [],
         data: stockData.map((dataPoint) => dataPoint.price),
         fill: false,
-        borderColor: "rgb(75, 192, 192)",
+        borderColor: (context) => {
+          const latestPoint = context.chart.data.datasets[0].data[0];
+          const mostRecentPoint = stockData[stockData.length - 1];
+
+          let condition = true;
+          if (latestPoint && mostRecentPoint) {
+            condition = latestPoint < mostRecentPoint.price;
+          }
+
+          return condition ? "green" : "red";
+        },
         tension: 0.1,
       },
     ],

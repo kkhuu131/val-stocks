@@ -18,11 +18,7 @@ const StockDetailContainer = ({ symbol }) => {
         const response = await axios.get(
           `http://localhost:5000/stockData/${symbol}`
         );
-        const stockDataResponse = response.data;
-        stockDataResponse.sort(
-          (a, b) => new Date(a.timestamp) - new Date(b.timestamp)
-        );
-        setStockData(stockDataResponse);
+        setStockData(response.data);
 
         const response2 = await axios.get(
           `http://localhost:5000/currentStockData/${symbol}`

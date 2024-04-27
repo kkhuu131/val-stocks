@@ -19,10 +19,20 @@ const StockGraph = ({ symbol, stockData }) => {
     labels: stockData.map((dataPoint) => formatTimestamp(dataPoint.timestamp)),
     datasets: [
       {
-        label: "Stock Price",
+        label: [],
         data: stockData.map((dataPoint) => dataPoint.price),
         fill: false,
-        borderColor: "rgb(75, 192, 192)",
+        borderColor: (context) => {
+          const latestPoint = context.chart.data.datasets[0].data[0];
+          const mostRecentPoint = stockData[stockData.length - 1];
+
+          let condition = true;
+          if (latestPoint && mostRecentPoint) {
+            condition = latestPoint < mostRecentPoint.price;
+          }
+
+          return condition ? "green" : "red";
+        },
         tension: 0.1,
       },
     ],
@@ -36,6 +46,14 @@ const StockGraph = ({ symbol, stockData }) => {
       },
       title: {
         display: false,
+      },
+      tooltip: {
+        callbacks: {
+          label: function (context) {
+            return "$" + context.dataset.data[context.dataIndex].toFixed(2);
+          },
+        },
+        displayColors: false,
       },
     },
     elements: {
