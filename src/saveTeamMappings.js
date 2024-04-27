@@ -28,6 +28,8 @@ const fetchTeam = async (teamid) => {
   }
 };
 
+// "2":{"id":"2","url":"https://www.vlr.gg/team/2/sentinels","name":"Sentinels","img":"https://owcdn.net/img/62875027c8e06.png","country":"United States","symbol":"SEN"}
+
 async function saveTeamMappings() {
   try {
     const teams = await fetchTeams();

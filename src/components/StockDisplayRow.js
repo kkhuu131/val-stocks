@@ -13,7 +13,16 @@ const StockDisplayRow = ({ stock }) => {
         const response = await axios.get(
           `http://localhost:5000/stockData/${stock.symbol}`
         );
-        setStockData(response.data);
+        const data = response.data;
+        const currentTime = new Date();
+        const oneDayAgo = new Date(currentTime.getTime() - 24 * 60 * 60 * 1000);
+
+        const filteredData = data.filter((dataPoint) => {
+          const dataPointTime = new Date(dataPoint.timestamp);
+          return dataPointTime >= oneDayAgo;
+        });
+
+        setStockData(filteredData);
       } catch (error) {
         console.error("Error fetching stock data:", error);
       }
@@ -37,7 +46,9 @@ const StockDisplayRow = ({ stock }) => {
       href={`/stock/${stock.symbol}`}
       style={{ textDecoration: "none", color: "black" }}
     >
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 4fr 1fr 1fr" }}>
+      <div
+        style={{ display: "grid", gridTemplateColumns: "1fr 4fr 1fr 1fr 1fr" }}
+      >
         <div
           style={{
             display: "flex",
@@ -69,6 +80,36 @@ const StockDisplayRow = ({ stock }) => {
           }}
         >
           <p>${stock.price}</p>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "right",
+          }}
+        >
+          <p>
+            {stockData[0] && (
+              <>
+                {(() => {
+                  const percentageChange =
+                    Math.round(
+                      (stockData[stockData.length - 1].price /
+                        stockData[0].price -
+                        1) *
+                        100 *
+                        100
+                    ) / 100;
+                  return (
+                    <>
+                      {percentageChange > 0 && "+"}
+                      {String(percentageChange)}%
+                    </>
+                  );
+                })()}
+              </>
+            )}
+          </p>
         </div>
         <div
           style={{
