@@ -29,16 +29,16 @@ const StockDisplayRow = ({ stock }) => {
     };
     fetchStockData();
 
-    const socket = io("http://localhost:5000");
-    socket.on("newStockData", (newStockData) => {
-      if (newStockData.symbol === stock.symbol) {
-        setStockData((prevStockData) => [...prevStockData, newStockData]);
-      }
-    });
+    // const socket = io("http://localhost:5000");
+    // socket.on("newStockData", (newStockData) => {
+    //   if (newStockData.symbol === stock.symbol) {
+    //     setStockData((prevStockData) => [...prevStockData, newStockData]);
+    //   }
+    // });
 
-    return () => {
-      socket.disconnect();
-    };
+    // return () => {
+    //   socket.disconnect();
+    // };
   }, [stock.symbol]);
 
   return (

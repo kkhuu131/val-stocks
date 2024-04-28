@@ -16,7 +16,7 @@ async function createStock(symbol = "NRG", price = 1000, demand = 0) {
     // Create a new stock price document
     const newStockPrice = new CurrentStockPrice({
       symbol,
-      formattedPrice,
+      price: formattedPrice,
       demand,
     });
 
@@ -46,9 +46,9 @@ async function getStockData(symbol = "NRG") {
     timestamp: 1,
   });
 
-  if (stockData.length === 0) {
-    throw new Error("Stock data not found");
-  }
+  // if (stockData.length === 0) {
+  //   throw new Error("Stock data not found");
+  // }
 
   return stockData;
 }

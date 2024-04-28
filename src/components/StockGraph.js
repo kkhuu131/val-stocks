@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { Chart as ChartJS } from "chart.js/auto";
 import { Line } from "react-chartjs-2";
-import socketIOClient from "socket.io-client";
-import teamData from "../teamMappings.json";
 
 const StockGraph = ({ symbol, stockData }) => {
   const formatTimestamp = (timestamp) => {

@@ -17,7 +17,7 @@ const StockForm = () => {
       console.log("New stock created:", response.data);
       // Reset form fields after successful submission
       setSymbol("");
-      setPrice("");
+      setPrice(0);
     } catch (error) {
       console.error("Error creating stock:", error);
     }
