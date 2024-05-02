@@ -20,7 +20,7 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-const mongoURI = "mongodb://localhost:27017/ValorantStocksTest";
+const mongoURI = "mongodb://localhost:27017/ValorantStocksTest1";
 
 mongoose
   .connect(mongoURI, {})

@@ -88,8 +88,6 @@ async function performVLRScraping(page = 1) {
     // Wait for all promises to resolve
     const result = await Promise.all(promises);
 
-    console.log(result);
-
     return result;
   } catch (err) {
     console.log(err.message);
@@ -145,7 +143,8 @@ async function getVLRMatchData(url) {
 
     const team1MapScoreline = [];
     const team2MapScoreline = [];
-    let round_diff = 0;
+    let team1_rounds_scored = 0;
+    let team2_rounds_scored = 0;
 
     let i = 0;
     $('div[class="team"]').each((index, element) => {
@@ -154,7 +153,7 @@ async function getVLRMatchData(url) {
         team1MapScoreline[i] = Number(
           $(element).children().first().text().trim()
         );
-        round_diff += team1MapScoreline[i];
+        team1_rounds_scored += team1MapScoreline[i];
         i++;
       }
     });
@@ -166,7 +165,7 @@ async function getVLRMatchData(url) {
         team2MapScoreline[i] = Number(
           $(element).children().last().text().trim()
         );
-        round_diff -= team2MapScoreline[i];
+        team2_rounds_scored += team2MapScoreline[i];
         i++;
       }
     });
@@ -176,10 +175,12 @@ async function getVLRMatchData(url) {
       match_series: match_series,
       team1_name: team1_name,
       team2_name: team2_name,
+      best_of: Math.max(team1_score, team2_score) * 2 - 1,
       team1_score: team1_score,
       team2_score: team2_score,
       num_maps: team1_score + team2_score,
-      round_diff: round_diff,
+      team1_rounds_scored: team1_rounds_scored,
+      team2_rounds_scored: team2_rounds_scored,
     };
 
     if (team1_score > team2_score) {
@@ -214,4 +215,4 @@ async function testGetVLRMatchData() {
   }
 }
 
-testGetVLRMatchData();
+module.exports = { performVLRScraping };
