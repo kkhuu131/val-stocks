@@ -3,6 +3,7 @@ import axios from "axios";
 import teamData from "../teamMappings.json";
 import io from "socket.io-client";
 import SmallDisplayStockGraph from "./SmallDisplayStockGraph";
+import { Box, Flex, Image, Text } from "@chakra-ui/react";
 
 const StockDisplayRow = ({ stock }) => {
   const [stockData, setStockData] = useState([]);
@@ -46,49 +47,25 @@ const StockDisplayRow = ({ stock }) => {
       href={`/stock/${stock.symbol}`}
       style={{ textDecoration: "none", color: "black" }}
     >
-      <div
-        style={{ display: "grid", gridTemplateColumns: "1fr 4fr 1fr 1fr 1fr" }}
-      >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          <img
+      <Box display="grid" gridTemplateColumns="1fr 4fr 1fr 1fr 1fr">
+        <Flex alignItems="center">
+          <Image
             src={teamData["teamBySymbolMap"][stock.symbol].img}
             alt={`Team logo for ${stock.symbol}`}
             width="100"
             height="100"
           />
-        </div>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          <p>
+        </Flex>
+        <Flex alignItems="center">
+          <Text>
             {teamData["teamBySymbolMap"][stock.symbol].name} {stock.symbol}
-          </p>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "right",
-          }}
-        >
-          <p>${stock.price}</p>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "right",
-          }}
-        >
-          <p>
+          </Text>
+        </Flex>
+        <Flex alignItems="center" justifyContent="flex-end">
+          <Text>${stock.price}</Text>
+        </Flex>
+        <Flex alignItems="center" justifyContent="flex-end">
+          <Text>
             {stockData[0] && (
               <>
                 {(() => {
@@ -109,18 +86,12 @@ const StockDisplayRow = ({ stock }) => {
                 })()}
               </>
             )}
-          </p>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "right",
-          }}
-        >
+          </Text>
+        </Flex>
+        <Flex alignItems="center" justifyContent="flex-end">
           <SmallDisplayStockGraph stockData={stockData} />
-        </div>
-      </div>
+        </Flex>
+      </Box>
     </a>
   );
 };

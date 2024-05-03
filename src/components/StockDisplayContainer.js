@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import StockDisplayRow from "./StockDisplayRow";
+import { Box } from "@chakra-ui/react";
 
 const StockDisplayContainer = () => {
   const [stocks, setStocks] = useState([]);
@@ -21,11 +22,11 @@ const StockDisplayContainer = () => {
   });
 
   return (
-    <div>
+    <Box>
       {stocks.map((item, index) => {
         return <StockDisplayRow key={index} stock={item} />;
       })}
-    </div>
+    </Box>
   );
 };
 

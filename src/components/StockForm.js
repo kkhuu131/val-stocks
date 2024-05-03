@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import axios from "axios";
+import { FormControl, Input, Button } from "@chakra-ui/react";
 
 const StockForm = () => {
   const [symbol, setSymbol] = useState("");
@@ -24,23 +25,23 @@ const StockForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
+    <FormControl as="form" onSubmit={handleSubmit}>
+      <Input
         type="text"
         placeholder="Stock Name"
         value={symbol}
         onChange={(e) => setSymbol(e.target.value)}
-        required
+        isRequired
       />
-      <input
+      <Input
         type="number"
         placeholder="Price"
         value={price}
         onChange={(e) => setPrice(e.target.value)}
-        required
+        isRequired
       />
-      <button type="submit">Create Stock</button>
-    </form>
+      <Button type="submit">Create Stock</Button>
+    </FormControl>
   );
 };
 

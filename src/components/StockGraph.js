@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Line } from "react-chartjs-2";
 import Chart from "chart.js/auto";
+import { Box } from "@chakra-ui/react";
 
 const StockGraph = ({ symbol, stockData }) => {
   const formatTimestamp = (timestamp) => {
@@ -70,9 +71,9 @@ const StockGraph = ({ symbol, stockData }) => {
   };
 
   return (
-    <div style={{ width: "1000px", height: "500px" }}>
+    <Box w="1000px" h="500px">
       <Line data={data} options={options} />
-    </div>
+    </Box>
   );
 };
 

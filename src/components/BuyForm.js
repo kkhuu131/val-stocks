@@ -1,6 +1,16 @@
 // BuyForm.js (React component)
 import React, { useState } from "react";
 import axios from "axios";
+import {
+  FormControl,
+  FormLabel,
+  Button,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
+} from "@chakra-ui/react";
 
 const BuyForm = ({ symbol }) => {
   const [amount, setAmount] = useState(0);
@@ -21,18 +31,26 @@ const BuyForm = ({ symbol }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="number"
-        placeholder="Enter amount"
-        value={amount}
-        onChange={(e) => setAmount(e.target.value)}
-        required
-        min="0"
-        step=".001"
-      />
-      <button type="submit">Buy Stock</button>
-    </form>
+    <FormControl as="form" onSubmit={handleSubmit}>
+      <FormLabel>Amount</FormLabel>
+      <NumberInput
+        defaultValue={0}
+        min={0}
+        onChange={(e) => setAmount(e)}
+        precision={3}
+        isRequired={true}
+        step={0.001}
+      >
+        <NumberInputField />
+        <NumberInputStepper>
+          <NumberIncrementStepper />
+          <NumberDecrementStepper />
+        </NumberInputStepper>
+      </NumberInput>
+      <Button type="submit" colorScheme="blue" size="sm">
+        Buy Stock
+      </Button>
+    </FormControl>
   );
 };
 

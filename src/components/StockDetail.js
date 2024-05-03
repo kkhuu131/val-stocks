@@ -2,6 +2,7 @@ import { React, useEffect } from "react";
 import StockDetailContainer from "./StockDetailContainer";
 import { useParams } from "react-router-dom";
 import teamData from "../teamMappings.json";
+import { Box } from "@chakra-ui/react";
 
 export default function StockDetail() {
   const { symbol } = useParams();
@@ -12,8 +13,8 @@ export default function StockDetail() {
   }, [symbol]);
 
   return (
-    <div>
+    <Box>
       <StockDetailContainer symbol={symbol} />
-    </div>
+    </Box>
   );
 }
