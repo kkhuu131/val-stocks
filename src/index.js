@@ -2,14 +2,15 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import { theme } from "@saas-ui/theme-glass";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <ChakraProvider>
-    <React.StrictMode>
-      <BrowserRouter>
+  <React.StrictMode>
+    <BrowserRouter>
+      <ChakraProvider theme={theme} resetCSS={true}>
         <App />
-      </BrowserRouter>
-    </React.StrictMode>
-  </ChakraProvider>
+      </ChakraProvider>
+    </BrowserRouter>
+  </React.StrictMode>
 );

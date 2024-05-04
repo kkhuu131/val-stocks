@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import StockDisplayRow from "./StockDisplayRow";
 import { Box } from "@chakra-ui/react";
+import { theme } from "@saas-ui/theme-glass";
 
 const StockDisplayContainer = () => {
   const [stocks, setStocks] = useState([]);
@@ -22,7 +23,7 @@ const StockDisplayContainer = () => {
   });
 
   return (
-    <Box>
+    <Box m={1} mx="auto" maxW="70%">
       {stocks.map((item, index) => {
         return <StockDisplayRow key={index} stock={item} />;
       })}

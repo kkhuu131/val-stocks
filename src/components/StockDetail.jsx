@@ -13,7 +13,7 @@ export default function StockDetail() {
   }, [symbol]);
 
   return (
-    <Box>
+    <Box minH="100vh" backgroundColor="black" pt={1}>
       <StockDetailContainer symbol={symbol} />
     </Box>
   );

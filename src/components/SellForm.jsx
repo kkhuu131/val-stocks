@@ -1,4 +1,4 @@
-// BuyForm.js (React component)
+// SellForm.js (React component)
 import React, { useState } from "react";
 import axios from "axios";
 import {
@@ -10,23 +10,24 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
+  Flex,
 } from "@chakra-ui/react";
 
-const BuyForm = ({ symbol }) => {
+const SellForm = ({ symbol }) => {
   const [amount, setAmount] = useState(0);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/buy", {
+      const response = await axios.post("http://localhost:5000/sell", {
         symbol,
         amount,
       });
-      console.log("Stock bought:", response.data);
+      console.log("Stock sold:", response.data);
       // Reset form fields after successful submission
       setAmount(0);
     } catch (error) {
-      console.error("Error buying stock:", error);
+      console.error("Error selling stock:", error);
     }
   };
 
@@ -40,18 +41,39 @@ const BuyForm = ({ symbol }) => {
         precision={3}
         isRequired={true}
         step={0.001}
+        backgroundColor="grayAlpha.500"
+        color="white"
+        borderColor="grayAlpha.50"
+        borderRadius="lg"
+        m={1}
       >
-        <NumberInputField />
+        <NumberInputField
+          fontSize="16"
+          textAlign="center"
+          height="40px"
+          placeholder="Enter amount"
+        />
         <NumberInputStepper>
           <NumberIncrementStepper />
           <NumberDecrementStepper />
         </NumberInputStepper>
       </NumberInput>
-      <Button type="submit" colorScheme="blue" size="sm">
-        Buy Stock
-      </Button>
+      <Flex alignItems="center" justifyContent="center">
+        <Button
+          type="submit"
+          m={1}
+          mt={3}
+          borderRadius="lg"
+          border="0px"
+          backgroundColor="grayAlpha.50"
+          color="white"
+          fontSize="16"
+        >
+          Sell {symbol} Stock
+        </Button>
+      </Flex>
     </FormControl>
   );
 };
 
-export default BuyForm;
+export default SellForm;

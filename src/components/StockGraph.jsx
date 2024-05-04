@@ -71,7 +71,7 @@ const StockGraph = ({ symbol, stockData }) => {
   };
 
   return (
-    <Box w="1000px" h="500px">
+    <Box w="800px" h="500px">
       <Line data={data} options={options} />
     </Box>
   );
