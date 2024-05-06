@@ -1,6 +1,7 @@
 // BuyForm.js (React component)
 import React, { useState } from "react";
 import axios from "axios";
+import teamData from "../teamMappings.json";
 import {
   FormControl,
   FormLabel,
@@ -12,6 +13,8 @@ import {
   NumberDecrementStepper,
   Box,
   Flex,
+  Image,
+  Text
 } from "@chakra-ui/react";
 
 const BuyForm = ({ symbol }) => {
@@ -33,7 +36,7 @@ const BuyForm = ({ symbol }) => {
   };
 
   return (
-    <Box alignItems="center" justifyContent="center" h="70%">
+    <Box alignItems="center" justifyContent="center" w="200px">
       <FormControl as="form" onSubmit={handleSubmit}>
         <NumberInput
           defaultValue={0}
@@ -50,6 +53,7 @@ const BuyForm = ({ symbol }) => {
         >
           <NumberInputField
             fontSize="16"
+            fontWeight={"bold"}
             textAlign="center"
             height="40px"
             placeholder="Enter amount"
@@ -66,11 +70,24 @@ const BuyForm = ({ symbol }) => {
             mt={3}
             borderRadius="lg"
             border="0px"
-            backgroundColor="grayAlpha.50"
+            backgroundColor="grayAlpha.300"
             color="white"
-            fontSize="16"
+            fontSize="12"
+            fontWeight={"bold"}
+            _hover={{
+              backgroundColor:"grayAlpha.500"
+            }}
           >
-            Buy {symbol} Stock
+
+            <Text>Buy</Text>
+            <Image
+                src={teamData["teamBySymbolMap"][symbol].img}
+                alt={"{symbol} Logo"}
+                width="20x"
+                height="20px"
+                m={1}
+              />
+            <Text>Stock</Text>
           </Button>
         </Flex>
       </FormControl>

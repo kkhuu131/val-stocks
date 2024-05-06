@@ -1,6 +1,7 @@
 // SellForm.js (React component)
 import React, { useState } from "react";
 import axios from "axios";
+import teamData from "../teamMappings.json";
 import {
   FormControl,
   FormLabel,
@@ -10,7 +11,10 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
+  Box,
   Flex,
+  Image,
+  Text
 } from "@chakra-ui/react";
 
 const SellForm = ({ symbol }) => {
@@ -32,6 +36,7 @@ const SellForm = ({ symbol }) => {
   };
 
   return (
+    <Box alignItems="center" justifyContent="center" w="200px">
     <FormControl as="form" onSubmit={handleSubmit}>
       <FormLabel>Amount</FormLabel>
       <NumberInput
@@ -52,6 +57,7 @@ const SellForm = ({ symbol }) => {
           textAlign="center"
           height="40px"
           placeholder="Enter amount"
+          fontWeight={"bold"}
         />
         <NumberInputStepper>
           <NumberIncrementStepper />
@@ -67,12 +73,25 @@ const SellForm = ({ symbol }) => {
           border="0px"
           backgroundColor="grayAlpha.50"
           color="white"
-          fontSize="16"
+          fontSize="12"
+          fontWeight={"bold"}
+          _hover={{
+            backgroundColor:"grayAlpha.500"
+          }}
         >
-          Sell {symbol} Stock
+                      <Text>Sell</Text>
+            <Image
+                src={teamData["teamBySymbolMap"][symbol].img}
+                alt={"{symbol} Logo"}
+                width="20x"
+                height="20px"
+                m={1}
+              />
+            <Text>Stock</Text>
         </Button>
       </Flex>
     </FormControl>
+    </Box>
   );
 };
 

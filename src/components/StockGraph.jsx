@@ -29,7 +29,7 @@ const StockGraph = ({ symbol, stockData }) => {
             condition = latestPoint < mostRecentPoint.price;
           }
 
-          return condition ? "green" : "red";
+          return condition ? "#32a852" : "#db4444";
         },
         tension: 0.1,
       },

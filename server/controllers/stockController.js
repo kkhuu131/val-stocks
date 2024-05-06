@@ -133,7 +133,7 @@ async function sellStock(symbol, amount = 0) {
 }
 
 async function updateStockAlgorithm(io, timestamp) {
-  const randomnessWeight = 0.02;
+  const randomnessWeight = 0.007;
   const demandWeight = 0.01;
 
   try {

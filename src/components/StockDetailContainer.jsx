@@ -46,16 +46,16 @@ const StockDetailContainer = ({ symbol }) => {
   }, [symbol]);
 
   return (
-    <Box mx="auto" maxW="75%" backgroundColor="grayAlpha.700" borderRadius="lg">
-      <Grid templateColumns="1fr 1fr">
+    <Box mx="auto" maxW="1200px" backgroundColor="grayAlpha.700" borderRadius="lg">
+      <Grid templateColumns="800px 400px">
         <Flex alignItems="right" m={5}>
           <Grid templateRows="100px 450px">
             <Flex>
               <Box p={1}>
                 <Box>
-                  <Heading color="white">
+                  <Text color="white" fontSize={32}>
                     ${currStockData.price && currStockData.price}
-                  </Heading>
+                  </Text>
                 </Box>
                 <Box pt={1} pb={4}>
                   <Text color="white">
