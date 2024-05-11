@@ -61,6 +61,16 @@ const StockGraph = ({ symbol, stockData }) => {
         backgroundColor: "rgba(0,0,0,0)",
       },
     },
+    backgroundColor: (context) => {
+      if(!context.chart.chartArea) {
+        return;
+      }
+
+      console.log(context.chart.chartArea)
+      const {ctx, data, chartArea: {top, bottom}} = context.chart;
+      const gradientBg = ctx.createLinearGradient(0, top, 0, bottom);
+      gradientBg.addColorStop(0)
+    },
     scales: {
       x: {
         grid: {

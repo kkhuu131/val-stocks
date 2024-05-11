@@ -7,7 +7,7 @@ const MenuItem = ({ children, isLast, to = "/", ...rest }) => {
             <Text
               display="block"
               _hover={{
-                color: "grayAlpha.500",
+                color: "grayAlpha.100",
               }}
               {...rest}
         >
