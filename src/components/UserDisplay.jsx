@@ -21,21 +21,21 @@ const UserDisplay = ({handleAuth}) => {
     const [userData, setUserData] = useState(null);
   
     useEffect(() => {
-      const fetchUserInfo = async () => {
+        const fetchUserInfo = async () => {
         try {
-          const {
+            const {
             data: { user },
-          } = await supabase.auth.getUser();
-          if (user) {
+            } = await supabase.auth.getUser();
+            if (user) {
             setUserData(user.user_metadata);
             setLoading(false);
-          }
+            }
         } catch (error) {
-          console.error('Error fetching user info:', error.message);
+            console.error('Error fetching user info:', error.message);
         }
-      };
+        };
 
-      fetchUserInfo();
+        fetchUserInfo();
     }, []);
 
     if (!userData) {
@@ -67,7 +67,7 @@ const UserDisplay = ({handleAuth}) => {
                         </Flex>
                     </MenuButton >
                 <MenuList>
-                    <MenuItem onClick={handleAuth}>Log Out</MenuItem>
+                    <MenuItem onClick={handleAuth}><Text color="white" fontSize="16" fontWeight={"bold"}>Log Out?</Text></MenuItem>
                 </MenuList>
             </Menu>
             </Flex>

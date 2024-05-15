@@ -14,8 +14,8 @@ const MenuLinks = () => {
               direction={["column", "row", "row", "row"]} 
               pt={[4, 4, 0, 0]}>
                 <MenuItem to="/">Home</MenuItem>
-                <MenuItem to="/">Rankings</MenuItem>
-                <MenuItem to="/">Career</MenuItem>
+                <MenuItem to="/rankings">Rankings</MenuItem>
+                <MenuItem to="/career">Career</MenuItem>
                 <AuthButton/>
             </Stack>
         </Box>

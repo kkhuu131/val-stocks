@@ -16,6 +16,7 @@ import {
   Image,
   Text
 } from "@chakra-ui/react";
+import { supabase } from '../supabase';
 
 const BuyForm = ({ symbol }) => {
   const [amount, setAmount] = useState(0);
@@ -23,13 +24,43 @@ const BuyForm = ({ symbol }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/buy", {
-        symbol,
-        amount,
-      });
-      console.log("Stock bought:", response.data);
-      // Reset form fields after successful submission
-      setAmount(0);
+      const stockResponse = await axios.get("http://localhost:5000/currentStockData/" + symbol);
+      const stockPrice = stockResponse.data.price;
+
+      console.log(stockPrice);
+      
+      const { data: userResponse, error: userError} = await supabase.auth.getUser();
+      if (userError) throw userError;
+
+      const user = userResponse.user;
+      console.log(user.id);
+
+      if (user) {
+        const { data: userData, error: profileError } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', user.id)
+        .single();
+
+        if (profileError) throw profileError;
+
+        console.log(userData);
+
+        if(userData && userData.balance >= amount * stockResponse.data.price) {
+          console.log("Able to buy " + amount);
+          const response = await axios.post("http://localhost:5000/buy", {
+            symbol,
+            amount
+          });
+          console.log("Stock bought:", response.data);
+          setAmount(0);
+        }
+        else {
+          console.log("Cannot buy " + amount);
+        }
+      } else {
+        console.error("User not authenticated");
+      }
     } catch (error) {
       console.error("Error buying stock:", error);
     }
