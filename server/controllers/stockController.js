@@ -160,7 +160,7 @@ async function updateStockAlgorithm(io, timestamp) {
   const demandWeight = 0.01;
 
   try {
-    const currentStocks = getAllStocks();
+    const currentStocks = await getAllStocks();
     const previousMinute = new Date(timestamp - 60 * 1000);
 
     for (const stock of currentStocks) {
@@ -192,7 +192,7 @@ async function updateStockAlgorithm(io, timestamp) {
       const { updatedData, updateError } = await supabase
         .from("current_stock_prices")
         .update({ price: newPrice, demand: 0 })
-        .eq("symbol", symbol);
+        .eq("symbol", stock.symbol);
 
       if (updateError) {
         console.error("Error updating stock price:", updateError);

@@ -1,5 +1,4 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const cors = require("cors");
 const {
   createStock,
@@ -19,17 +18,6 @@ const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
-
-const mongoURI = "mongodb://localhost:27017/ValorantStocksTest1";
-
-mongoose
-  .connect(mongoURI, {})
-  .then(() => {
-    console.log("Connected to MongoDB");
-  })
-  .catch((err) => {
-    console.error("Error connecting to MongoDB:", err);
-  });
 
 const server = http.createServer(app);
 const io = socketIo(server, {
