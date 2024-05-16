@@ -14,7 +14,7 @@ const StockGraph = ({ symbol, stockData }) => {
   };
 
   const data = {
-    labels: stockData.map((dataPoint) => formatTimestamp(dataPoint.timestamp)),
+    labels: stockData.map((dataPoint) => formatTimestamp(dataPoint.localTimestamp)),
     datasets: [
       {
         label: [],

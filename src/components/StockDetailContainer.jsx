@@ -11,6 +11,15 @@ const StockDetailContainer = ({ symbol }) => {
   const [stockData, setStockData] = useState([]);
   const [currStockData, setCurrStockData] = useState({});
 
+  const convertToLocaleTime = (data) => {
+    return data.map(item => {
+      return {
+        ...item,
+        localTimestamp: new Date(item.timestamp)
+      };
+    });
+  };
+
   useEffect(() => {
     const socket = io("http://localhost:5000");
 
@@ -19,12 +28,21 @@ const StockDetailContainer = ({ symbol }) => {
         const response = await axios.get(
           `http://localhost:5000/stockData/${symbol}`
         );
-        setStockData(response.data);
+
+        const localizedData = convertToLocaleTime(response.data);
+
+        setStockData(localizedData);
 
         const response2 = await axios.get(
           `http://localhost:5000/currentStockData/${symbol}`
         );
-        setCurrStockData(response2.data);
+        
+        const newData = {
+          ...response2.data,
+          localTimestamp: new Date(response2.data.timestamp)
+        }
+
+        setCurrStockData(newData);
       } catch (error) {
         console.error("Error fetching stock data:", error);
       }
@@ -34,8 +52,10 @@ const StockDetailContainer = ({ symbol }) => {
 
     socket.on("newStockData", (newStockData) => {
       if (newStockData.symbol === symbol) {
+        newStockData.localTimestamp = new Date(newStockData.timestamp);
         setStockData((prevStockData) => [...prevStockData, newStockData]);
         setCurrStockData(newStockData);
+        console.log(newStockData);
       }
     });
 

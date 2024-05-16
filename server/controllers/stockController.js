@@ -188,7 +188,6 @@ async function updateStockAlgorithm(io, timestamp) {
 
   try {
     const currentStocks = await getAllStocks();
-    const previousMinute = new Date(timestamp - 60 * 1000);
 
     for (const stock of currentStocks) {
       // Update the price for each document
@@ -203,20 +202,22 @@ async function updateStockAlgorithm(io, timestamp) {
       let newPrice = Number(stock.price) * Number(1 + priceChange);
       newPrice = Math.round((newPrice + Number.EPSILON) * 100) / 100;
 
-      const { data, error } = await supabase.from("stock_prices").insert([
-        {
-          symbol: stock.symbol,
-          price: stock.price,
-          timestamp: previousMinute,
-        },
-      ]);
+      const updatedStockPrice = {
+        symbol: stock.symbol,
+        price: stock.price,
+        timestamp,
+      };
+
+      const { data, error } = await supabase
+        .from("stock_prices")
+        .insert([updatedStockPrice]);
 
       if (error) {
         console.error("Error creating new stock timestamp:", error);
         throw error;
       }
 
-      const { updatedData, updateError } = await supabase
+      const { data: updatedData, error: updateError } = await supabase
         .from("current_stock_prices")
         .update({ price: newPrice, demand: 0 })
         .eq("symbol", stock.symbol);
@@ -224,6 +225,8 @@ async function updateStockAlgorithm(io, timestamp) {
       if (updateError) {
         console.error("Error updating stock price:", updateError);
       }
+
+      io.emit("newStockData", updatedStockPrice);
 
       console.log(`Updated stock ${stock.symbol}`);
     }

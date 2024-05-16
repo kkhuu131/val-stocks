@@ -34,30 +34,32 @@ io.on("connection", (socket) => {
   });
 });
 
-// const cronSchedule = "* * * * *";
+const cronSchedule = "* * * * *";
 
-// async function updateStocks() {
-//   const timestamp = new Date();
-//   timestamp.setSeconds(0);
-//   timestamp.setMilliseconds(0);
+async function updateStocks() {
+  const now = new Date();
+  now.setSeconds(0);
+  now.setMilliseconds(0);
 
-//   try {
-//     await updateStockAlgorithm(io, timestamp);
-//     console.log("Stock update completed successfully.");
-//   } catch (error) {
-//     console.error(`Error updating stocks: `, error);
-//   }
+  const utcNow = now.toISOString();
 
-//   console.log("All stock updates completed successfully.");
-// }
+  try {
+    await updateStockAlgorithm(io, utcNow);
+    console.log("Stock update completed successfully.");
+  } catch (error) {
+    console.error(`Error updating stocks: `, error);
+  }
 
-// cron.schedule(cronSchedule, async () => {
-//   try {
-//     await updateStocks();
-//   } catch (error) {
-//     console.error("Error updating stocks:", error);
-//   }
-// });
+  console.log("All stock updates completed successfully.");
+}
+
+cron.schedule(cronSchedule, async () => {
+  try {
+    await updateStocks();
+  } catch (error) {
+    console.error("Error updating stocks:", error);
+  }
+});
 
 // Route to create a new stock
 app.post("/create", async (req, res) => {
