@@ -4,7 +4,6 @@ import axios from "axios";
 import teamData from "../teamMappings.json";
 import {
   FormControl,
-  FormLabel,
   Button,
   NumberInput,
   NumberInputField,
@@ -36,28 +35,56 @@ const BuyForm = ({ symbol }) => {
       console.log(user.id);
 
       if (user) {
-        const { data: userData, error: profileError } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', user.id)
-        .single();
+        const { data: currentStockData, error: fetchStockError } = await supabase
+          .from("current_stock_prices")
+          .select("*")
+          .eq("symbol", symbol)
+          .single();
+        
+        if (fetchStockError) {
+          console.error("Error fetching current stock price:", fetchStockError);
 
-        if (profileError) throw profileError;
-
-        console.log(userData);
-
-        if(userData && userData.balance >= amount * stockResponse.data.price) {
-          console.log("Able to buy " + amount);
-          const response = await axios.post("http://localhost:5000/buy", {
-            symbol,
-            amount
-          });
-          console.log("Stock bought:", response.data);
-          setAmount(0);
+          return;
         }
-        else {
-          console.log("Cannot buy " + amount);
+
+        const stockPrice = Number(currentStockData.price);
+
+        const { data: userProfile, error: fetchUserError } = await supabase
+          .from("profiles")
+          .select("*")
+          .eq("id", user.id)
+          .single();
+
+        if (fetchUserError) {
+          console.error("Error fetching user profile:", fetchUserError);
+
+          return;
         }
+
+        const userBalance = Number(userProfile.balance);
+        const transactionAmount = Number(amount * stockPrice);
+
+        if (transactionAmount > userBalance) {
+          console.log("Insufficient balance.");
+
+          return;
+        }
+
+        const updatedBalance = Number(userBalance - transactionAmount);
+        const updatedStocks = { ...userProfile.stocks };
+        updatedStocks[symbol] = (Number(updatedStocks[symbol]) || 0) + Number(amount);
+
+        await supabase
+          .from("profiles")
+          .update({ balance: updatedBalance, stocks: updatedStocks })
+          .eq("id", user.id);
+
+        await supabase
+          .from("current_stock_prices")
+          .update({ demand: currentStockData.demand + Number(amount) })
+          .eq("symbol", symbol);
+
+        console.log("Stock bought");
       } else {
         console.error("User not authenticated");
       }

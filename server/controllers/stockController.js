@@ -112,46 +112,73 @@ async function updateStockEloPrice(symbol, elo, price) {
   return data;
 }
 
-// buySell: True for buy, False for sell
-async function modifyDemand(symbol, amount = 0, buySell) {
-  const { data: currentData, error: fetchError } = await supabase
+async function buyStock(userId, symbol, amount = 0) {
+  console.log(userId);
+
+  const { data: currentStockData, error: fetchStockError } = await supabase
     .from("current_stock_prices")
-    .select("demand")
+    .select("*")
     .eq("symbol", symbol)
-    .limit(1)
     .single();
 
-  if (fetchError) {
-    console.error("Error fetching current demand:", fetchError);
-    throw fetchError;
+  if (fetchStockError) {
+    console.error("Error fetching current demand:", fetchStockError);
+    throw fetchStockError;
   }
 
-  let newDemand = currentData.demand;
+  const stockPrice = currentStockData.price;
 
-  if (buySell) {
-    newDemand += amount;
+  const { data: userProfile, error: fetchUserError } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("id", userId)
+    .single();
+
+  if (fetchUserError) {
+    console.error("Error fetching profile:", fetchUserError);
+    throw fetchUserError;
+  }
+
+  let userBalance = userProfile.balance;
+  let chargeAmount = amount * stockPrice;
+
+  if (chargeAmount > userBalance) {
+    console.log("Insufficient balance.");
+    return;
+  }
+
+  userBalance = Math.round((userBalance - chargeAmount) * 100) / 100;
+
+  let userStocks = userProfile.stocks || {};
+
+  if (userStocks[symbol]) {
+    userStocks[symbol] += amount;
   } else {
-    newDemand -= amount;
+    userStocks[symbol] = amount;
   }
 
-  const { data, error } = await supabase
+  const { error: updateProfileError } = await supabase
+    .from("profiles")
+    .update({ balance: userBalance, stocks: userStocks })
+    .eq("id", userId);
+
+  if (updateProfileError) {
+    throw updateProfileError;
+  }
+
+  const { error: updateStockError } = await supabase
     .from("current_stock_prices")
-    .update({ demand: newDemand })
+    .update({ demand: currentStockData.demand + amount })
     .eq("symbol", symbol);
 
-  if (error) {
-    console.error("Error updating stock demand:", error);
-    throw error;
+  if (updateStockError) {
+    throw updateStockError;
   }
 
-  return data;
+  console.log("Completed stock transaction successfully.");
 }
 
-async function buyStock(symbol, amount = 0) {
-  return modifyDemand(symbol, Number(amount), true);
-}
-
-async function sellStock(symbol, amount = 0) {
+async function sellStock(userId, symbol, amount = 0) {
   return modifyDemand(symbol, Number(amount), false);
 }
 

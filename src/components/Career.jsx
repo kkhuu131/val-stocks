@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import CareerContainer from "./CareerContainer";
 import { Box, CSSReset } from "@chakra-ui/react";
 

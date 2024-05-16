@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Box, Flex, Image, Button, Text } from '@chakra-ui/react';
+import { Flex, Button, Text } from '@chakra-ui/react';
 import { supabase } from '../supabase';
 import UserDisplay from "./UserDisplay";
 

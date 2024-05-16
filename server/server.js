@@ -34,30 +34,30 @@ io.on("connection", (socket) => {
   });
 });
 
-const cronSchedule = "* * * * *";
+// const cronSchedule = "* * * * *";
 
-async function updateStocks() {
-  const timestamp = new Date();
-  timestamp.setSeconds(0);
-  timestamp.setMilliseconds(0);
+// async function updateStocks() {
+//   const timestamp = new Date();
+//   timestamp.setSeconds(0);
+//   timestamp.setMilliseconds(0);
 
-  try {
-    await updateStockAlgorithm(io, timestamp);
-    console.log("Stock update completed successfully.");
-  } catch (error) {
-    console.error(`Error updating stocks: `, error);
-  }
+//   try {
+//     await updateStockAlgorithm(io, timestamp);
+//     console.log("Stock update completed successfully.");
+//   } catch (error) {
+//     console.error(`Error updating stocks: `, error);
+//   }
 
-  console.log("All stock updates completed successfully.");
-}
+//   console.log("All stock updates completed successfully.");
+// }
 
-cron.schedule(cronSchedule, async () => {
-  try {
-    await updateStocks();
-  } catch (error) {
-    console.error("Error updating stocks:", error);
-  }
-});
+// cron.schedule(cronSchedule, async () => {
+//   try {
+//     await updateStocks();
+//   } catch (error) {
+//     console.error("Error updating stocks:", error);
+//   }
+// });
 
 // Route to create a new stock
 app.post("/create", async (req, res) => {
@@ -73,9 +73,9 @@ app.post("/create", async (req, res) => {
 
 // Route to buy a stock
 app.post("/buy", async (req, res) => {
-  const { symbol, amount } = req.body;
+  const { userId, symbol, amount } = req.body;
   try {
-    const newStock = await buyStock(symbol, amount);
+    const newStock = await buyStock(userId, symbol, amount);
     res.status(201).json();
   } catch (error) {
     console.error("Error buying stock:", error);
