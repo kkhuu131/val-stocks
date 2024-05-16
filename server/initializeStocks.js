@@ -1,18 +1,12 @@
-const { createStock } = require("./controllers/stockController");
-const mongoose = require("mongoose");
-const mongoURI = "mongodb://localhost:27017/ValorantStocksTest1";
+const {
+  createStock,
+  updateStockElo,
+  updateStockEloPrice,
+  getAllStocks,
+  getCurrentStockData,
+} = require("./controllers/stockController");
 const { performVLRScraping } = require("./api/webScraper");
 const teamData = require("../src/teamMappings.json");
-const CurrentStockPrice = require("./models/CurrentStockPrice");
-
-mongoose
-  .connect(mongoURI, {})
-  .then(() => {
-    console.log("Connected to MongoDB");
-  })
-  .catch((err) => {
-    console.error("Error connecting to MongoDB:", err);
-  });
 
 const teams = [
   "100T",
@@ -38,10 +32,10 @@ async function initializeStocks() {
 
 async function initializeElo() {
   try {
-    const allStocks = await CurrentStockPrice.find({});
+    const allStocks = await getAllStocks();
+    console.log(allStocks);
     for (const stocks of allStocks) {
-      stocks.elo = S0;
-      await stocks.save();
+      updateStockElo(stocks.symbol, S0);
     }
 
     const matchData = await getAndFilterMatches();
@@ -61,10 +55,10 @@ async function initializeElo() {
       }
 
       const team1Stock = team1Data
-        ? await CurrentStockPrice.findOne({ symbol: team1Data.symbol })
+        ? await getCurrentStockData(team1Data.symbol)
         : undefined;
       const team2Stock = team2Data
-        ? await CurrentStockPrice.findOne({ symbol: team2Data.symbol })
+        ? await getCurrentStockData(team2Data.symbol)
         : undefined;
 
       if (!team1Stock && !team2Stock) {
@@ -114,27 +108,23 @@ async function initializeElo() {
       const newRb = Rb + K * (Sb - Eb) + L * Pb + Sb * V;
 
       if (team1Stock) {
-        team1Stock.elo = Math.round(newRa);
-        team1Stock.price =
-          Math.round(((team1Stock.price * newRa) / Ra) * 100) / 100; // ** EXPERIMENT **
-        await team1Stock.save();
+        updateStockEloPrice(
+          team1Stock.symbol,
+          Math.round(newRa),
+          Math.round(((team1Stock.price * newRa) / Ra) * 100) / 100
+        );
       }
 
       if (team2Stock) {
-        team2Stock.elo = Math.round(newRb);
-        team2Stock.price =
-          Math.round(((team2Stock.price * newRb) / Rb) * 100) / 100; // ** EXPERIMENT **
-        await team2Stock.save();
+        updateStockEloPrice(
+          team2Stock.symbol,
+          Math.round(newRb),
+          Math.round(((team2Stock.price * newRb) / Rb) * 100) / 100
+        );
       }
     }
 
     console.log("DONE");
-
-    const updatedStocks = await CurrentStockPrice.find({}).sort({ elo: -1 });
-
-    for (const stock of updatedStocks) {
-      console.log(stock.symbol + ": " + stock.elo);
-    }
 
     return;
   } catch (error) {

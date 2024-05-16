@@ -1,6 +1,18 @@
-const StockPrice = require("../models/StockPrice");
-const CurrentStockPrice = require("../models/CurrentStockPrice");
-const mongoose = require("mongoose");
+const { supabase } = require("../supabase");
+
+async function checkSymbolExists(symbol = "NRG") {
+  const { data, error } = await supabase
+    .from("current_stock_prices")
+    .select("symbol")
+    .eq("symbol", symbol)
+    .single();
+
+  if (error) {
+    return false;
+  }
+
+  return !!data;
+}
 
 // Function to create a new stock price
 async function createStock(
@@ -9,127 +21,138 @@ async function createStock(
   demand = 0,
   elo = 1000
 ) {
-  try {
-    // Check if the stock already exists in the database
-    const existingStock = await CurrentStockPrice.findOne({ symbol });
-    if (existingStock) {
-      throw new Error("Stock already exists");
-    }
+  // check if this stock already exists
+  const exists = await checkSymbolExists(symbol);
+  if (exists) {
+    return null;
+  }
 
-    const formattedPrice = Math.round((price + Number.EPSILON) * 100) / 100;
+  price = Math.round((price + Number.EPSILON) * 100) / 100;
 
-    // Create a new stock price document
-    const newStockPrice = new CurrentStockPrice({
-      symbol,
-      price: formattedPrice,
-      demand,
-      elo: elo,
-    });
+  const { data, error } = await supabase
+    .from("current_stock_prices")
+    .insert([{ symbol, price, demand, elo }]);
 
-    // Save the new stock price document to the database
-    await newStockPrice.save();
-
-    return newStockPrice;
-  } catch (error) {
+  if (error) {
+    console.error("Error creating new stock:", error);
     throw error;
   }
+
+  return data;
 }
 
 async function getAllStocks() {
-  // Check if the stock exists in the database
-  const stockData = await CurrentStockPrice.find();
+  const { data, error } = await supabase
+    .from("current_stock_prices")
+    .select("*");
 
-  if (stockData.length === 0) {
-    throw new Error("Stock data not found");
+  if (error) {
+    console.error("Error fetching all stock prices:", error);
+    throw error;
   }
 
-  return stockData;
+  return data;
 }
 
+// get all the stock prices associated with one symbol (all timestamps)
 async function getStockData(symbol = "NRG") {
-  // Check if the stock exists in the database
-  const stockData = await StockPrice.find({ symbol }).sort({
-    timestamp: 1,
-  });
+  const { data, error } = await supabase
+    .from("stock_prices")
+    .select("*")
+    .eq("symbol", symbol)
+    .order("timestamp", { ascending: true });
 
-  // if (stockData.length === 0) {
-  //   throw new Error("Stock data not found");
-  // }
-
-  return stockData;
+  if (error) {
+    console.error("Error fetching stock price:", error);
+    throw error;
+  }
+  return data;
 }
 
 async function getCurrentStockData(symbol = "NRG") {
-  // Check if the stock exists in the database
-  const stockData = await CurrentStockPrice.findOne({ symbol });
+  const { data, error } = await supabase
+    .from("current_stock_prices")
+    .select("*")
+    .eq("symbol", symbol)
+    .limit(1)
+    .single();
 
-  if (stockData.length === 0) {
-    throw new Error("Stock data not found");
+  if (error) {
+    console.error("Error fetching current stock price:", error);
+    throw error;
+  }
+  return data;
+}
+
+async function updateStockElo(symbol, elo = 1000) {
+  const { data, error } = await supabase
+    .from("current_stock_prices")
+    .update({ elo })
+    .eq("symbol", symbol);
+
+  if (error) {
+    console.error("Error updating stock elo:", error);
+    throw error;
   }
 
-  return stockData;
+  return data;
+}
+
+async function updateStockEloPrice(symbol, elo, price) {
+  const { data, error } = await supabase
+    .from("current_stock_prices")
+    .update({ elo, price })
+    .eq("symbol", symbol);
+
+  if (error) {
+    console.error("Error updating stock elo and price:", error);
+    throw error;
+  }
+
+  return data;
 }
 
 // buySell: True for buy, False for sell
 async function modifyDemand(symbol, amount = 0, buySell) {
-  try {
-    if (isNaN(amount)) {
-      throw new Error("Amount must be a valid number");
-    }
+  const { data: currentData, error: fetchError } = await supabase
+    .from("current_stock_prices")
+    .select("demand")
+    .eq("symbol", symbol)
+    .limit(1)
+    .single();
 
-    // Find the stock price document for the specified symbol and timestamp
-    let currentStockPrice = await CurrentStockPrice.findOne({ symbol });
+  if (fetchError) {
+    console.error("Error fetching current demand:", fetchError);
+    throw fetchError;
+  }
 
-    // If the stock price document doesn't exist, create it
-    if (!currentStockPrice) {
-      throw new Error("Stock does not exist");
-    }
+  let newDemand = currentData.demand;
 
-    if (!buySell) {
-      amount = -1 * amount;
-    }
+  if (buySell) {
+    newDemand += amount;
+  } else {
+    newDemand -= amount;
+  }
 
-    let result = Number(+currentStockPrice.demand) + Number(amount);
-    currentStockPrice.demand = result;
+  const { data, error } = await supabase
+    .from("current_stock_prices")
+    .update({ demand: newDemand })
+    .eq("symbol", symbol);
 
-    // Save the updated stock price document
-    await currentStockPrice.save();
-
-    console.log(`Demand of stock ${symbol} modified by ${amount}`);
-  } catch (error) {
-    console.error("Error modifying demand:", error);
+  if (error) {
+    console.error("Error updating stock demand:", error);
     throw error;
   }
+
+  return data;
 }
 
 async function buyStock(symbol, amount = 0) {
-  const session = await mongoose.startSession();
-  session.startTransaction();
-  try {
-    await modifyDemand(symbol, amount, true);
-    await session.commitTransaction();
-    session.endSession();
-  } catch (error) {
-    console.error("Error buying stock:", error);
-    await session.abortTransaction();
-    session.endSession();
-    throw error;
-  }
+  return modifyDemand(symbol, Number(amount), true);
 }
 
 async function sellStock(symbol, amount = 0) {
-  const session = await mongoose.startSession();
-  session.startTransaction();
-  try {
-    await modifyDemand(symbol, amount, false);
-    await session.commitTransaction();
-    session.endSession();
-  } catch (error) {
-    console.error("Error selling stock:", error);
-    await session.abortTransaction();
-    session.endSession();
-    throw error;
-  }
+  return modifyDemand(symbol, Number(amount), false);
 }
 
 async function updateStockAlgorithm(io, timestamp) {
@@ -137,11 +160,7 @@ async function updateStockAlgorithm(io, timestamp) {
   const demandWeight = 0.01;
 
   try {
-    // Start a session for the transaction
-    const session = await mongoose.startSession();
-    session.startTransaction();
-
-    const currentStocks = await CurrentStockPrice.find({});
+    const currentStocks = getAllStocks();
     const previousMinute = new Date(timestamp - 60 * 1000);
 
     for (const stock of currentStocks) {
@@ -157,36 +176,30 @@ async function updateStockAlgorithm(io, timestamp) {
       let newPrice = Number(stock.price) * Number(1 + priceChange);
       newPrice = Math.round((newPrice + Number.EPSILON) * 100) / 100;
 
-      stock.price = newPrice;
+      const { data, error } = await supabase.from("stock_prices").insert([
+        {
+          symbol: stock.symbol,
+          price: stock.price,
+          timestamp: previousMinute,
+        },
+      ]);
 
-      // Save current stock price as a document in StockPrice
-      const newArchivedStockPrice = new StockPrice({
-        symbol: stock.symbol,
-        price: stock.price,
-        demand: stock.demand,
-        previousMinute,
-      });
-      await newArchivedStockPrice.save();
-      io.emit("newStockData", newArchivedStockPrice);
-
-      stock.demand = 0;
-
-      try {
-        await stock.save();
-        console.log(`Updated stock ${stock.symbol}`);
-      } catch (error) {
-        console.error(`Error updating stock ${stock.symbol}:`, error);
-        // Rollback the transaction if any error occurs
-        await session.abortTransaction();
-        session.endSession();
+      if (error) {
+        console.error("Error creating new stock timestamp:", error);
         throw error;
       }
-    }
 
-    // Commit the transaction if all updates are successful
-    await session.commitTransaction();
-    session.endSession();
-    console.log("Transaction committed successfully.");
+      const { updatedData, updateError } = await supabase
+        .from("current_stock_prices")
+        .update({ price: newPrice, demand: 0 })
+        .eq("symbol", symbol);
+
+      if (updateError) {
+        console.error("Error updating stock price:", updateError);
+      }
+
+      console.log(`Updated stock ${stock.symbol}`);
+    }
   } catch (error) {
     console.error("Error finding or updating stocks:", error);
   }
@@ -197,6 +210,8 @@ module.exports = {
   getStockData,
   getCurrentStockData,
   getAllStocks,
+  updateStockElo,
+  updateStockEloPrice,
   buyStock,
   sellStock,
   updateStockAlgorithm,
