@@ -30,6 +30,7 @@ const StockDetailContainer = ({ symbol }) => {
         );
 
         const localizedData = convertToLocaleTime(response.data);
+        localizedData.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
 
         setStockData(localizedData);
 
@@ -55,7 +56,6 @@ const StockDetailContainer = ({ symbol }) => {
         newStockData.localTimestamp = new Date(newStockData.timestamp);
         setStockData((prevStockData) => [...prevStockData, newStockData]);
         setCurrStockData(newStockData);
-        console.log(newStockData);
       }
     });
 

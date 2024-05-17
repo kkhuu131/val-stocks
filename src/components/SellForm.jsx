@@ -16,6 +16,7 @@ import {
   Image,
   Text
 } from "@chakra-ui/react";
+import { supabase } from '../supabase';
 
 const SellForm = ({ symbol }) => {
   const [amount, setAmount] = useState(0);
@@ -23,13 +24,73 @@ const SellForm = ({ symbol }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/sell", {
-        symbol,
-        amount,
-      });
-      console.log("Stock sold:", response.data);
-      // Reset form fields after successful submission
-      setAmount(0);
+      const stockResponse = await axios.get("http://localhost:5000/currentStockData/" + symbol);
+      const stockPrice = stockResponse.data.price;
+      
+      const { data: userResponse, error: userError} = await supabase.auth.getUser();
+      if (userError) throw userError;
+
+      const user = userResponse.user;
+
+      if (user) {
+        const { data: currentStockData, error: fetchStockError } = await supabase
+          .from("current_stock_prices")
+          .select("*")
+          .eq("symbol", symbol)
+          .single();
+        
+        if (fetchStockError) {
+          console.error("Error fetching current stock price:", fetchStockError);
+
+          return;
+        }
+
+        const stockPrice = Number(currentStockData.price);
+
+        const { data: userProfile, error: fetchUserError } = await supabase
+          .from("profiles")
+          .select("*")
+          .eq("id", user.id)
+          .single();
+
+        if (fetchUserError) {
+          console.error("Error fetching user profile:", fetchUserError);
+
+          return;
+        }
+
+        const userBalance = Number(userProfile.balance);
+        const transactionAmount = Number(amount * stockPrice);
+
+        const userStockAmount = (userProfile.stocks && userProfile.stocks[symbol]) ? Number(userProfile.stocks[symbol]) : 0;
+
+        if (amount > userStockAmount) {
+          console.log("User doesn't own enough stocks: " + amount + " " + userStockAmount);
+
+          return;
+        }
+
+        const updatedBalance = Math.round(Number(userBalance + transactionAmount) * 100) / 100;
+        const updatedStocks = { ...userProfile.stocks };
+        updatedStocks[symbol] = Math.round(((Number(updatedStocks[symbol]) || 0) - Number(amount)) * 1000) / 1000;
+        if(Number(updatedStocks[symbol]) == 0) {
+          delete updatedStocks[symbol];
+        }
+
+        await supabase
+          .from("profiles")
+          .update({ balance: updatedBalance, stocks: updatedStocks })
+          .eq("id", user.id);
+
+        await supabase
+          .from("current_stock_prices")
+          .update({ demand: currentStockData.demand + Number(amount) })
+          .eq("symbol", symbol);
+
+        console.log("Stock sold");
+      } else {
+        console.error("User not authenticated");
+      }
     } catch (error) {
       console.error("Error selling stock:", error);
     }
