@@ -17,7 +17,7 @@ import {
 } from "@chakra-ui/react";
 import { supabase } from '../supabase';
 
-const BuyForm = ({ symbol }) => {
+const BuyForm = ({ symbol, stockPrice, userBalance}) => {
   const [amount, setAmount] = useState(0);
 
   const handleSubmit = async (e) => {
@@ -70,9 +70,9 @@ const BuyForm = ({ symbol }) => {
           return;
         }
 
-        const updatedBalance = Number(userBalance - transactionAmount);
+        const updatedBalance = Math.round(Number(userBalance - transactionAmount) * 100) / 100;
         const updatedStocks = { ...userProfile.stocks };
-        updatedStocks[symbol] = (Number(updatedStocks[symbol]) || 0) + Number(amount);
+        updatedStocks[symbol] = Math.round(((Number(updatedStocks[symbol]) || 0) + Number(amount)) * 1000) / 1000;
 
         await supabase
           .from("profiles")
@@ -99,6 +99,7 @@ const BuyForm = ({ symbol }) => {
         <NumberInput
           defaultValue={0}
           min={0}
+          max={Math.round(userBalance/stockPrice * 1000) / 1000}
           onChange={(e) => setAmount(e)}
           precision={3}
           isRequired={true}

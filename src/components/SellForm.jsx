@@ -18,7 +18,7 @@ import {
 } from "@chakra-ui/react";
 import { supabase } from '../supabase';
 
-const SellForm = ({ symbol }) => {
+const SellForm = ({ symbol, userStocks }) => {
   const [amount, setAmount] = useState(0);
 
   const handleSubmit = async (e) => {
@@ -103,6 +103,7 @@ const SellForm = ({ symbol }) => {
       <NumberInput
         defaultValue={0}
         min={0}
+        max={userStocks[symbol] || 0}
         onChange={(e) => setAmount(e)}
         precision={3}
         isRequired={true}

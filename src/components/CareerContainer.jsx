@@ -11,12 +11,11 @@ const CareerContainer = () => {
     useEffect(() => {
         const fetchUserData = async () => {
           try {
-            const {
-              data: { user },
-            } = await supabase.auth.getUser();
+            const { data: { user }, error: userError } = await supabase.auth.getUser();
+            if (userError) throw userError;
             if (user) {
               setUserData(user);
-              fetchUserStockData(user.id);
+              await fetchUserStockData(user.id);
             }
           } catch (error) {
             console.error('Error fetching user metadata:', error.message);
@@ -36,13 +35,13 @@ const CareerContainer = () => {
             }
 
             setUserStockData(data);
+            console.log(data);
           } catch (error) {
             console.error('Error fetching user info:', error.message);
           }
         };
   
         fetchUserData();
-        console.log(userStockData);
     }, []);
   
     if (!userData || !userStockData) {

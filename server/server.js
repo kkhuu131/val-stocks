@@ -9,6 +9,7 @@ const {
   sellStock,
   updateStockAlgorithm,
 } = require("./controllers/stockController");
+const { supabase } = require("./supabase");
 const cron = require("node-cron");
 const socketIo = require("socket.io");
 const http = require("http");
@@ -45,6 +46,10 @@ async function updateStocks() {
 
   try {
     await updateStockAlgorithm(io, utcNow);
+    const { data, error } = await supabase.rpc("update_user_net_worth");
+    if (error) {
+      throw error;
+    }
     console.log("Stock update completed successfully.");
   } catch (error) {
     console.error(`Error updating stocks: `, error);

@@ -3,8 +3,7 @@ import axios from "axios";
 import teamData from "../teamMappings.json";
 import io from "socket.io-client";
 import StockGraph from "./StockGraph";
-import BuyForm from "./BuyForm";
-import SellForm from "./SellForm";
+import BuySellPanel from "./BuySellPanel";
 import { Box, Heading, Text, Grid, Flex, Image } from "@chakra-ui/react";
 
 const StockDetailContainer = ({ symbol }) => {
@@ -44,6 +43,8 @@ const StockDetailContainer = ({ symbol }) => {
         }
 
         setCurrStockData(newData);
+
+        
       } catch (error) {
         console.error("Error fetching stock data:", error);
       }
@@ -114,29 +115,7 @@ const StockDetailContainer = ({ symbol }) => {
           borderRadius="lg"
           m={10}
         >
-          <Grid templateRows="75px 85px 85px">
-            <Flex alignItems="center" justifyContent={"center"}>
-              <Image
-                src={teamData["teamBySymbolMap"][symbol].img}
-                alt={"{symbol} Logo"}
-                width="35px"
-                height="35px"
-                m={1}
-              />
-              <Text m={1} fontSize={20} fontWeight="bold" color="white">
-                {teamData["teamBySymbolMap"][symbol].name}
-              </Text>
-              <Text m={1} fontSize={16} color={"grayAlpha.50"}>
-                {symbol}
-              </Text>
-            </Flex>
-            <Flex alignItems="top" justifyContent={"center"}>
-              <BuyForm symbol={symbol} />
-            </Flex>
-            <Flex alignItems="top" justifyContent={"center"}>
-              <SellForm symbol={symbol} />
-            </Flex>
-          </Grid>
+          <BuySellPanel symbol={symbol} currStockData={currStockData}/>
         </Flex>
       </Grid>
     </Box>
