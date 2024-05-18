@@ -35,36 +35,36 @@ io.on("connection", (socket) => {
   });
 });
 
-const cronSchedule = "* * * * *";
+// const cronSchedule = "* * * * *";
 
-async function updateStocks() {
-  const now = new Date();
-  now.setSeconds(0);
-  now.setMilliseconds(0);
+// async function updateStocks() {
+//   const now = new Date();
+//   now.setSeconds(0);
+//   now.setMilliseconds(0);
 
-  const utcNow = now.toISOString();
+//   const utcNow = now.toISOString();
 
-  try {
-    await updateStockAlgorithm(io, utcNow);
-    const { data, error } = await supabase.rpc("update_user_net_worth");
-    if (error) {
-      throw error;
-    }
-    console.log("Stock update completed successfully.");
-  } catch (error) {
-    console.error(`Error updating stocks: `, error);
-  }
+//   try {
+//     await updateStockAlgorithm(io, utcNow);
+//     const { data, error } = await supabase.rpc("update_user_net_worth");
+//     if (error) {
+//       throw error;
+//     }
+//     console.log("Stock update completed successfully.");
+//   } catch (error) {
+//     console.error(`Error updating stocks: `, error);
+//   }
 
-  console.log("All stock updates completed successfully.");
-}
+//   console.log("All stock updates completed successfully.");
+// }
 
-cron.schedule(cronSchedule, async () => {
-  try {
-    await updateStocks();
-  } catch (error) {
-    console.error("Error updating stocks:", error);
-  }
-});
+// cron.schedule(cronSchedule, async () => {
+//   try {
+//     await updateStocks();
+//   } catch (error) {
+//     console.error("Error updating stocks:", error);
+//   }
+// });
 
 // Route to create a new stock
 app.post("/create", async (req, res) => {

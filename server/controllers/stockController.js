@@ -112,79 +112,9 @@ async function updateStockEloPrice(symbol, elo, price) {
   return data;
 }
 
-async function buyStock(userId, symbol, amount = 0) {
-  console.log(userId);
-
-  const { data: currentStockData, error: fetchStockError } = await supabase
-    .from("current_stock_prices")
-    .select("*")
-    .eq("symbol", symbol)
-    .single();
-
-  if (fetchStockError) {
-    console.error("Error fetching current demand:", fetchStockError);
-    throw fetchStockError;
-  }
-
-  const stockPrice = currentStockData.price;
-
-  const { data: userProfile, error: fetchUserError } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("id", userId)
-    .single();
-
-  if (fetchUserError) {
-    console.error("Error fetching profile:", fetchUserError);
-    throw fetchUserError;
-  }
-
-  let userBalance = userProfile.balance;
-  let chargeAmount = amount * stockPrice;
-
-  if (chargeAmount > userBalance) {
-    console.log("Insufficient balance.");
-    return;
-  }
-
-  userBalance = Math.round((userBalance - chargeAmount) * 100) / 100;
-
-  let userStocks = userProfile.stocks || {};
-
-  if (userStocks[symbol]) {
-    userStocks[symbol] += amount;
-  } else {
-    userStocks[symbol] = amount;
-  }
-
-  const { error: updateProfileError } = await supabase
-    .from("profiles")
-    .update({ balance: userBalance, stocks: userStocks })
-    .eq("id", userId);
-
-  if (updateProfileError) {
-    throw updateProfileError;
-  }
-
-  const { error: updateStockError } = await supabase
-    .from("current_stock_prices")
-    .update({ demand: currentStockData.demand + amount })
-    .eq("symbol", symbol);
-
-  if (updateStockError) {
-    throw updateStockError;
-  }
-
-  console.log("Completed stock transaction successfully.");
-}
-
-async function sellStock(userId, symbol, amount = 0) {
-  return modifyDemand(symbol, Number(amount), false);
-}
-
 async function updateStockAlgorithm(io, timestamp) {
   const randomnessWeight = 0.007;
-  const demandWeight = 0.01;
+  const demandWeight = 0.003;
 
   try {
     const currentStocks = await getAllStocks();
