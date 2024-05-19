@@ -172,7 +172,5 @@ module.exports = {
   getAllStocks,
   updateStockElo,
   updateStockEloPrice,
-  buyStock,
-  sellStock,
   updateStockAlgorithm,
 };

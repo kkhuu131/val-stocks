@@ -1,65 +1,59 @@
 import React, { useState, useEffect } from "react";
 import teamData from "../teamMappings.json";
-import { Box, Heading, Text, Grid, Flex, Image } from "@chakra-ui/react";
+import { 
+  Box, 
+  Heading, 
+  Text, 
+  Grid, 
+  Flex, 
+  Image
+} from "@chakra-ui/react";
 import UserStocks from "./UserStocks";
+import RealTimeUserProfile from "./RealTimeUserProfile";
 import { supabase } from '../supabase';
 
 const CareerContainer = () => {
-    const [userData, setUserData] = useState(null);
-    const [userStockData, setUserStockData] = useState(null);
+  const [userData, setUserData] = useState(null);
+  const [userId, setUserId] = useState(null);
 
-    useEffect(() => {
-        const fetchUserData = async () => {
-          try {
-            const { data: { user }, error: userError } = await supabase.auth.getUser();
-            if (userError) throw userError;
-            if (user) {
-              setUserData(user);
-              await fetchUserStockData(user.id);
-            }
-          } catch (error) {
-            console.error('Error fetching user metadata:', error.message);
-          }
-        };
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const { data: { user }, error: userError } = await supabase.auth.getUser();
+        if (userError) throw userError;
+        setUserData(user);
+        setUserId(user.id);
+      } catch (error) {
+        console.error('Error fetching user metadata:', error.message);
+      }
+    };
 
-        const fetchUserStockData = async (userId) => {
-          try {
-            const { data, error } = await supabase
-              .from('profiles')
-              .select('*')
-              .eq('id', userId)
-              .single();
+    fetchUserData();
+}, []);
 
-            if (error) {
-              throw error;
-            }
-
-            setUserStockData(data);
-            console.log(data);
-          } catch (error) {
-            console.error('Error fetching user info:', error.message);
-          }
-        };
+  const userProfile = RealTimeUserProfile(userId);
   
-        fetchUserData();
-    }, []);
-  
-    if (!userData || !userStockData) {
-        return(
-            <Box Box mx="auto" maxW="1200px" backgroundColor="grayAlpha.700" borderRadius="lg">
-                <Text color="white" fontSize={32}>
-                    User not logged in!
-                </Text>
-            </Box>
-        );
-    } 
+  if (!userData || !userProfile) {
+      return(
+          <Box Box mx="auto" maxW="1200px" backgroundColor="grayAlpha.700" borderRadius="lg">
+              <Text color="white" fontSize={32}>
+                  User not logged in!
+              </Text>
+          </Box>
+      );
+  } 
 
     return (
-        <Box mx="auto" maxW="1200px" backgroundColor="grayAlpha.700" borderRadius="lg">
-            <Text color="white" fontSize={32}>Welcome, {userData.user_metadata.full_name}!</Text>
-            <Text color="white" fontSize={32}>Balance: {userStockData.balance}</Text>
-            <Text color="white" fontSize={32}>Stocks owned: </Text>
-            <UserStocks stocks={userStockData.stocks}/>
+        <Box p="5" mx="auto" maxW="1200px" backgroundColor="grayAlpha.700" borderRadius="lg">
+            <Flex alignItems="center" justifyContent={"center"}>
+              <Image src={userProfile.picture} alt="Profile Picture" boxSize="40px" borderRadius="full" mr="2"/>
+              <Text color="white" fontSize={24} fontWeight={"bold"}>{userProfile.username}</Text>
+            </Flex>
+            <Flex alignItems="center" justifyContent={"center"} m="10">
+              <Text color="white" fontSize={22} mr="5" fontWeight={"bold"}>Net Worth: ${userProfile.networth || 0}</Text>
+              <Text color="white" fontSize={22} ml="5" fontWeight={"bold"}>Balance: ${userProfile.balance || 0}</Text>
+            </Flex>
+            <UserStocks stocks={userProfile.stocks}/>
         </Box>
     );
 };

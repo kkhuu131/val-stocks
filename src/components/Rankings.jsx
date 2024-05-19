@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {
   Box,
   Flex,
+  Heading,
   Text,
   CSSReset,
   Image,
@@ -62,7 +63,10 @@ export default function Rankings() {
     <>
       <CSSReset />
       <Box backgroundColor="black" pt={1} pb={1} h="100vh">
-        <Box mx="auto" maxW="1200px" minW="800px" backgroundColor="grayAlpha.700" borderRadius="lg">
+        <Box p="5" mx="auto" maxW="1200px" minW="800px" backgroundColor="grayAlpha.700" borderRadius="lg">
+          <Flex justifyContent="center">
+            <Heading color="white" m="2">Rankings</Heading>
+          </Flex>
           <Box mx="auto" maxW="1150px" minW="850px">
             <Table color="white" fontSize="16" fontWeight={"bold"}>
               <TableCaption></TableCaption>
@@ -77,10 +81,15 @@ export default function Rankings() {
                 {profiles.map((item, index) => {
                   return (
                     <Tr>
-                      <Td>{index+1}</Td>
                       <Td>
-                        <Flex alignItems="center" m={1}>
-                          <Image src={item.picture} alt="Profile Picture" boxSize="30px" borderRadius="full" mr="2"/>
+                        <Flex alignItems="center">
+                          <Text>{index+1}</Text>
+                          <Image ml="5" src={"https://cdn3.emoji.gg/emojis/9768_Radiant_Valorant.png"} alt="Profile Picture" boxSize="40px"/>
+                        </Flex>
+                      </Td>
+                      <Td>
+                        <Flex alignItems="center">
+                          <Image src={item.picture} alt="Profile Picture" boxSize="40px" borderRadius="full" mr="2"/>
                           <Text>{item.username}</Text>
                         </Flex>
                       </Td>

@@ -23,7 +23,7 @@ const StockDisplayContainer = () => {
   });
 
   return (
-    <Box m={1} mx="auto" maxW="70%">
+    <Box m={1} mx="auto" maxW="70%" minW="800px">
       {stocks.map((item, index) => {
         return <StockDisplayRow key={index} stock={item} />;
       })}
