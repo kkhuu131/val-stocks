@@ -27,8 +27,8 @@ const UserDisplay = ({handleAuth}) => {
             data: { user },
             } = await supabase.auth.getUser();
             if (user) {
-            setUserData(user.user_metadata);
-            setLoading(false);
+                setUserData(user.user_metadata);
+                setLoading(false);
             }
         } catch (error) {
             console.error('Error fetching user info:', error.message);

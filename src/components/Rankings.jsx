@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   Box,
+  Link,
   Flex,
   Heading,
   Text,
@@ -80,21 +81,23 @@ export default function Rankings() {
               <Tbody>
                 {profiles.map((item, index) => {
                   return (
-                    <Tr>
-                      <Td>
-                        <Flex alignItems="center">
-                          <Text>{index+1}</Text>
-                          <Image ml="5" src={"https://cdn3.emoji.gg/emojis/9768_Radiant_Valorant.png"} alt="Profile Picture" boxSize="40px"/>
-                        </Flex>
-                      </Td>
-                      <Td>
-                        <Flex alignItems="center">
-                          <Image src={item.picture} alt="Profile Picture" boxSize="40px" borderRadius="full" mr="2"/>
-                          <Text>{item.username}</Text>
-                        </Flex>
-                      </Td>
-                      <Td>${item.networth}</Td>
-                    </Tr>
+                    <Link display="contents" href={"/career/" + item.username}>
+                      <Tr _hover={{ background: "grayAlpha.700"}}>
+                        <Td verticalAlign="middle">
+                          <Flex alignItems="center">
+                            <Text>{index+1}</Text>
+                            <Image ml="5" src={"https://cdn3.emoji.gg/emojis/9768_Radiant_Valorant.png"} alt="Profile Picture" boxSize="40px"/>
+                          </Flex>
+                        </Td>
+                        <Td verticalAlign="middle">
+                          <Flex alignItems="center">
+                            <Image src={item.picture} alt="Profile Picture" boxSize="40px" borderRadius="full" mr="2"/>
+                            <Text>{item.username}</Text>
+                          </Flex>
+                        </Td>
+                        <Td verticalAlign="middle">${item.networth}</Td>
+                      </Tr>
+                    </Link>
                   );
                 })}
               </Tbody>

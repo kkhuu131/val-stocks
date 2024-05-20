@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <>
       <CSSReset />
-      <Box backgroundColor="black" pt={1} pb={1}>
+      <Box backgroundColor="black" pt={1} pb={1} minHeight="100vh">
         <UpcomingMatchesContainer/>
         <StockDisplayContainer />
       </Box>

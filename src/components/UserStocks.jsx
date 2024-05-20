@@ -1,5 +1,6 @@
 import React from "react";
-import { 
+import {
+    Link,
     Box,
     Flex,
     Image,
@@ -35,31 +36,34 @@ const UserStocks = ({ stocks }) => {
                     {Object.entries(stocks)
                         .sort(([, amountA], [, amountB]) => amountB - amountA)
                         .map(([symbol, amount]) => (
-                        <Tr key={symbol}>
-                            <Td>
-                                <Flex alignItems="center">
-                                    <Image
-                                    src={teamData["teamBySymbolMap"][symbol].img}
-                                    alt={`Team logo for ${symbol}`}
-                                    width="41"
-                                    height="41"
-                                    mr="2"
-                                    objectFit="cover"
-                                    />
-                                    <Text mr="1" color="white" fontSize="16" fontWeight={"bold"}>
-                                        {teamData.teamBySymbolMap[symbol].name}
-                                    </Text>
-                                    <Text color="white" fontSize="16">
-                                        {symbol}
-                                    </Text>
-                                </Flex>
-                            </Td>
-                            <Td>
-                                <Text color="white" fontSize="16" fontWeight={"bold"}>
-                                    {amount}
-                                </Text>
-                            </Td>
-                        </Tr>
+                        <Link display="contents" href={"/stock/" + symbol}>
+                            <Tr key={symbol} _hover={{ background: "grayAlpha.700"}}>
+                                <Td verticalAlign="middle">
+                                    <Flex alignItems="center">
+                                        <Image
+                                            src={teamData["teamBySymbolMap"][symbol].img}
+                                            alt={`Team logo for ${symbol}`}
+                                            width="41"
+                                            height="41"
+                                            objectFit="cover"
+                                        />
+                                        <Text m="5" color="white" fontSize="16" fontWeight={"bold"}>
+                                            {teamData.teamBySymbolMap[symbol].name}
+                                        </Text>
+                                        <Text color="white" fontSize="16">
+                                            {symbol}
+                                        </Text>
+                                    </Flex>
+                                </Td>
+                                <Td verticalAlign="middle">
+                                    <Flex>
+                                        <Text color="white" fontSize="16" fontWeight={"bold"}>
+                                            {amount}
+                                        </Text>
+                                    </Flex>
+                                </Td>
+                            </Tr>
+                        </Link>
                     ))}
                 </Tbody>
             </Table>
