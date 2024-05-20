@@ -8,51 +8,64 @@ import {
   Flex, 
   Image
 } from "@chakra-ui/react";
-import UserStocks from "./UserStocks";
-import RealTimeUserProfile from "./RealTimeUserProfile";
 import { supabase } from '../supabase';
+import UserStocks from "./UserStocks";
 
-const CareerContainer = () => {
-  const [userData, setUserData] = useState(null);
-  const [userId, setUserId] = useState(null);
+const CareerContainer = ({username}) => {
+  const [loading, setLoading] = useState(true);
+  const [userProfile, setUserProfile] = useState(null);
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const { data: { user }, error: userError } = await supabase.auth.getUser();
-        if (userError) throw userError;
-        setUserData(user);
-        setUserId(user.id);
-      } catch (error) {
-        console.error('Error fetching user metadata:', error.message);
+     
+    const fetchUserProfile = async () => {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("username", username)
+        .single();
+
+      if (error) {
+        console.error("Error fetching user profile:", error.message);
+        return;
       }
+
+      setUserProfile(data);
+      setLoading(false);
     };
 
-    fetchUserData();
-}, []);
+    fetchUserProfile();
+  }, [username]);
 
-  const userProfile = RealTimeUserProfile(userId);
+  if(loading) {
+    return(
+      <Box p="5" mx="auto" maxW="1200px" minH="300px" backgroundColor="grayAlpha.700" borderRadius="lg">
+      </Box>
+    );
+  }
   
-  if (!userData || !userProfile) {
-      return(
-          <Box Box mx="auto" maxW="1200px" backgroundColor="grayAlpha.700" borderRadius="lg">
-          </Box>
-      );
-  } 
-
-    return (
-        <Box p="5" mx="auto" maxW="1200px" backgroundColor="grayAlpha.700" borderRadius="lg">
-            <Flex alignItems="center" justifyContent={"center"}>
-              <Image src={userProfile.picture} alt="Profile Picture" boxSize="40px" borderRadius="full" mr="2"/>
-              <Text color="white" fontSize={24} fontWeight={"bold"}>{userProfile.username}</Text>
-            </Flex>
-            <Flex alignItems="center" justifyContent={"center"} m="8">
-              <Text color="white" fontSize={22} mr="5" fontWeight={"bold"}>Net Worth: ${userProfile.networth || 0}</Text>
-              <Text color="white" fontSize={22} ml="5" fontWeight={"bold"}>Balance: ${userProfile.balance || 0}</Text>
-            </Flex>
-            <UserStocks stocks={userProfile.stocks}/>
+  if (!userProfile) {
+    return(
+        <Box p="5" mx="auto" maxW="1200px" minH="300px" backgroundColor="grayAlpha.700" borderRadius="lg">
+          <Flex alignItems="center" justifyContent="center">
+            <Heading color="white">We could not find the user {username}</Heading>
+          </Flex>
         </Box>
     );
+  }
+
+  return (
+      <Box p="5" mx="auto" maxW="1200px" backgroundColor="grayAlpha.700" borderRadius="lg">
+          <Flex alignItems="center" justifyContent={"center"}>
+            <Image src={userProfile.picture} alt="Profile Picture" boxSize="40px" borderRadius="full" mr="2"/>
+            <Text color="white" fontSize={24} fontWeight={"bold"}>{userProfile.username}</Text>
+          </Flex>
+          <Flex alignItems="center" justifyContent={"center"} m="8">
+            <Text color="white" fontSize={22} mr="5" fontWeight={"bold"}>Net Worth: ${userProfile.networth || 0}</Text>
+            <Text color="white" fontSize={22} ml="5" fontWeight={"bold"}>Balance: ${userProfile.balance || 0}</Text>
+          </Flex>
+          <UserStocks stocks={userProfile.stocks}/>
+      </Box>
+  );
 };
 
 export default CareerContainer;

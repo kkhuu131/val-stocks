@@ -35,7 +35,7 @@ const UpcomingMatchesContainer = () => {
         }
 
         return (
-          <UpcomingMatchesRow match={item}/>
+          <UpcomingMatchesRow match={item} key={index}/>
         );
       })}
     </Box>

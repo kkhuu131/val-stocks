@@ -8,7 +8,7 @@ const UpcomingMatchesRow = ({match}) => {
         <Flex m={2} pt={2} pb={2} backgroundColor="grayAlpha.700" alignItems="center" justifyContent="center" borderRadius="md" >
           <Grid gridTemplateColumns="400px 100px">
             <Flex alignItems="center" justifyContent="left">
-              <Grid gridTemplateRow="50% 50%">
+              <Grid gridTemplateRows="50% 50%">
                 <Flex alignItems="center">
                   <Image
                     src={teamData["teamByNameMap"][match.team1_name].img}

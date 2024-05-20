@@ -14,7 +14,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/stock/:symbol" element={<StockDetail />}></Route>
-        <Route path="/career" element={<Career />}></Route>
+        <Route path="/career/:username" element={<Career />}></Route>
         <Route path="/rankings" element={<Rankings />}></Route>
       </Routes>
     </Box>

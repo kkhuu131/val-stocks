@@ -35,7 +35,7 @@ const UserStocks = ({ stocks }) => {
                     {Object.entries(stocks)
                         .sort(([, amountA], [, amountB]) => amountB - amountA)
                         .map(([symbol, amount]) => (
-                        <Tr>
+                        <Tr key={symbol}>
                             <Td>
                                 <Flex alignItems="center">
                                     <Image
