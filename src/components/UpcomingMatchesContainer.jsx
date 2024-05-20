@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Box, Text } from "@chakra-ui/react";
+import teamData from "../teamMappings.json";
+import { Box, Flex, Grid, Text, Image, Heading } from "@chakra-ui/react";
+import UpcomingMatchesRow from "./UpcomingMatchesRow";
 
 const UpcomingMatchesContainer = () => {
   const [matches, setMatches] = useState([]);
@@ -18,10 +20,23 @@ const UpcomingMatchesContainer = () => {
     fetchUpcomingMatches();
   });
 
+  if(matches.length == 0) {
+    return;
+  }
+
   return (
-    <Box m={1} mx="auto" maxW="50%" minW="500px">
+    <Box m={5} mx="auto" maxW="40%" minW="600px">
+      <Flex justifyContent={"center"}>
+        <Heading color="white">Upcoming Matches</Heading>
+      </Flex>
       {matches.map((item, index) => {
-        return <Text color="white" fontSize="32">{item && item.team1_name} vs. {item && item.team2_name}</Text>;
+        if(!item) {
+          return;
+        }
+
+        return (
+          <UpcomingMatchesRow match={item}/>
+        );
       })}
     </Box>
   );
