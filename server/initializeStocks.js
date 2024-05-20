@@ -7,20 +7,7 @@ const {
 } = require("./controllers/stockController");
 const { performVLRScraping } = require("./api/webScraper");
 const teamData = require("../src/teamMappings.json");
-
-const teams = [
-  "100T",
-  "C9",
-  "EG",
-  "FUR",
-  "KRÜ",
-  "LEV",
-  "LOUD",
-  "MIBR",
-  "NRG",
-  "SEN",
-  "G2",
-];
+const teams = require("./teams.json");
 
 const S0 = 1000; // Starting Elo
 

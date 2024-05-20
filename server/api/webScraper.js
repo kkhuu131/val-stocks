@@ -1,6 +1,7 @@
 const axios = require("axios");
 const cheerio = require("cheerio");
-
+const teamData = require("../../src/teamMappings.json");
+const teams = require("../teams.json");
 const redditUrl = "https://www.reddit.com";
 const valoCompetitiveUrl =
   "https://www.reddit.com/r/ValorantCompetitive/New/?f=flair_name%3A%22Post-Match%20Thread%22";
@@ -204,15 +205,130 @@ async function getVLRMatchData(url) {
   } catch (err) {}
 }
 
+async function performVLRUpcomingScraping(page = 1, teamFilter = []) {
+  try {
+    const { data } = await axios.get(
+      "https://www.vlr.gg/matches/?page=" + page
+    );
+    const $ = cheerio.load(data);
+
+    const divElements = $("div.wf-card");
+
+    const promises = [];
+
+    divElements.each((index, divElement) => {
+      $(divElement)
+        .children()
+        .each((childIndex, childElement) => {
+          promises.push(getUpcomingMatchData($(childElement).attr("href")));
+        });
+    });
+
+    // Wait for all promises to resolve
+    const result = await Promise.all(promises);
+
+    if (teamFilter.length == 0) {
+      return result;
+    }
+
+    const filteredResult = [];
+
+    result.forEach((match) => {
+      if (match) {
+        let team1_symbol = "";
+        if (teamData.teamByNameMap[match.team1_name]) {
+          team1_symbol = teamData.teamByNameMap[match.team1_name].symbol;
+        }
+
+        let team2_symbol = "";
+        if (teamData.teamByNameMap[match.team2_name]) {
+          team2_symbol = teamData.teamByNameMap[match.team2_name].symbol;
+        }
+
+        if (
+          teamFilter.length == 0 ||
+          teamFilter.includes(match.team1_name) ||
+          teamFilter.includes(match.team2_name) ||
+          teamFilter.includes(team1_symbol) ||
+          teamFilter.includes(team2_symbol)
+        ) {
+          filteredResult.push(match);
+        }
+      }
+    });
+
+    return filteredResult;
+  } catch (err) {
+    console.log(err.message);
+  }
+}
+
+async function getUpcomingMatchData(url) {
+  try {
+    const { data } = await axios.get("https://www.vlr.gg" + url);
+    const $ = cheerio.load(data);
+
+    const match_event = $('div[style="font-weight: 700;"]').text().trim();
+    const match_series = $(".match-header-event-series")
+      .text()
+      .trim()
+      .replace(/[\n\t]/g, "");
+
+    const team1_name = $('div[class="match-header-link-name mod-1"]')
+      .children()
+      .first()
+      .text()
+      .trim();
+
+    const team2_name = $('div[class="match-header-link-name mod-2"]')
+      .children()
+      .first()
+      .text()
+      .trim();
+
+    const eta = $('div[class="match-header-vs-score"]')
+      .children()
+      .first()
+      .children()
+      .first()
+      .text()
+      .trim();
+
+    const match_date = $('div[class="match-header-date"]')
+      .children()
+      .first()
+      .text()
+      .trim();
+
+    const match_time = $('div[class="match-header-date"]')
+      .children()
+      .last()
+      .text()
+      .trim();
+
+    const matchData = {
+      match_event: match_event,
+      match_series: match_series,
+      team1_name: team1_name,
+      team2_name: team2_name,
+      eta: eta,
+      match_date: match_date,
+      match_time: match_time,
+    };
+
+    return matchData;
+  } catch (err) {}
+}
+
 async function testGetVLRMatchData() {
   try {
-    const matchData = await getVLRMatchData(
-      "/325990/arena-internet-cafe-vs-jijiehao-challengers-league-oceania-stage-1-uf"
-    );
+    const matchData = await performVLRUpcomingScraping(1, teams);
     console.log(matchData);
   } catch (err) {
     console.error("Error:", err.message);
   }
 }
 
-module.exports = { performVLRScraping };
+testGetVLRMatchData();
+
+module.exports = { performVLRScraping, performVLRUpcomingScraping };

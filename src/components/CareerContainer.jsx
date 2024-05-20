@@ -36,9 +36,6 @@ const CareerContainer = () => {
   if (!userData || !userProfile) {
       return(
           <Box Box mx="auto" maxW="1200px" backgroundColor="grayAlpha.700" borderRadius="lg">
-              <Text color="white" fontSize={32}>
-                  User not logged in!
-              </Text>
           </Box>
       );
   } 
@@ -49,7 +46,7 @@ const CareerContainer = () => {
               <Image src={userProfile.picture} alt="Profile Picture" boxSize="40px" borderRadius="full" mr="2"/>
               <Text color="white" fontSize={24} fontWeight={"bold"}>{userProfile.username}</Text>
             </Flex>
-            <Flex alignItems="center" justifyContent={"center"} m="10">
+            <Flex alignItems="center" justifyContent={"center"} m="8">
               <Text color="white" fontSize={22} mr="5" fontWeight={"bold"}>Net Worth: ${userProfile.networth || 0}</Text>
               <Text color="white" fontSize={22} ml="5" fontWeight={"bold"}>Balance: ${userProfile.balance || 0}</Text>
             </Flex>

@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const teams = require("./teams.json");
 const {
   createStock,
   getStockData,
@@ -9,6 +10,7 @@ const {
   sellStock,
   updateStockAlgorithm,
 } = require("./controllers/stockController");
+const { performVLRUpcomingScraping } = require("./api/webScraper");
 const { supabase } = require("./supabase");
 const cron = require("node-cron");
 const socketIo = require("socket.io");
@@ -110,6 +112,17 @@ app.get("/stocks", async (req, res) => {
   } catch (error) {
     console.error("Error getting all current stocks:", error);
     res.status(500).json({ error: "Failed getting all current stocks" });
+  }
+});
+
+// Route to get all upcoming relevant matches
+app.get("/upcomingMatches", async (req, res) => {
+  try {
+    const matches = await performVLRUpcomingScraping(1, teams);
+    res.json(matches);
+  } catch (error) {
+    console.error("Error getting upcoming matches:", error);
+    res.status(500).json({ error: "Failed getting upcoming matches" });
   }
 });
 
