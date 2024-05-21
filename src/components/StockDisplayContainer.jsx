@@ -66,7 +66,7 @@ const StockDisplayContainer = () => {
         <Flex justifyContent="center" alignItems="center" w="100%" mb="4">
           <Input borderColor="grayAlpha.500" color="white" fontSize="24" h="50px" placeholder="Search stocks..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
         </Flex>
-        <Flex>
+        <Flex ml="3">
           <Select color="white" backgroundColor="black" fontSize="24" h="50px" borderColor="grayAlpha.500" value={selectedRegion} onChange={(e) => setSelectedRegion(e.target.value)}>
             <option value="All" style={{ color: 'black'}}>All Regions</option>
             <option value="Americas" style={{ color: 'black'}}>Americas</option>

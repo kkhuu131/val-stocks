@@ -25,7 +25,7 @@ const UpcomingMatchesContainer = () => {
   }
 
   return (
-    <Box m={5} mx="auto" maxW="40%" minW="600px">
+    <Box m={5} mx="auto" maxW="40%" minW="750px">
       <Flex justifyContent={"center"}>
         <Heading color="white">Upcoming Matches</Heading>
       </Flex>

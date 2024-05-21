@@ -268,6 +268,15 @@ async function getUpcomingMatchData(url) {
     const { data } = await axios.get("https://www.vlr.gg" + url);
     const $ = cheerio.load(data);
 
+    const match_event_img = $('div[class="match-header-super"]')
+      .children()
+      .first()
+      .children()
+      .first()
+      .children()
+      .first()
+      .attr("src");
+
     const match_event = $('div[style="font-weight: 700;"]').text().trim();
     const match_series = $(".match-header-event-series")
       .text()
@@ -309,6 +318,7 @@ async function getUpcomingMatchData(url) {
     const matchData = {
       match_event: match_event,
       match_series: match_series,
+      match_event_img: match_event_img,
       team1_name: team1_name,
       team2_name: team2_name,
       eta: eta,
@@ -328,5 +338,7 @@ async function testGetVLRMatchData() {
     console.error("Error:", err.message);
   }
 }
+
+testGetVLRMatchData();
 
 module.exports = { performVLRScraping, performVLRUpcomingScraping };
