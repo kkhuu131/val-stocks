@@ -326,6 +326,35 @@ async function getUpcomingMatchData(url) {
       match_time: match_time,
     };
 
+    if (eta === "live") {
+      const team1_score = Number(
+        $('div[class="match-header-vs-score"]')
+          .children()
+          .eq(1)
+          .children()
+          .first()
+          .children()
+          .first()
+          .text()
+          .trim()
+      );
+
+      const team2_score = Number(
+        $('div[class="match-header-vs-score"]')
+          .children()
+          .eq(1)
+          .children()
+          .first()
+          .children()
+          .last()
+          .text()
+          .trim()
+      );
+
+      matchData.team1_score = team1_score;
+      matchData.team2_score = team2_score;
+    }
+
     return matchData;
   } catch (err) {}
 }
@@ -338,7 +367,5 @@ async function testGetVLRMatchData() {
     console.error("Error:", err.message);
   }
 }
-
-testGetVLRMatchData();
 
 module.exports = { performVLRScraping, performVLRUpcomingScraping };

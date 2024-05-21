@@ -1,7 +1,7 @@
 // BuyForm.js (React component)
 import React, { useState, useEffect } from "react";
 import teamData from "../teamMappings.json";
-import { Box, Heading, Text, Grid, Flex, Image } from "@chakra-ui/react";
+import { Box, Heading, Text, Grid, Flex, Image, Spinner } from "@chakra-ui/react";
 import BuyForm from "./BuyForm";
 import SellForm from "./SellForm";
 import RealTimeUserProfile from "./RealTimeUserProfile";
@@ -10,6 +10,7 @@ import { supabase } from '../supabase';
 const BuySellPanel = ({ symbol, currStockData }) => {
   const [userData, setUserData] = useState(null);
   const [userId, setUserId] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
       const fetchUserData = async () => {
@@ -18,6 +19,7 @@ const BuySellPanel = ({ symbol, currStockData }) => {
           if (userError) throw userError;
           setUserData(user);
           setUserId(user.id);
+          setLoading(false);
         } catch (error) {
           console.error('Error fetching user metadata:', error.message);
         }
@@ -28,39 +30,35 @@ const BuySellPanel = ({ symbol, currStockData }) => {
 
   const userProfile = RealTimeUserProfile(userId);
 
+  if(loading) {
+    return(
+        <Flex alignItems="center" justifyContent={"center"}>
+            <Spinner color="white"/>
+        </Flex>
+    );
+  }
+
   if (!userData || !userProfile) {
     return(
         <Box>
-            <Text m={1} fontSize={20} fontWeight="bold" color="white">Log in to buy and sell stocks!</Text>
         </Box>
     );
   }
 
   return (
-    <Grid templateRows="50px 25px 25px 30px 120px 120px">
-        <Flex alignItems="center" justifyContent={"center"} mt={5}>
-            <Image
-                src={teamData["teamBySymbolMap"][symbol].img}
-                alt={"{symbol} Logo"}
-                width="35px"
-                height="35px"
-                m={1}
-            />
-            <Text m={1} fontSize={20} fontWeight="bold" color="white">
-                {teamData["teamBySymbolMap"][symbol].name}
-            </Text>
-            <Text m={1} fontSize={16} color={"grayAlpha.50"}>
-                {symbol}
-            </Text>
+    <Grid templateRows="5px 45px 30px 50px 30px 110px 110px">
+        <Flex alignItems="center" justifyContent={"center"}>
         </Flex>
         <Flex alignItems="center" justifyContent={"center"}>
-            <Text mt={5} fontSize={16} fontWeight="bold" color="white">Balance: ${userProfile.balance || 0}</Text>
+            <Text mt={5} fontSize={24} fontWeight="bold" color="white">Networth: ${userProfile.networth || 0}</Text>
         </Flex>
         <Flex alignItems="center" justifyContent={"center"}>
-            <Text mt={5} fontSize={16} fontWeight="bold" color="white">Networth: ${userProfile.networth || 0}</Text>
+            <Text mt={5} fontSize={20} fontWeight="bold" color="white">Balance: ${userProfile.balance || 0}</Text>
         </Flex>
         <Flex alignItems="center" justifyContent={"center"}>
             <Text mt={3} fontSize={12} color={"grayAlpha.50"}>Owned: {userProfile.stocks[symbol] || 0}</Text>
+        </Flex>
+        <Flex alignItems="center" justifyContent={"center"}>
         </Flex>
         <Flex alignItems="center" justifyContent={"center"}>
             <BuyForm symbol={symbol} stockPrice={currStockData.price} userBalance={userProfile.balance}/>

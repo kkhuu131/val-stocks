@@ -66,7 +66,7 @@ const UserDisplay = ({handleAuth}) => {
                             <Text color="white" fontSize="16" fontWeight={"bold"}>{userData.full_name}</Text>
                         </Flex>
                     </MenuButton >
-                <MenuList>
+                <MenuList backgroundColor="grayAlpha.600" borderColor="grayAlpha.500">
                     <MenuItem onClick={handleAuth}><Text color="white" fontSize="16" fontWeight={"bold"}>Log Out?</Text></MenuItem>
                 </MenuList>
             </Menu>

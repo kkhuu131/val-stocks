@@ -108,22 +108,23 @@ const SellForm = ({ symbol, userStocks }) => {
         precision={3}
         isRequired={true}
         step={0.001}
-        backgroundColor="grayAlpha.500"
+        borderColor={"grayAlpha.50"}
+        backgroundColor="grayAlpha.700"
         color="white"
-        borderColor="grayAlpha.50"
         borderRadius="lg"
         m={1}
       >
         <NumberInputField
-          fontSize="16"
-          textAlign="center"
-          height="40px"
-          placeholder="Enter amount"
-          fontWeight={"bold"}
+            fontSize="16"
+            textAlign="center"
+            border="0px"
+            fontWeight="bold"
+            height="40px"
+            placeholder="Enter amount"
         />
         <NumberInputStepper>
-          <NumberIncrementStepper />
-          <NumberDecrementStepper />
+          <NumberIncrementStepper children='+' color='grayAlpha.100' borderColor="grayAlpha.500"/>
+          <NumberDecrementStepper children='-' color='grayAlpha.100' borderColor="grayAlpha.500"/>
         </NumberInputStepper>
       </NumberInput>
       <Flex alignItems="center" justifyContent="center">
@@ -131,25 +132,19 @@ const SellForm = ({ symbol, userStocks }) => {
           type="submit"
           m={1}
           mt={3}
-          borderRadius="lg"
+          borderRadius="md"
           border="0px"
-          backgroundColor="grayAlpha.50"
+          backgroundColor="grayAlpha.500"
           color="white"
-          fontSize="12"
+          fontSize="14"
+          h="35px"
+          w="60px"
           fontWeight={"bold"}
           _hover={{
-            backgroundColor:"grayAlpha.500"
+            backgroundColor:"grayAlpha.400"
           }}
         >
                       <Text>Sell</Text>
-            <Image
-                src={teamData["teamBySymbolMap"][symbol].img}
-                alt={"{symbol} Logo"}
-                width="20x"
-                height="20px"
-                m={1}
-              />
-            <Text>Stock</Text>
         </Button>
       </Flex>
     </FormControl>

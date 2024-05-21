@@ -56,7 +56,7 @@ const UpcomingMatchesRow = ({match}) => {
             </Flex>
             <Flex alignItems="center" justifyContent="center">
               {match.team1_score ? <Text color="grayAlpha.500" fontSize="20" m="1">match.team1_score</Text> : <Text color="grayAlpha.500" fontSize="20" m="1">-</Text>}
-              <Text color="white" fontSize="20" m="1">-</Text>
+              <Text color="white" fontSize="20" m="1">:</Text>
               {match.team2_score ? <Text color="grayAlpha.500" fontSize="20" m="1">match.team2_score</Text> : <Text color="grayAlpha.500" fontSize="20" m="1">-</Text>}
             </Flex>
             <Flex alignItems="center" justifyContent="right">
