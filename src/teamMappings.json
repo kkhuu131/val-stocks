@@ -1,5 +1,85 @@
 {
   "teamByIDMap": {
+    "8304": {
+      "id": "8304",
+      "url": "https://www.vlr.gg/team/8304/talon-esports",
+      "name": "Talon Esports",
+      "img": "https://owcdn.net/img/6226f3d764e03.png",
+      "country": "Indonesia",
+      "symbol": "TLN"
+    },
+    "878": {
+      "id": "878",
+      "url": "https://www.vlr.gg/team/878/rex-regum-qeon",
+      "name": "Rex Regum Qeon",
+      "img": "https://owcdn.net/img/629f17f51e7a3.png",
+      "country": "Indonesia",
+      "symbol": "RRQ"
+    },
+    "918": {
+      "id": "918",
+      "url": "https://www.vlr.gg/team/918/global-esports",
+      "name": "Global Esports",
+      "img": "https://owcdn.net/img/657b2f3fcd199.png",
+      "country": "India",
+      "symbol": "GE"
+    },
+    "14419": {
+      "id": "14419",
+      "url": "https://www.vlr.gg/team/14419/giantx",
+      "name": "GIANTX",
+      "img": "https://owcdn.net/img/657b2f3fcd199.png",
+      "country": "Europe",
+      "symbol": "GX"
+    },
+    "2059": {
+      "id": "2059",
+      "url": "https://www.vlr.gg/team/2059/team-vitality",
+      "name": "Team Vitality",
+      "img": "https://owcdn.net/img/637b755224c12.png",
+      "country": "Europe",
+      "symbol": "VIT"
+    },
+    "1001": {
+      "id": "1001",
+      "url": "https://www.vlr.gg/team/1001/team-heretics",
+      "name": "Team Heretics",
+      "img": "https://owcdn.net/img/637b755224c12.png",
+      "country": "Europe",
+      "symbol": "TH"
+    },
+    "7035": {
+      "id": "7035",
+      "url": "https://www.vlr.gg/team/7035/koi",
+      "name": "KOI",
+      "img": "https://owcdn.net/img/660ceac6275cd.png",
+      "country": "Europe",
+      "symbol": "KOI"
+    },
+    "397": {
+      "id": "397",
+      "url": "https://www.vlr.gg/team/397/bbl-esports",
+      "name": "BBL Esports",
+      "img": "https://owcdn.net/img/65b8cce735f26.png",
+      "country": "Turkey",
+      "symbol": "BBL"
+    },
+    "731": {
+      "id": "731",
+      "url": "https://www.vlr.gg/team/731/tyloo",
+      "name": "TYLOO",
+      "img": "https://owcdn.net/img/63eb60fb08390.png",
+      "country": "China",
+      "symbol": "TYL"
+    },
+    "12064": {
+      "id": "12064",
+      "url": "https://www.vlr.gg/team/12064/nova-esports",
+      "name": "Nova Esports",
+      "img": "https://owcdn.net/img/6404c0174250b.png",
+      "country": "China",
+      "symbol": "NOVA"
+    },
     "5248": {
       "id": "5248",
       "url": "https://www.vlr.gg/team/5248/evil-geniuses",
@@ -400,12 +480,12 @@
       "country": "Philippines",
       "symbol": "NAOS"
     },
-    "7055": {
-      "id": "7055",
-      "url": "https://www.vlr.gg/team/7055/team-liquid-brazil",
-      "name": "Team Liquid Brazil",
+    "474": {
+      "id": "474",
+      "url": "https://www.vlr.gg/team/474/team-liquid",
+      "name": "Team Liquid",
       "img": "https://owcdn.net/img/640c381f0603f.png",
-      "country": "Brazil",
+      "country": "Europe",
       "symbol": "TL"
     },
     "7386": {
@@ -1018,6 +1098,86 @@
     }
   },
   "teamByNameMap": {
+    "Talon Esports": {
+      "id": "8304",
+      "url": "https://www.vlr.gg/team/8304/talon-esports",
+      "name": "Talon Esports",
+      "img": "https://owcdn.net/img/6226f3d764e03.png",
+      "country": "Indonesia",
+      "symbol": "TLN"
+    },
+    "Rex Regum Qeon": {
+      "id": "878",
+      "url": "https://www.vlr.gg/team/878/rex-regum-qeon",
+      "name": "Rex Regum Qeon",
+      "img": "https://owcdn.net/img/629f17f51e7a3.png",
+      "country": "Indonesia",
+      "symbol": "RRQ"
+    },
+    "Global Esports": {
+      "id": "918",
+      "url": "https://www.vlr.gg/team/918/global-esports",
+      "name": "Global Esports",
+      "img": "https://owcdn.net/img/657b2f3fcd199.png",
+      "country": "India",
+      "symbol": "GE"
+    },
+    "GIANTX": {
+      "id": "14419",
+      "url": "https://www.vlr.gg/team/14419/giantx",
+      "name": "GIANTX",
+      "img": "https://owcdn.net/img/657b2f3fcd199.png",
+      "country": "Europe",
+      "symbol": "GX"
+    },
+    "Team Vitality": {
+      "id": "2059",
+      "url": "https://www.vlr.gg/team/2059/team-vitality",
+      "name": "Team Vitality",
+      "img": "https://owcdn.net/img/637b755224c12.png",
+      "country": "Europe",
+      "symbol": "VIT"
+    },
+    "Team Heretics": {
+      "id": "1001",
+      "url": "https://www.vlr.gg/team/1001/team-heretics",
+      "name": "Team Heretics",
+      "img": "https://owcdn.net/img/637b755224c12.png",
+      "country": "Europe",
+      "symbol": "TH"
+    },
+    "KOI": {
+      "id": "7035",
+      "url": "https://www.vlr.gg/team/7035/koi",
+      "name": "KOI",
+      "img": "https://owcdn.net/img/660ceac6275cd.png",
+      "country": "Europe",
+      "symbol": "KOI"
+    },
+    "BBL Esports": {
+      "id": "397",
+      "url": "https://www.vlr.gg/team/397/bbl-esports",
+      "name": "BBL Esports",
+      "img": "https://owcdn.net/img/65b8cce735f26.png",
+      "country": "Turkey",
+      "symbol": "BBL"
+    },
+    "TYLOO": {
+      "id": "731",
+      "url": "https://www.vlr.gg/team/731/tyloo",
+      "name": "TYLOO",
+      "img": "https://owcdn.net/img/63eb60fb08390.png",
+      "country": "China",
+      "symbol": "TYL"
+    },
+    "Nova Esports": {
+      "id": "12064",
+      "url": "https://www.vlr.gg/team/12064/nova-esports",
+      "name": "Nova Esports",
+      "img": "https://owcdn.net/img/6404c0174250b.png",
+      "country": "China",
+      "symbol": "NOVA"
+    },
     "Evil Geniuses": {
       "id": "5248",
       "url": "https://www.vlr.gg/team/5248/evil-geniuses",
@@ -1890,12 +2050,12 @@
       "country": "Philippines",
       "symbol": "XIP"
     },
-    "Team Liquid Brazil": {
-      "id": "7055",
-      "url": "https://www.vlr.gg/team/7055/team-liquid-brazil",
-      "name": "Team Liquid Brazil",
+    "Team Liquid": {
+      "id": "474",
+      "url": "https://www.vlr.gg/team/474/team-liquid",
+      "name": "Team Liquid",
       "img": "https://owcdn.net/img/640c381f0603f.png",
-      "country": "Brazil",
+      "country": "Europe",
       "symbol": "TL"
     },
     "KRÜ BLAZE": {
@@ -2036,6 +2196,86 @@
     }
   },
   "teamBySymbolMap": {
+    "TLN": {
+      "id": "8304",
+      "url": "https://www.vlr.gg/team/8304/talon-esports",
+      "name": "Talon Esports",
+      "img": "https://owcdn.net/img/6226f3d764e03.png",
+      "country": "Indonesia",
+      "symbol": "TLN"
+    },
+    "RRQ": {
+      "id": "878",
+      "url": "https://www.vlr.gg/team/878/rex-regum-qeon",
+      "name": "Rex Regum Qeon",
+      "img": "https://owcdn.net/img/629f17f51e7a3.png",
+      "country": "Indonesia",
+      "symbol": "RRQ"
+    },
+    "GE": {
+      "id": "918",
+      "url": "https://www.vlr.gg/team/918/global-esports",
+      "name": "Global Esports",
+      "img": "https://owcdn.net/img/657b2f3fcd199.png",
+      "country": "India",
+      "symbol": "GE"
+    },
+    "GX": {
+      "id": "14419",
+      "url": "https://www.vlr.gg/team/14419/giantx",
+      "name": "GIANTX",
+      "img": "https://owcdn.net/img/657b2f3fcd199.png",
+      "country": "Europe",
+      "symbol": "GX"
+    },
+    "VIT": {
+      "id": "2059",
+      "url": "https://www.vlr.gg/team/2059/team-vitality",
+      "name": "Team Vitality",
+      "img": "https://owcdn.net/img/637b755224c12.png",
+      "country": "Europe",
+      "symbol": "VIT"
+    },
+    "TH": {
+      "id": "1001",
+      "url": "https://www.vlr.gg/team/1001/team-heretics",
+      "name": "Team Heretics",
+      "img": "https://owcdn.net/img/637b755224c12.png",
+      "country": "Europe",
+      "symbol": "TH"
+    },
+    "KOI": {
+      "id": "7035",
+      "url": "https://www.vlr.gg/team/7035/koi",
+      "name": "KOI",
+      "img": "https://owcdn.net/img/660ceac6275cd.png",
+      "country": "Europe",
+      "symbol": "KOI"
+    },
+    "BBL": {
+      "id": "397",
+      "url": "https://www.vlr.gg/team/397/bbl-esports",
+      "name": "BBL Esports",
+      "img": "https://owcdn.net/img/65b8cce735f26.png",
+      "country": "Turkey",
+      "symbol": "BBL"
+    },
+    "TYL": {
+      "id": "731",
+      "url": "https://www.vlr.gg/team/731/tyloo",
+      "name": "TYLOO",
+      "img": "https://owcdn.net/img/63eb60fb08390.png",
+      "country": "China",
+      "symbol": "TYL"
+    },
+    "NOVA": {
+      "id": "12064",
+      "url": "https://www.vlr.gg/team/12064/nova-esports",
+      "name": "Nova Esports",
+      "img": "https://owcdn.net/img/6404c0174250b.png",
+      "country": "China",
+      "symbol": "NOVA"
+    },
     "EG": {
       "id": "5248",
       "url": "https://www.vlr.gg/team/5248/evil-geniuses",
@@ -2813,11 +3053,11 @@
       "symbol": "XIP"
     },
     "TL": {
-      "id": "7055",
-      "url": "https://www.vlr.gg/team/7055/team-liquid-brazil",
-      "name": "Team Liquid Brazil",
+      "id": "474",
+      "url": "https://www.vlr.gg/team/474/team-liquid",
+      "name": "Team Liquid",
       "img": "https://owcdn.net/img/640c381f0603f.png",
-      "country": "Brazil",
+      "country": "Europe",
       "symbol": "TL"
     },
     "KRÜ.B": {
