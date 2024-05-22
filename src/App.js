@@ -9,8 +9,8 @@ import { Box } from "@chakra-ui/react";
 
 function App() {
   return (
-    <Box>
-      <NavBar></NavBar>
+    <Box w="100%" minH="100vh" backgroundColor="black" overflowX="hidden">
+      <NavBar />
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/stock/:symbol" element={<StockDetail />}></Route>

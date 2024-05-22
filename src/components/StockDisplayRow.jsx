@@ -3,10 +3,11 @@ import axios from "axios";
 import teamData from "../teamMappings.json";
 import io from "socket.io-client";
 import SmallDisplayStockGraph from "./SmallDisplayStockGraph";
-import { Box, Flex, Image, Text, LinkBox, LinkOverlay, Tooltip } from "@chakra-ui/react";
+import { Box, Grid, Flex, Image, Text, LinkBox, LinkOverlay, Tooltip, useMediaQuery } from "@chakra-ui/react";
 
 const StockDisplayRow = ({ stock }) => {
   const [stockData, setStockData] = useState([]);
+  const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
 
   useEffect(() => {
     const fetchStockData = async () => {
@@ -44,6 +45,85 @@ const StockDisplayRow = ({ stock }) => {
     //   socket.disconnect();
     // };
   }, [stock.symbol]);
+
+  if(!isLargerThan768) {
+    return(
+      <Tooltip label={'Click to view ' + stock.symbol + ' details' } placement='right'>
+        <LinkBox
+          as="article"
+          backgroundColor="grayAlpha.700"
+          m={2}
+          borderRadius="md"
+        >
+          <LinkOverlay
+            href={`/stock/${stock.symbol}`}
+            style={{ textDecoration: "none", color: "black" }}
+          >
+            <Box display="grid" gridTemplateColumns="1fr 1fr 1fr" p="3">
+              <Flex alignItems="center">
+                  <Image
+                    src={teamData["teamBySymbolMap"][stock.symbol].img}
+                    alt={`Team logo for ${stock.symbol}`}
+                    width="50"
+                    height="50"
+                    objectFit="cover"
+                  />
+              </Flex>
+              <Flex
+                alignItems="center"
+                justifyContent="flex-end"
+                marginLeft={2}
+                marginRight={2}
+              >
+                <Grid templateRows="1fr">
+                  <Text m={1} fontSize={16} fontWeight="bold" color="white">
+                    ${stock.price}
+                  </Text>
+                  {stockData[0] && (
+                    <>
+                      {(() => {
+                        const percentageChange =
+                          Math.round(
+                            (stockData[stockData.length - 1].price /
+                              stockData[0].price -
+                              1) *
+                              100 *
+                              100
+                          ) / 100;
+
+                        if(percentageChange > 0) {
+                          return (
+                            <Text m={1} fontSize={16} fontWeight="bold" color="green.500">
+                              +{String(percentageChange)}%
+                            </Text>
+                          );
+                        }
+                        else {
+                          return (
+                            <Text m={1} fontSize={16} fontWeight="bold" color="red.500">
+                              {String(percentageChange)}%
+                            </Text>
+                          );
+                        }
+                      })()}
+                    </>
+                  )}
+                </Grid>
+              </Flex>
+              <Flex
+                alignItems="center"
+                justifyContent="flex-end"
+                marginLeft={2}
+                marginRight={2}
+              >
+                <SmallDisplayStockGraph stockData={stockData} />
+              </Flex>
+            </Box>
+          </LinkOverlay>
+        </LinkBox>
+      </Tooltip>
+    );
+  }
 
   return (
     <Tooltip label={'Click to view ' + stock.symbol + ' details' } placement='right'>

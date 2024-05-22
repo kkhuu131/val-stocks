@@ -24,7 +24,7 @@ const UpcomingMatchesContainer = () => {
 
   if(loading) {
     return(
-      <Box m={5} mx="auto" maxW="40%" minW="750px">
+      <Box m={5} mx="auto" maxW={["80%", "60%", "40%"]} minW={["80%", "60%", "750px"]}>
         <Flex justifyContent={"center"} my="auto" minH="100px">
           <Heading color="white">Upcoming Matches</Heading>
         </Flex>
@@ -40,7 +40,7 @@ const UpcomingMatchesContainer = () => {
   }
 
   return (
-    <Box m={5} mx="auto" maxW="40%" minW="750px">
+    <Box m={5} mx="auto" maxW={["90%", "60%", "40%"]} minW={["90%", "60%", "750px"]}>
       <Flex justifyContent={"center"}>
         <Heading color="white">Upcoming Matches</Heading>
       </Flex>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import StockDisplayRow from "./StockDisplayRow";
 import teamData from "../teamMappings.json";
-import { Box, Grid, Flex, Input, Select } from "@chakra-ui/react";
+import { Box, Grid, Flex, Input, Select, useMediaQuery } from "@chakra-ui/react";
 
 const StockDisplayContainer = () => {
   const [stocks, setStocks] = useState([]);
@@ -61,7 +61,7 @@ const StockDisplayContainer = () => {
   }, [searchQuery, stocks]);
 
   return (
-    <Box m={1} mx="auto" maxW="70%" minW="800px">
+    <Box m={1} mx="auto" maxW={["90%", "80%", "70%"]} minW={["90%", "80%", "750px"]}>
       <Grid gridTemplateColumns="4fr 2fr 3fr">
         <Flex justifyContent="center" alignItems="center" w="100%" mb="4">
           <Input borderColor="grayAlpha.500" color="white" fontSize="24" h="50px" placeholder="Search stocks..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>

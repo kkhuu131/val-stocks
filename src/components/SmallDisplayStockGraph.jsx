@@ -1,6 +1,7 @@
 import React from "react";
 import { Line } from "react-chartjs-2";
 import Chart from "chart.js/auto"; // important
+import { Box } from "@chakra-ui/react";
 
 const SmallDisplayStockGraph = ({ stockData }) => {
   const data = {
@@ -59,9 +60,9 @@ const SmallDisplayStockGraph = ({ stockData }) => {
   };
 
   return (
-    <div style={{ width: "100px", height: "50px" }}>
+    <Box width= {["75px", "100px"]} height= "50px">
       <Line data={data} options={options} />
-    </div>
+    </Box>
   );
 };
 
