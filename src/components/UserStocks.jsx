@@ -14,17 +14,20 @@ import {
     Td,
     TableCaption,
     TableContainer,
+    useMediaQuery
 } from "@chakra-ui/react";
 import teamData from "../teamMappings.json";
 
 const UserStocks = ({ stocks }) => {
+    const [isLargerThan425] = useMediaQuery("(min-width: 425px)");
+
     if (!stocks || Object.keys(stocks).length === 0) {
         return <Text color="white" fontSize={32}>No stocks owned</Text>;
     }
 
     return(
         <Box>
-            <Table mx="auto" maxW="900px" minW="500px">
+            <Table mx="auto" maxW="auto" minW="auto">
                 <TableCaption></TableCaption>
                 <Thead>
                     <Tr>
@@ -50,9 +53,9 @@ const UserStocks = ({ stocks }) => {
                                         <Text m="5" color="white" fontSize="16" fontWeight={"bold"}>
                                             {teamData.teamBySymbolMap[symbol].name}
                                         </Text>
-                                        <Text color="white" fontSize="16">
+                                        {isLargerThan425 && <Text color="white" fontSize="16">
                                             {symbol}
-                                        </Text>
+                                        </Text>}
                                     </Flex>
                                 </Td>
                                 <Td verticalAlign="middle">

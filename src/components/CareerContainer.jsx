@@ -38,14 +38,14 @@ const CareerContainer = ({username}) => {
 
   if(loading) {
     return(
-      <Box p="5" mx="auto" maxW="1200px" minH="300px" backgroundColor="grayAlpha.700" borderRadius="lg">
+      <Box p="5" mx="auto" maxW={["90%", "90%", "90%", "1200px"]} minW={["90%", "90%", "90%", "80%"]} minH="300px" backgroundColor="grayAlpha.900" borderRadius="lg">
       </Box>
     );
   }
   
   if (!userProfile) {
     return(
-        <Box p="5" mx="auto" maxW="1200px" minH="300px" backgroundColor="grayAlpha.700" borderRadius="lg">
+        <Box p="5" mx="auto" maxW={["90%", "90%", "90%", "1200px"]} minW={["90%", "90%", "90%", "80%"]} minH="300px" backgroundColor="grayAlpha.900" borderRadius="lg">
           <Flex alignItems="center" justifyContent="center">
             <Heading color="white">We could not find the user {username}</Heading>
           </Flex>
@@ -54,16 +54,18 @@ const CareerContainer = ({username}) => {
   }
 
   return (
-      <Box p="5" mx="auto" maxW="1200px" backgroundColor="grayAlpha.700" borderRadius="lg">
+      <Box p="5" mx="auto" maxW={["90%", "90%", "90%", "1200px"]} minW={["90%", "90%", "90%", "80%"]} backgroundColor="grayAlpha.900" borderRadius="lg">
           <Flex alignItems="center" justifyContent={"center"}>
             <Image src={userProfile.picture} alt="Profile Picture" boxSize="40px" borderRadius="full" mr="2"/>
             <Text color="white" fontSize={24} fontWeight={"bold"}>{userProfile.username}</Text>
           </Flex>
           <Flex alignItems="center" justifyContent={"center"} m="8">
-            <Text color="white" fontSize={22} mr="5" fontWeight={"bold"}>Net Worth: ${userProfile.networth || 0}</Text>
-            <Text color="white" fontSize={22} ml="5" fontWeight={"bold"}>Balance: ${userProfile.balance || 0}</Text>
+            <Text color="white" fontSize={[16, 20, 22]} mr="5" fontWeight={"bold"}>Net Worth: ${userProfile.networth || 0}</Text>
+            <Text color="white" fontSize={[16, 20, 22]} ml="5" fontWeight={"bold"}>Balance: ${userProfile.balance || 0}</Text>
           </Flex>
-          <UserStocks stocks={userProfile.stocks}/>
+          <Box maxW="1000px" mx="auto">
+            <UserStocks stocks={userProfile.stocks}/>
+          </Box>
       </Box>
   );
 };

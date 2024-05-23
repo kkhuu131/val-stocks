@@ -4,11 +4,12 @@ import teamData from "../teamMappings.json";
 import io from "socket.io-client";
 import StockGraph from "./StockGraph";
 import BuySellPanel from "./BuySellPanel";
-import { Box, Heading, Text, Grid, Flex, Image } from "@chakra-ui/react";
+import { Box, Heading, Text, Grid, Flex, Image, useMediaQuery } from "@chakra-ui/react";
 
 const StockDetailContainer = ({ symbol }) => {
   const [stockData, setStockData] = useState([]);
   const [currStockData, setCurrStockData] = useState({});
+  const [isLargerThan768] = useMediaQuery("(min-width: 1024px)");
 
   const convertToLocaleTime = (data) => {
     return data.map(item => {
@@ -66,79 +67,161 @@ const StockDetailContainer = ({ symbol }) => {
     };
   }, [symbol]);
 
-  return (
-    <Box py="3" mx="auto" maxW="1200px" backgroundColor="grayAlpha.700" borderRadius="lg">
-      <Grid templateColumns="800px 400px">
-        <Flex alignItems="left" ml={5} maxW="800px">
-          <Grid templateRows="100px 450px">
-            <Flex> 
-                <Grid templateColumns="500px 280px">
-                  <Flex alignItems="center" justifyContent={"left"}>
-                      <Image
-                          src={teamData["teamBySymbolMap"][symbol].img}
-                          alt={"{symbol} Logo"}
-                          width="75px"
-                          height="75px"
-                          m={1}
-                      />
-                      <Text m={1} fontSize={40} fontWeight="bold" color="white">
-                          {teamData["teamBySymbolMap"][symbol].name}
-                      </Text>
-                      <Text m={1} fontSize={16} color={"grayAlpha.50"}>
-                          {symbol}
-                      </Text>
+  if(!isLargerThan768) {
+    return(
+      <Box p="1" mx="auto" minW="90%" maxW="90%" h="100%" backgroundColor="grayAlpha.900" borderRadius="lg">
+        <Grid templateColumns="auto auto">
+              <Flex alignItems="center" justifyContent="left">
+                  <Image
+                      src={teamData["teamBySymbolMap"][symbol].img}
+                      alt={"{symbol} Logo"}
+                      width="50px"
+                      height="50px"
+                      m={1}
+                  />
+                  <Flex>
+                    <Text m={1} fontSize={16} color={"grayAlpha.50"} fontWeight="bold">
+                        {symbol}
+                    </Text>
                   </Flex>
-                  <Flex alignItems="center" justifyContent={"right"}>
-                        <Heading color="white" fontSize={24} mr="3">
-                          ${currStockData.price && currStockData.price}
-                        </Heading>
-                        {stockData[0] && (
-                          <>
-                            {(() => {
-                              const percentageChange =
-                                Math.round(
-                                  (stockData[stockData.length - 1].price /
-                                    stockData[0].price -
-                                    1) *
-                                    100 *
-                                    100
-                                ) / 100;
+              </Flex>
+              <Flex alignItems="center" justifyContent="right">
+                <Grid templateRows="50% 50%">
+                  <Flex justifyContent={"right"}>
+                    <Heading color="white" fontSize={20} >
+                      ${currStockData.price && currStockData.price}
+                    </Heading>
+                  </Flex>
+                  <Flex justifyContent={"right"}>
+                    {stockData[0] && (
+                      <>
+                        {(() => {
+                          const percentageChange =
+                            Math.round(
+                              (stockData[stockData.length - 1].price /
+                                stockData[0].price -
+                                1) *
+                                100 *
+                                100
+                            ) / 100;
 
-                              if(percentageChange > 0) {
-                                return (
-                                  <Text m={1} fontSize={16} fontWeight="bold" color="green.500">
-                                    +{String(percentageChange)}%
-                                  </Text>
-                                );
-                              }
-                              else {
-                                return (
-                                  <Text m={1} fontSize={16} fontWeight="bold" color="red.500">
-                                    {String(percentageChange)}%
-                                  </Text>
-                                );
-                              }
-                            })()}
-                          </>
-                      )}
-                  </Flex>      
+                          if(percentageChange > 0) {
+                            return (
+                              <Text fontSize={16} fontWeight="bold" color="green.500">
+                                +{String(percentageChange)}%
+                              </Text>
+                            );
+                          }
+                          else {
+                            return (
+                              <Text fontSize={16} fontWeight="bold" color="red.500">
+                                {String(percentageChange)}%
+                              </Text>
+                            );
+                          }
+                        })()}
+                      </>
+                    )}  
+                  </Flex>
                 </Grid>
+              </Flex>      
+            </Grid>
+            <Box h="100%" w="100%" aspectRatio="2">
+              <StockGraph stock={stockData.symbol} stockData={stockData}/>
+            </Box>
+            <Flex
+              alignItems="center"
+              justifyContent="center"
+              border="1px solid"
+              borderColor="grayAlpha.500"
+              borderRadius="lg"
+              m={2}
+              mx="auto"
+              maxWidth="325px"
+              h="auto"
+            >
+              <BuySellPanel symbol={symbol} currStockData={currStockData}/>
             </Flex>
-            <Flex>
-              <StockGraph symbol={symbol} stockData={stockData} />
+      </Box>
+    );
+  }
+
+  return (
+    <Box py="5" mx="auto" maxW={["90%", "90%", "80%", "80%"]} minW="auto" backgroundColor="grayAlpha.900" borderRadius="lg">
+      <Grid templateColumns={["auto 250px", "auto 250px", "auto 300px", "auto 350px"]}>
+        <Box>
+          <Grid templateColumns="auto auto">
+            <Flex alignItems="center" justifyContent={"left"}>
+                <Image
+                    src={teamData["teamBySymbolMap"][symbol].img}
+                    alt={"{symbol} Logo"}
+                    width={["50px", "55px", "60px", "75px"]}
+                    height={["50px", "55px", "60px", "75px"]}
+                    m={1}
+                />
+                <Text m={1} fontSize={[16, 16, 20, 30]} fontWeight="bold" color="white">
+                    {teamData["teamBySymbolMap"][symbol].name}
+                </Text>
+                <Text m={1} fontSize={16} color={"grayAlpha.50"}>
+                    {symbol}
+                </Text>
             </Flex>
+            <Flex alignItems="center" justifyContent="right">
+              <Grid templateRows="auto auto">
+                <Flex justifyContent={"right"}>
+                  <Heading color="white" fontSize={[16, 16, 20, 30]} >
+                    ${currStockData.price && currStockData.price}
+                  </Heading>
+                </Flex>
+                <Flex justifyContent={"right"}>
+                  {stockData[0] && (
+                    <>
+                      {(() => {
+                        const percentageChange =
+                          Math.round(
+                            (stockData[stockData.length - 1].price /
+                              stockData[0].price -
+                              1) *
+                              100 *
+                              100
+                          ) / 100;
+
+                        if(percentageChange > 0) {
+                          return (
+                            <Text fontSize={[12, 12, 16, 24]} fontWeight="bold" color="green.500">
+                              +{String(percentageChange)}%
+                            </Text>
+                          );
+                        }
+                        else {
+                          return (
+                            <Text fontSize={[12, 12, 16, 24]} fontWeight="bold" color="red.500">
+                              {String(percentageChange)}%
+                            </Text>
+                          );
+                        }
+                      })()}
+                    </>
+                  )}  
+                </Flex>
+              </Grid>
+            </Flex>   
           </Grid>
-        </Flex>
-        <Flex
+          <Box h="0%" w="100%" aspectRatio="2">
+            <StockGraph symbol={symbol} stockData={stockData} />
+          </Box>
+        </Box>
+        <Box
           alignItems="right"
           justifyContent="center"
           border="1px solid"
           borderColor="grayAlpha.500"
           borderRadius="lg"
-          m={10}
+          m={5}
+          w={["200px", "200px", "250px", "300px"]}
         >
           <BuySellPanel symbol={symbol} currStockData={currStockData}/>
-        </Flex>
+        </Box>
       </Grid>
     </Box>
   );

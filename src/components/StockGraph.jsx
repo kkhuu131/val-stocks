@@ -39,6 +39,7 @@ const StockGraph = ({ symbol, stockData }) => {
 
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         display: false,
@@ -72,9 +73,9 @@ const StockGraph = ({ symbol, stockData }) => {
   };
 
   return (
-    <Box w="800px" h="500px">
-      <Line data={data} options={options} />
-    </Box>
+      <Box w="100%" h="100%">
+        <Line data={data} options={options} />
+      </Box>
   );
 };
 

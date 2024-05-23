@@ -5,7 +5,7 @@ import AuthButton from "./AuthButton";
 import { supabase } from '../supabase';
 import UserDisplay from "./UserDisplay";
 
-const MenuLinks = () => {
+const MenuLinks = ({isOpen}) => {
     const [userData, setUserData] = useState(null);
     const [username, setUsername] = useState(null);
 
@@ -27,7 +27,10 @@ const MenuLinks = () => {
     console.log(username);
 
     return(
-        <Box>
+        <Box
+          display={{ base: isOpen ? "block" : "none", md: "block" }}
+          flexBasis={{ base: "100%", md: "auto" }}
+        >
             <Stack 
               spacing={8} 
               align="center" 

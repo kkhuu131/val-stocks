@@ -6,6 +6,7 @@ import { supabase } from '../supabase';
 import UserDisplay from "./UserDisplay";
 
 const NavBarContainer = ({children, ...props}) => {
+
     return(
         <Flex
           as="nav"

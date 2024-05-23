@@ -46,17 +46,15 @@ const BuySellPanel = ({ symbol, currStockData }) => {
   }
 
   return (
-    <Grid templateRows="5px 45px 30px 50px 30px 110px 110px">
+    <Grid templateRows="auto" py="5">
         <Flex alignItems="center" justifyContent={"center"}>
+            <Text fontSize={24} fontWeight="bold" color="white">Networth: ${userProfile.networth || 0}</Text>
         </Flex>
         <Flex alignItems="center" justifyContent={"center"}>
-            <Text mt={5} fontSize={24} fontWeight="bold" color="white">Networth: ${userProfile.networth || 0}</Text>
+            <Text fontSize={20} fontWeight="bold" color="white">Balance: ${userProfile.balance || 0}</Text>
         </Flex>
         <Flex alignItems="center" justifyContent={"center"}>
-            <Text mt={5} fontSize={20} fontWeight="bold" color="white">Balance: ${userProfile.balance || 0}</Text>
-        </Flex>
-        <Flex alignItems="center" justifyContent={"center"}>
-            <Text mt={3} fontSize={12} color={"grayAlpha.50"}>Owned: {userProfile.stocks[symbol] || 0}</Text>
+            <Text fontSize={12} color={"grayAlpha.50"}>Owned: {userProfile.stocks[symbol] || 0}</Text>
         </Flex>
         <Flex alignItems="center" justifyContent={"center"}>
         </Flex>

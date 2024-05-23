@@ -62,12 +62,12 @@ const StockDisplayContainer = () => {
 
   return (
     <Box m={1} mx="auto" maxW={["90%", "80%", "70%"]} minW={["90%", "80%", "750px"]}>
-      <Grid gridTemplateColumns="4fr 2fr 3fr">
+      <Grid gridTemplateColumns={["1fr 1fr", "1fr 1fr","2fr 1fr 1fr"]}>
         <Flex justifyContent="center" alignItems="center" w="100%" mb="4">
-          <Input borderColor="grayAlpha.500" color="white" fontSize="24" h="50px" placeholder="Search stocks..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
+          <Input borderColor="grayAlpha.500" color="white" fontSize={["14", "24"]} h="50px" placeholder="Search stocks..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
         </Flex>
         <Flex ml="3">
-          <Select color="white" backgroundColor="black" fontSize="24" h="50px" borderColor="grayAlpha.500" value={selectedRegion} onChange={(e) => setSelectedRegion(e.target.value)}>
+          <Select color="white" backgroundColor="black" fontSize={["14", "24"]} h="50px" borderColor="grayAlpha.500" value={selectedRegion} onChange={(e) => setSelectedRegion(e.target.value)}>
             <option value="All" style={{ color: 'black'}}>All Regions</option>
             <option value="Americas" style={{ color: 'black'}}>Americas</option>
             <option value="EMEA" style={{ color: 'black'}}>EMEA</option>
