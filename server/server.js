@@ -10,7 +10,10 @@ const {
   sellStock,
   updateStockAlgorithm,
 } = require("./controllers/stockController");
-const { performVLRUpcomingScraping } = require("./api/webScraper");
+const {
+  getRelevantUpcomingMatches,
+  getMatchData,
+} = require("./api/webScraper");
 const { supabase } = require("./supabase");
 const cron = require("node-cron");
 const socketIo = require("socket.io");
@@ -37,8 +40,6 @@ io.on("connection", (socket) => {
   });
 });
 
-// const cronSchedule = "* * * * *";
-
 // async function updateStocks() {
 //   const now = new Date();
 //   now.setSeconds(0);
@@ -60,11 +61,70 @@ io.on("connection", (socket) => {
 //   console.log("All stock updates completed successfully.");
 // }
 
-// cron.schedule(cronSchedule, async () => {
+// cron.schedule("* * * * *", async () => {
 //   try {
 //     await updateStocks();
 //   } catch (error) {
 //     console.error("Error updating stocks:", error);
+//   }
+// });
+
+async function updateMatches() {
+  try {
+    const matchLinks = await getRelevantUpcomingMatches();
+
+    const { data, error } = await supabase.from("matches").select("match_link");
+
+    if (error) {
+      console.error("Error fetching matches table: ", error);
+    }
+
+    const allLinks = [...new Set([...matchLinks, ...data])];
+    const matchesData = [];
+
+    const twentyFourHoursAgo = new Date(
+      new Date().getTime() - 24 * 60 * 60 * 1000
+    ).toISOString();
+
+    for (const link of allLinks) {
+      if (!link) {
+        continue;
+      }
+      const matchData = await getMatchData(link);
+      matchesData.push(matchData);
+    }
+
+    // update existing or insert new matches
+    const { error: upsertError } = await supabase
+      .from("matches")
+      .upsert(matchesData)
+      .select();
+
+    if (upsertError) {
+      console.error("Error upserting matches: ", upsertError);
+    }
+
+    // delete matches that were more than 24 hours ago
+    const { error: deleteError } = await supabase
+      .from("matches")
+      .delete()
+      .lt("match_date", twentyFourHoursAgo);
+
+    if (deleteError) {
+      console.error("Error deleting old matches: ", deleteError);
+    }
+
+    console.log("Successfully updated matches data!");
+  } catch (error) {
+    console.error("Error updating matches:", error);
+  }
+}
+
+// cron.schedule("* * * * *", async () => {
+//   try {
+//     await updateMatches();
+//   } catch (error) {
+//     console.error("Error updating matches:", error);
 //   }
 // });
 
@@ -77,30 +137,6 @@ app.post("/create", async (req, res) => {
   } catch (error) {
     console.error("Error creating stock:", error);
     res.status(500).json({ error: "Failed to create stock" });
-  }
-});
-
-// Route to buy a stock
-app.post("/buy", async (req, res) => {
-  const { userId, symbol, amount } = req.body;
-  try {
-    const newStock = await buyStock(userId, symbol, amount);
-    res.status(201).json();
-  } catch (error) {
-    console.error("Error buying stock:", error);
-    res.status(500).json({ error: "Failed to buy stock" });
-  }
-});
-
-// Route to sell a stock
-app.post("/sell", async (req, res) => {
-  const { symbol, amount } = req.body;
-  try {
-    const newStock = await sellStock(symbol, amount);
-    res.status(201).json();
-  } catch (error) {
-    console.error("Error selling stock:", error);
-    res.status(500).json({ error: "Failed to sell stock" });
   }
 });
 

@@ -9,64 +9,6 @@ const VLRUrl = "https://www.vlr.gg/matches/results";
 // Define a regular expression to match the scoreline (e.g., "2-1", "1-2", etc.)
 const scorelineRegex = /\d+-\d+/;
 
-async function performValoCompetitiveScraping() {
-  try {
-    const { data } = await axios.get(valoCompetitiveUrl);
-    const $ = cheerio.load(data);
-    const matchSet = new Set();
-
-    $('a[data-click-id="body"]').each(async (index, element) => {
-      const pageUrl = $(element).attr("href");
-      if (pageUrl) {
-        try {
-          const id = pageUrl.split("/")[4];
-          if (!matchSet.has(id)) {
-            matchSet.add(id);
-            const response = await axios.get(redditUrl + pageUrl);
-
-            const pageContent = response.data;
-            const page$ = cheerio.load(pageContent);
-            // Extract the text of the first child of the div with id "t3-lcgegvu-post-rtjson-content"
-            const match = page$("#t3_" + id + "-post-rtjson-content")
-              .children()
-              .first()
-              .text();
-            const scoreline = match.match(scorelineRegex)[0];
-            const [team1, team2] = match.split(scoreline);
-            const team1Name = team1.trim();
-            const team2Name = team2.trim();
-            console.log("Scoreline:", scoreline);
-            console.log("Team 1:", team1Name);
-            console.log("Team 2:", team2Name);
-
-            let [team1Games, team2Games] = scoreline.split("-");
-            const numGames = Number(team1Games) + Number(team2Games);
-            console.log(numGames);
-
-            for (let i = 0; i < numGames; i++) {
-              const game = page$("#t3_" + id + "-post-rtjson-content")
-                .children()
-                .eq(2 + i)
-                .text()
-                .trim();
-
-              const gameScoreline = game.match(scorelineRegex)[0];
-
-              console.log(gameScoreline);
-            }
-
-            console.log("-------------------");
-          }
-        } catch (error) {
-          console.error("Error scraping page:", error);
-        }
-      }
-    });
-  } catch (err) {
-    console.log(err.message);
-  }
-}
-
 async function performVLRScraping(page = 1) {
   try {
     const { data } = await axios.get(
@@ -220,7 +162,7 @@ async function performVLRUpcomingScraping(page = 1, teamFilter = []) {
       $(divElement)
         .children()
         .each((childIndex, childElement) => {
-          promises.push(getUpcomingMatchData($(childElement).attr("href")));
+          promises.push(getMatchData($(childElement).attr("href")));
         });
     });
 
@@ -263,7 +205,67 @@ async function performVLRUpcomingScraping(page = 1, teamFilter = []) {
   }
 }
 
-async function getUpcomingMatchData(url) {
+async function getRelevantUpcomingMatches() {
+  try {
+    const { data } = await axios.get("https://www.vlr.gg/matches/?page=" + 1);
+    const $ = cheerio.load(data);
+
+    const divElements = $("div.wf-card");
+
+    const res = [];
+
+    divElements.each((index, element) => {
+      const links = $(element).children("a");
+      links.each((i, link) => {
+        const href = $(link).attr("href");
+        const team1_name = $(link)
+          .children()
+          .eq(1)
+          .children()
+          .first()
+          .children()
+          .first()
+          .children()
+          .first()
+          .text()
+          .trim();
+        const team1_symbol = teamData.teamByNameMap[team1_name]
+          ? teamData.teamByNameMap[team1_name].symbol
+          : null;
+
+        const team2_name = $(link)
+          .children()
+          .eq(1)
+          .children()
+          .last()
+          .children()
+          .first()
+          .children()
+          .first()
+          .text()
+          .trim();
+        const team2_symbol = teamData.teamByNameMap[team2_name]
+          ? teamData.teamByNameMap[team2_name].symbol
+          : null;
+
+        if (
+          teams.includes(team1_name) ||
+          teams.includes(team2_name) ||
+          teams.includes(team1_symbol) ||
+          teams.includes(team2_symbol)
+        ) {
+          res.push(href);
+        }
+      });
+    });
+
+    return res;
+  } catch (err) {
+    console.log(err.message);
+  }
+}
+
+async function getMatchData(url) {
   try {
     const { data } = await axios.get("https://www.vlr.gg" + url);
     const $ = cheerio.load(data);
@@ -303,30 +305,44 @@ async function getUpcomingMatchData(url) {
       .text()
       .trim();
 
+    const best_of = Number(
+      $('div[class="match-header-vs-score"] div[class="match-header-vs-note"]')
+        .eq(1)
+        .text()
+        .trim()
+        .replace("Bo", "")
+    );
+
     const match_date = $('div[class="match-header-date"]')
       .children()
       .first()
-      .text()
-      .trim();
-
-    const match_time = $('div[class="match-header-date"]')
-      .children()
-      .last()
-      .text()
-      .trim();
+      .attr("data-utc-ts");
 
     const matchData = {
+      match_link: "https://www.vlr.gg" + url,
       match_event: match_event,
       match_series: match_series,
       match_event_img: match_event_img,
       team1_name: team1_name,
       team2_name: team2_name,
-      eta: eta,
-      match_date: match_date,
-      match_time: match_time,
+      match_date: new Date(match_date).toISOString(),
+      best_of: best_of,
+      team1_score: 0,
+      team2_score: 0,
     };
 
-    if (eta === "live") {
+    switch (eta) {
+      case "live":
+        matchData.status = "live";
+        break;
+      case "":
+        matchData.status = "completed";
+        break;
+      default:
+        matchData.status = "upcoming";
+    }
+
+    if (eta === "live" || eta === "") {
       const team1_score = Number(
         $('div[class="match-header-vs-score"]')
           .children()
@@ -359,13 +375,8 @@ async function getUpcomingMatchData(url) {
   } catch (err) {}
 }
 
-async function testGetVLRMatchData() {
-  try {
-    const matchData = await performVLRUpcomingScraping(1, teams);
-    console.log(matchData);
-  } catch (err) {
-    console.error("Error:", err.message);
-  }
-}
-
-module.exports = { performVLRScraping, performVLRUpcomingScraping };
+module.exports = {
+  performVLRScraping,
+  getRelevantUpcomingMatches,
+  getMatchData,
+};

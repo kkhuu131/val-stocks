@@ -43,9 +43,9 @@ const UpcomingMatchesRow = ({match}) => {
               <Text color="white" fontSize="14" m="1" fontWeight="bold">{match.team2_name}</Text>
             </Flex>
             <Flex alignItems="center" justifyContent="center">
-              {match.team1_score ? <Text color="grayAlpha.500" fontSize="20" m="1">match.team1_score</Text> : <Text color="grayAlpha.500" fontSize="20" m="1">-</Text>}
+              {match.status==="live" ? <Text color="grayAlpha.500" fontSize="20" m="1">match.team1_score</Text> : <Text color="grayAlpha.500" fontSize="20" m="1">-</Text>}
               <Text color="white" fontSize="20" m="1">:</Text>
-              {match.team2_score ? <Text color="grayAlpha.500" fontSize="20" m="1">match.team2_score</Text> : <Text color="grayAlpha.500" fontSize="20" m="1">-</Text>}
+              {match.status==="live" ? <Text color="grayAlpha.500" fontSize="20" m="1">match.team2_score</Text> : <Text color="grayAlpha.500" fontSize="20" m="1">-</Text>}
             </Flex>
           </Grid>
         </Flex>
@@ -103,12 +103,12 @@ const UpcomingMatchesRow = ({match}) => {
               </Grid>
             </Flex>
             <Flex alignItems="center" justifyContent="center">
-              {match.team1_score ? <Text color="grayAlpha.500" fontSize="20" m="1">match.team1_score</Text> : <Text color="grayAlpha.500" fontSize="20" m="1">-</Text>}
+              {(match.status === "live") ? <Text color="white" fontSize="20" m="1">{match.team1_score}</Text> : <Text color="grayAlpha.500" fontSize="20" m="1">-</Text>}
               <Text color="white" fontSize="20" m="1">:</Text>
-              {match.team2_score ? <Text color="grayAlpha.500" fontSize="20" m="1">match.team2_score</Text> : <Text color="grayAlpha.500" fontSize="20" m="1">-</Text>}
+              {(match.status === "live") ? <Text color="white" fontSize="20" m="1">{match.team2_score}</Text> : <Text color="grayAlpha.500" fontSize="20" m="1">-</Text>}
             </Flex>
             <Flex alignItems="center" justifyContent="right">
-              {(match.eta && match.eta === "live") ? <Text color="red.500" fontSize="20">Live</Text> : <Text color="green.500" fontSize="20">{match.eta}</Text>}
+              {(match.status === "live") ? <Text color="red.500" fontSize="20">Live</Text> : <Text color="green.500" fontSize="20">{match.match_date}</Text>}
             </Flex>
           </Grid>
         </Flex>

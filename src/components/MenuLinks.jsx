@@ -24,8 +24,6 @@ const MenuLinks = ({isOpen}) => {
         fetchUserData();
     }, []);
 
-    console.log(username);
-
     return(
         <Box
           display={{ base: isOpen ? "block" : "none", md: "block" }}
