@@ -4,11 +4,12 @@ import teamData from "../teamMappings.json";
 import io from "socket.io-client";
 import StockGraph from "./StockGraph";
 import BuySellPanel from "./BuySellPanel";
-import { Box, Heading, Text, Grid, Flex, Image, useMediaQuery } from "@chakra-ui/react";
+import { Box, Heading, Text, Grid, Flex, Image, Tabs, TabList, TabPanels, Tab, TabPanel, useMediaQuery } from "@chakra-ui/react";
 
 const StockDetailContainer = ({ symbol }) => {
   const [stockData, setStockData] = useState([]);
   const [currStockData, setCurrStockData] = useState({});
+  const [timeRange, setTimeRange] = useState("1H");
   const [isLargerThan768] = useMediaQuery("(min-width: 1024px)");
 
   const convertToLocaleTime = (data) => {
@@ -147,10 +148,10 @@ const StockDetailContainer = ({ symbol }) => {
   }
 
   return (
-    <Box py="5" mx="auto" maxW={["90%", "90%", "80%", "80%"]} minW="auto" backgroundColor="grayAlpha.900" borderRadius="lg">
+    <Box py="5" mx="auto" maxW={["90%", "90%", "80%", "80%"]} minW="auto" backgroundColor="grayAlpha.900" borderRadius="lg">  
       <Grid templateColumns={["auto 250px", "auto 250px", "auto 300px", "auto 350px"]}>
         <Box>
-          <Grid templateColumns="auto auto">
+          <Grid templateColumns="auto auto auto">
             <Flex alignItems="center" justifyContent={"left"}>
                 <Image
                     src={teamData["teamBySymbolMap"][symbol].img}
@@ -166,6 +167,13 @@ const StockDetailContainer = ({ symbol }) => {
                     {symbol}
                 </Text>
             </Flex>
+            <Tabs variant='soft-rounded' alignContent="center" onChange={(value) => setTimeRange(value)}>
+              <Grid templateColumns="50px 50px 50px">
+                <Tab _selected={{color:"white"}} value="1H">1H</Tab>
+                <Tab _selected={{color:"white"}} value="1D">1D</Tab>
+                <Tab _selected={{color:"white"}} value="1W">1W</Tab>
+              </Grid>
+            </Tabs>
             <Flex alignItems="center" justifyContent="right">
               <Grid templateRows="auto auto">
                 <Flex justifyContent={"right"}>
@@ -208,7 +216,7 @@ const StockDetailContainer = ({ symbol }) => {
             </Flex>   
           </Grid>
           <Box h="0%" w="100%" aspectRatio="2">
-            <StockGraph symbol={symbol} stockData={stockData} />
+            <StockGraph symbol={symbol} stockData={stockData} timeRange={timeRange}/>
           </Box>
         </Box>
         <Box

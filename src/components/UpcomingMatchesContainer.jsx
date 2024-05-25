@@ -9,6 +9,24 @@ const UpcomingMatchesContainer = () => {
   const [matches, setMatches] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const updateMatchesArray = (newMatch) => {
+    setMatches((prevMatches) => {
+      const matchIndex = prevMatches.findIndex(
+        (match) => match.match_link === newMatch.match_link
+      );
+
+      if (matchIndex !== -1 ) {
+        const updatedMatches = [...prevMatches];
+        updatedMatches[matchIndex] = newMatch;
+        return updatedMatches;
+      } else {
+        return [...prevMatches, newMatch];
+      }
+    });
+
+    console.log(matches);
+  };
+
   useEffect(() => {
     const channel = supabase
       .channel("matches-updates")
@@ -21,9 +39,8 @@ const UpcomingMatchesContainer = () => {
           filter: `status=neq.completed`,
         },
         (payload) => {
-          console.log("Change received!", payload);
-          const updatedMatches = payload.new;
-          setMatches(updatedMatches);
+          const updatedMatch = payload.new;
+          updateMatchesArray(updatedMatch);
         }
       )
       .subscribe();
@@ -35,7 +52,7 @@ const UpcomingMatchesContainer = () => {
         .neq("status", "completed");
 
       if (error) {
-        console.error("Error fetching user profile:", error.message);
+        console.error("Error fetching matches:", error.message);
         return;
       }
       setMatches(data);

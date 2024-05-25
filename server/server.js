@@ -40,34 +40,49 @@ io.on("connection", (socket) => {
   });
 });
 
-// async function updateStocks() {
-//   const now = new Date();
-//   now.setSeconds(0);
-//   now.setMilliseconds(0);
+async function updateStocks() {
+  const now = new Date();
+  now.setSeconds(0);
+  now.setMilliseconds(0);
 
-//   const utcNow = now.toISOString();
+  const utcNow = now.toISOString();
 
-//   try {
-//     await updateStockAlgorithm(io, utcNow);
-//     const { data, error } = await supabase.rpc("update_user_net_worth");
-//     if (error) {
-//       throw error;
-//     }
-//     console.log("Stock update completed successfully.");
-//   } catch (error) {
-//     console.error(`Error updating stocks: `, error);
-//   }
+  const oneWeekAgo = new Date(now - 7 * 24 * 60 * 60 * 1000).toISOString();
 
-//   console.log("All stock updates completed successfully.");
-// }
+  try {
+    await updateStockAlgorithm(io, utcNow);
+    const { error } = await supabase.rpc("update_user_net_worth");
+    if (error) {
+      throw error;
+    } else {
+      console.log("Stock update completed successfully.");
+    }
 
-// cron.schedule("* * * * *", async () => {
-//   try {
-//     await updateStocks();
-//   } catch (error) {
-//     console.error("Error updating stocks:", error);
-//   }
-// });
+    // delete stock records that were more than 24 hours ago
+    const { error: deleteError } = await supabase
+      .from("stock_prices")
+      .delete()
+      .lt("timestamp", oneWeekAgo);
+
+    if (deleteError) {
+      console.error("Error deleting old stock prices: ", deleteError);
+    } else {
+      console.log("Delete operation completed successfully.");
+    }
+  } catch (error) {
+    console.error(`Error updating stocks: `, error);
+  }
+
+  console.log("All stock updates completed successfully.");
+}
+
+cron.schedule("* * * * *", async () => {
+  try {
+    await updateStocks();
+  } catch (error) {
+    console.error("Error updating stocks:", error);
+  }
+});
 
 async function updateMatches() {
   try {
@@ -81,7 +96,6 @@ async function updateMatches() {
     const linksData = data.map((match) => match.match_link);
 
     const allLinks = [...new Set([...matchLinks, ...linksData])];
-    console.log(allLinks);
 
     const matchesData = [];
 
@@ -129,13 +143,13 @@ async function updateMatches() {
 
 updateMatches();
 
-// cron.schedule("* * * * *", async () => {
-//   try {
-//     await updateMatches();
-//   } catch (error) {
-//     console.error("Error updating matches:", error);
-//   }
-// });
+cron.schedule("* * * * *", async () => {
+  try {
+    await updateMatches();
+  } catch (error) {
+    console.error("Error updating matches:", error);
+  }
+});
 
 // Route to create a new stock
 app.post("/create", async (req, res) => {

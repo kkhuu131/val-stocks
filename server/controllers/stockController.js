@@ -157,8 +157,6 @@ async function updateStockAlgorithm(io, timestamp) {
       }
 
       io.emit("newStockData", updatedStockPrice);
-
-      console.log(`Updated stock ${stock.symbol}`);
     }
   } catch (error) {
     console.error("Error finding or updating stocks:", error);
