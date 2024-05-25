@@ -212,12 +212,13 @@ const StockDetailContainer = ({ symbol }) => {
           </Box>
         </Box>
         <Box
-          alignItems="right"
+          alignItems="center"
           justifyContent="center"
           border="1px solid"
           borderColor="grayAlpha.500"
           borderRadius="lg"
           m={5}
+          my="auto"
           w={["200px", "200px", "250px", "300px"]}
         >
           <BuySellPanel symbol={symbol} currStockData={currStockData}/>

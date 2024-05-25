@@ -217,7 +217,7 @@ async function getRelevantUpcomingMatches() {
     divElements.each((index, element) => {
       const links = $(element).children("a");
       links.each((i, link) => {
-        const href = $(link).attr("href");
+        const href = "https://www.vlr.gg" + $(link).attr("href");
         const team1_name = $(link)
           .children()
           .eq(1)
@@ -267,7 +267,7 @@ async function getRelevantUpcomingMatches() {
 
 async function getMatchData(url) {
   try {
-    const { data } = await axios.get("https://www.vlr.gg" + url);
+    const { data } = await axios.get(url);
     const $ = cheerio.load(data);
 
     const match_event_img = $('div[class="match-header-super"]')
@@ -319,7 +319,7 @@ async function getMatchData(url) {
       .attr("data-utc-ts");
 
     const matchData = {
-      match_link: "https://www.vlr.gg" + url,
+      match_link: url,
       match_event: match_event,
       match_series: match_series,
       match_event_img: match_event_img,

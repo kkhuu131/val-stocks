@@ -47,17 +47,18 @@ const UpcomingMatchesContainer = () => {
     return () => {
       supabase.removeChannel(channel);
     };
-  });
+  }, []);
 
   if(loading) {
     return(
-      <Box m={5} mx="auto" maxW={["80%", "60%", "40%"]} minW={["80%", "60%", "750px"]}>
-        <Flex justifyContent={"center"} my="auto" minH="100px">
+      <Box>
+        <Flex justifyContent={"center"} my="auto" minH="50px">
           <Heading color="white">Upcoming Matches</Heading>
         </Flex>
-        <Flex justifyContent="center" minHeight="100px" size="md">
-          <Spinner color="white"/>
-        </Flex>
+        <Box m={5} minH="100px" mx="auto" maxW={["80%", "60%", "40%"]} minW={["80%", "60%", "750px"]} backgroundColor="grayAlpha.900" borderRadius="lg">
+          <Flex justifyContent="center" minHeight="100px" size="md">
+          </Flex>
+        </Box>
       </Box>
     );
   }

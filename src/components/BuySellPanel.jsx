@@ -32,7 +32,7 @@ const BuySellPanel = ({ symbol, currStockData }) => {
 
   if(loading) {
     return(
-        <Flex alignItems="center" justifyContent={"center"}>
+        <Flex alignItems="center" justifyContent={"center"} minHeight="300px">
             <Spinner color="white"/>
         </Flex>
     );
@@ -40,7 +40,7 @@ const BuySellPanel = ({ symbol, currStockData }) => {
 
   if (!userData || !userProfile) {
     return(
-        <Box>
+        <Box minHeight="300px">
         </Box>
     );
   }

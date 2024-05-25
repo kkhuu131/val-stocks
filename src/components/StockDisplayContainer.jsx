@@ -2,13 +2,16 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import StockDisplayRow from "./StockDisplayRow";
 import teamData from "../teamMappings.json";
-import { Box, Grid, Flex, Input, Select, useMediaQuery } from "@chakra-ui/react";
+import { supabase } from "../supabase";
+import { Box, Grid, Flex, Input, Select, useMediaQuery, Spinner } from "@chakra-ui/react";
 
 const StockDisplayContainer = () => {
   const [stocks, setStocks] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredStocks, setFilteredStocks] = useState([]);
   const [selectedRegion, setSelectedRegion] = useState("All");
+  const [loading, setLoading] = useState("true");
+
   const regions = {
     Americas: [
       "United States",
@@ -37,28 +40,41 @@ const StockDisplayContainer = () => {
 
   useEffect(() => {
     const fetchStocks = async () => {
-      try {
-        const response = await axios.get(`http://localhost:5000/stocks`);
-        const stockResponse = response.data;
-        stockResponse.sort((a, b) => new Date(b.price) - new Date(a.price));
-        setStocks(stockResponse);
-      } catch (error) {
+      const { data, error } = await supabase
+        .from("current_stock_prices")
+        .select("symbol, price")
+        .order("price", { ascending: false});
+
+      if (error) {
         console.error("Error fetching stocks data:", error);
+        return;
       }
+
+      setStocks(data);
+      setLoading(false);
     };
 
     fetchStocks();
-  });
+  }, []);
 
   useEffect(() => {
     const filtered = stocks.filter((stock) => {
       const matchesSearchQuery = stock.symbol.toLowerCase().includes(searchQuery.toLowerCase()) || (teamData.teamBySymbolMap[stock.symbol] && teamData.teamBySymbolMap[stock.symbol].name.toLowerCase().includes(searchQuery.toLowerCase()))
       const matchesRegion = selectedRegion === "All" || regions[selectedRegion].includes(teamData.teamBySymbolMap[stock.symbol].country);
       return matchesSearchQuery && matchesRegion;
-  });
+  }, []);
 
     setFilteredStocks(filtered);
   }, [searchQuery, stocks]);
+
+  if(loading) {
+    return(
+      <Box m={1} mx="auto" maxW={["90%", "80%", "70%"]} minW={["90%", "80%", "750px"]} minH="500px" backgroundColor="grayAlpha.900" borderRadius="lg">
+        <Flex justifyContent="center" minHeight="100px" size="md" m="auto">
+        </Flex>
+      </Box>
+    );
+  }
 
   return (
     <Box m={1} mx="auto" maxW={["90%", "80%", "70%"]} minW={["90%", "80%", "750px"]}>

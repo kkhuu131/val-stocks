@@ -78,8 +78,11 @@ async function updateMatches() {
     if (error) {
       console.error("Error fetching matches table: ", error);
     }
+    const linksData = data.map((match) => match.match_link);
 
-    const allLinks = [...new Set([...matchLinks, ...data])];
+    const allLinks = [...new Set([...matchLinks, ...linksData])];
+    console.log(allLinks);
+
     const matchesData = [];
 
     const twentyFourHoursAgo = new Date(
@@ -97,11 +100,13 @@ async function updateMatches() {
     // update existing or insert new matches
     const { error: upsertError } = await supabase
       .from("matches")
-      .upsert(matchesData)
+      .upsert(matchesData, { onConflict: "match_link" })
       .select();
 
     if (upsertError) {
       console.error("Error upserting matches: ", upsertError);
+    } else {
+      console.log("Upsert operation completed successfully.");
     }
 
     // delete matches that were more than 24 hours ago
@@ -112,6 +117,8 @@ async function updateMatches() {
 
     if (deleteError) {
       console.error("Error deleting old matches: ", deleteError);
+    } else {
+      console.log("Delete operation completed successfully.");
     }
 
     console.log("Successfully updated matches data!");
@@ -119,6 +126,8 @@ async function updateMatches() {
     console.error("Error updating matches:", error);
   }
 }
+
+updateMatches();
 
 // cron.schedule("* * * * *", async () => {
 //   try {

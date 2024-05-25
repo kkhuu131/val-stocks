@@ -8,42 +8,25 @@ import { Box, Grid, Flex, Image, Text, LinkBox, LinkOverlay, Tooltip, useMediaQu
 const StockDisplayRow = ({ stock }) => {
   const [stockData, setStockData] = useState([]);
   const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
+  const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
-    const fetchStockData = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:5000/stockData/${stock.symbol}`
-        );
-        const data = response.data;
-
-        setStockData(data);
-
-        // const currentTime = new Date();
-        // const oneDayAgo = new Date(currentTime.getTime() - 24 * 60 * 60 * 1000);
-
-        // const filteredData = data.filter((dataPoint) => {
-        //   const dataPointTime = new Date(dataPoint.timestamp);
-        //   return dataPointTime >= oneDayAgo;
-        // });
-
-        // setStockData(filteredData);
-      } catch (error) {
-        console.error("Error fetching stock data:", error);
-      }
-    };
-    fetchStockData();
-
-    // const socket = io("http://localhost:5000");
-    // socket.on("newStockData", (newStockData) => {
-    //   if (newStockData.symbol === stock.symbol) {
-    //     setStockData((prevStockData) => [...prevStockData, newStockData]);
-    //   }
-    // });
-
-    // return () => {
-    //   socket.disconnect();
-    // };
+    if(!hasMounted) {
+      const fetchStockData = async () => {
+        try {
+          const response = await axios.get(
+            `http://localhost:5000/stockData/${stock.symbol}`
+          );
+          const data = response.data;
+  
+          setStockData(data);
+        } catch (error) {
+          console.error("Error fetching stock data:", error);
+        }
+      };
+      fetchStockData();
+      setHasMounted(true);
+    }
   }, [stock.symbol]);
 
   if(!isLargerThan768) {
