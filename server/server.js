@@ -143,7 +143,7 @@ async function updateMatches() {
 
 updateMatches();
 
-cron.schedule("* * * * *", async () => {
+cron.schedule("*/10 * * * *", async () => {
   try {
     await updateMatches();
   } catch (error) {

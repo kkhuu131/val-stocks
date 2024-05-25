@@ -11,6 +11,40 @@ const StockDetailContainer = ({ symbol }) => {
   const [currStockData, setCurrStockData] = useState({});
   const [timeRange, setTimeRange] = useState("1H");
   const [isLargerThan768] = useMediaQuery("(min-width: 1024px)");
+  const [filteredData, setFilteredData] = useState(stockData);
+
+  useEffect(() => {
+    filterData();
+  }, [timeRange, stockData]);
+
+  const filterData = () => {
+    const now = new Date();
+    let filtered;
+
+    switch (timeRange) {
+      case 0:
+        filtered = stockData.filter(dataPoint =>
+          new Date(dataPoint.timestamp) >= new Date(now - 60 * 60 * 1000)
+        );
+        break;
+      case 1:
+        filtered = stockData.filter(dataPoint =>
+          new Date(dataPoint.timestamp) >= new Date(now - 24 * 60 * 60 * 1000)
+        );
+        break;
+      case 2:
+        filtered = stockData.filter(dataPoint =>
+          new Date(dataPoint.timestamp) >= new Date(now - 7 * 24 * 60 * 60 * 1000)
+        );
+        break;
+      default:
+        filtered = stockData.filter(dataPoint =>
+          new Date(dataPoint.timestamp) >= new Date(now - 60 * 60 * 1000)
+        );
+    }
+
+    setFilteredData(filtered);
+  };
 
   const convertToLocaleTime = (data) => {
     return data.map(item => {
@@ -94,13 +128,13 @@ const StockDetailContainer = ({ symbol }) => {
                     </Heading>
                   </Flex>
                   <Flex justifyContent={"right"}>
-                    {stockData[0] && (
+                    {filteredData[0] && (
                       <>
                         {(() => {
                           const percentageChange =
                             Math.round(
-                              (stockData[stockData.length - 1].price /
-                                stockData[0].price -
+                              (filteredData[filteredData.length - 1].price /
+                              filteredData[0].price -
                                 1) *
                                 100 *
                                 100
@@ -167,7 +201,7 @@ const StockDetailContainer = ({ symbol }) => {
                     {symbol}
                 </Text>
             </Flex>
-            <Tabs variant='soft-rounded' alignContent="center" onChange={(value) => setTimeRange(value)}>
+            <Tabs variant='soft-rounded' alignContent="center" onChange={(index) => setTimeRange(index)}>
               <Grid templateColumns="50px 50px 50px">
                 <Tab _selected={{color:"white"}} value="1H">1H</Tab>
                 <Tab _selected={{color:"white"}} value="1D">1D</Tab>
@@ -182,13 +216,13 @@ const StockDetailContainer = ({ symbol }) => {
                   </Heading>
                 </Flex>
                 <Flex justifyContent={"right"}>
-                  {stockData[0] && (
+                  {filteredData[0] && (
                     <>
                       {(() => {
                         const percentageChange =
                           Math.round(
-                            (stockData[stockData.length - 1].price /
-                              stockData[0].price -
+                            (filteredData[filteredData.length - 1].price /
+                            filteredData[0].price -
                               1) *
                               100 *
                               100
@@ -196,14 +230,14 @@ const StockDetailContainer = ({ symbol }) => {
 
                         if(percentageChange > 0) {
                           return (
-                            <Text fontSize={[12, 12, 16, 24]} fontWeight="bold" color="green.500">
+                            <Text fontSize={16} fontWeight="bold" color="green.500">
                               +{String(percentageChange)}%
                             </Text>
                           );
                         }
                         else {
                           return (
-                            <Text fontSize={[12, 12, 16, 24]} fontWeight="bold" color="red.500">
+                            <Text fontSize={16} fontWeight="bold" color="red.500">
                               {String(percentageChange)}%
                             </Text>
                           );
@@ -216,7 +250,7 @@ const StockDetailContainer = ({ symbol }) => {
             </Flex>   
           </Grid>
           <Box h="0%" w="100%" aspectRatio="2">
-            <StockGraph symbol={symbol} stockData={stockData} timeRange={timeRange}/>
+            <StockGraph symbol={symbol} stockData={filteredData}/>
           </Box>
         </Box>
         <Box

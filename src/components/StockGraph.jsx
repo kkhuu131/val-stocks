@@ -4,38 +4,6 @@ import Chart from "chart.js/auto";
 import { Box } from "@chakra-ui/react";
 
 const StockGraph = ({ symbol, stockData, timeRange }) => {
-  const [filteredData, setFilteredData] = useState(stockData);
-
-  useEffect(() => {
-    filterData();
-  }, [timeRange, stockData]);
-
-  const filterData = () => {
-    const now = new Date();
-    let filtered;
-
-    switch (timeRange) {
-      case '1H':
-        filtered = stockData.filter(dataPoint =>
-          new Date(dataPoint.localTimestamp) >= new Date(now - 60 * 60 * 1000)
-        );
-        break;
-      case '1D':
-        filtered = stockData.filter(dataPoint =>
-          new Date(dataPoint.localTimestamp) >= new Date(now - 24 * 60 * 60 * 1000)
-        );
-        break;
-      case '1W':
-        filtered = stockData.filter(dataPoint =>
-          new Date(dataPoint.localTimestamp) >= new Date(now - 7 * 24 * 60 * 60 * 1000)
-        );
-        break;
-      default:
-        filtered = stockData;
-    }
-
-    setFilteredData(filtered);
-  };
   
   const formatTimestamp = (timestamp) => {
     const date = new Date(timestamp);
@@ -47,15 +15,15 @@ const StockGraph = ({ symbol, stockData, timeRange }) => {
   };
 
   const data = {
-    labels: filteredData.map((dataPoint) => formatTimestamp(dataPoint.localTimestamp)),
+    labels: stockData.map((dataPoint) => formatTimestamp(dataPoint.localTimestamp)),
     datasets: [
       {
         label: [],
-        data: filteredData.map((dataPoint) => dataPoint.price),
+        data: stockData.map((dataPoint) => dataPoint.price),
         fill: false,
         borderColor: (context) => {
           const latestPoint = context.chart.data.datasets[0].data[0];
-          const mostRecentPoint = filteredData[filteredData.length - 1];
+          const mostRecentPoint = stockData[stockData.length - 1];
 
           let condition = true;
           if (latestPoint && mostRecentPoint) {

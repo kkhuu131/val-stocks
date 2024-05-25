@@ -23,8 +23,6 @@ const UpcomingMatchesContainer = () => {
         return [...prevMatches, newMatch];
       }
     });
-
-    console.log(matches);
   };
 
   useEffect(() => {

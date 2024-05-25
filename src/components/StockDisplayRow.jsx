@@ -18,8 +18,13 @@ const StockDisplayRow = ({ stock }) => {
             `http://localhost:5000/stockData/${stock.symbol}`
           );
           const data = response.data;
+          const now = new Date();
+          const twentyFourHoursAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+          const filtered = data.filter(dataPoint =>
+            new Date(dataPoint.timestamp) >= twentyFourHoursAgo
+          );
   
-          setStockData(data);
+          setStockData(filtered);
         } catch (error) {
           console.error("Error fetching stock data:", error);
         }

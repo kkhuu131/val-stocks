@@ -20,7 +20,15 @@ const UpcomingMatchesRow = ({match}) => {
         return (days && days + "d ") + hours + "h " + (days ? "" : minutes + "m");
       };
 
-      setEta(calculateETA);
+      const updateETA = () => {
+        setEta(calculateETA);
+      };
+
+      updateETA();
+
+      const intervalId = setInterval(updateETA, 60000);
+
+      return () => clearInterval(intervalId);
     });
 
 
