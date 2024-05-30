@@ -1,5 +1,5 @@
 import React from "react"
-import { Box, Grid, Text, Image} from "@chakra-ui/react"
+import { Box, Grid, Text, Image, Badge} from "@chakra-ui/react"
 import valorantLogo from "../ValorantLogo.png"
 
 const Logo = () => {
@@ -9,7 +9,11 @@ const Logo = () => {
                 <Image src={valorantLogo} alt={"valorantlogo"} h={["50px", "70px"]}/>
                 <Text fontSize={["24", "32"]} fontWeight="bold">
                     valstonks
+                    <Badge variant='solid' colorScheme='red' m={2}>
+                        Beta
+                    </Badge>
                 </Text>
+                
             </Grid>
         </Box>
     );

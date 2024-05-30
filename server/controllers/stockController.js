@@ -134,7 +134,7 @@ async function updateStockAlgorithm(io, timestamp) {
 
       const updatedStockPrice = {
         symbol: stock.symbol,
-        price: stock.price,
+        price: newPrice,
         timestamp,
       };
 

@@ -18,7 +18,6 @@ const RealTimeUserProfile = (userId) => {
           filter: `id=eq.${userId}`,
         },
         (payload) => {
-          console.log("Change received!", payload);
           const updatedProfile = payload.new;
           setUserProfile(updatedProfile);
         }

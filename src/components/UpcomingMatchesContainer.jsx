@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import teamData from "../teamMappings.json";
 import { Box, Flex, Grid, Text, Image, Heading, Spinner } from "@chakra-ui/react";
 import UpcomingMatchesRow from "./UpcomingMatchesRow";

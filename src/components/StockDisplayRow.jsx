@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import teamData from "../teamMappings.json";
-import io from "socket.io-client";
+import { supabase } from "../supabase";
 import SmallDisplayStockGraph from "./SmallDisplayStockGraph";
-import { Box, Grid, Flex, Image, Text, LinkBox, LinkOverlay, Tooltip, useMediaQuery } from "@chakra-ui/react";
+import { Box, Grid, Flex, Image, Text, LinkBox, LinkOverlay, Tooltip, useMediaQuery, Badge } from "@chakra-ui/react";
 
 const StockDisplayRow = ({ stock }) => {
   const [stockData, setStockData] = useState([]);
@@ -14,14 +13,21 @@ const StockDisplayRow = ({ stock }) => {
     if(!hasMounted) {
       const fetchStockData = async () => {
         try {
-          const response = await axios.get(
-            `http://localhost:5000/stockData/${stock.symbol}`
-          );
-          const data = response.data;
+          const { data, error } = await supabase
+            .from("stock_prices")
+            .select("*")
+            .eq("symbol", stock.symbol)
+            .order("timestamp", { ascending: true });
+
+          if (error) {
+            console.error("Error fetching stock data:", error);
+            throw error;
+          }
+
           const now = new Date();
-          const twentyFourHoursAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+          const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
           const filtered = data.filter(dataPoint =>
-            new Date(dataPoint.timestamp) >= twentyFourHoursAgo
+            new Date(dataPoint.timestamp) >= oneHourAgo
           );
   
           setStockData(filtered);

@@ -9,15 +9,26 @@ const UpcomingMatchesRow = ({match}) => {
 
     useEffect(() => {
       const calculateETA = () => {
-        const now = new Date();
-        const matchDate = new Date(match.match_date);
-        const diff = matchDate - now;
+        const now = new Date().getTime();
+        const matchDate = new Date(match.match_date).getTime();
 
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        // console.log("now: " + now);
+        // console.log("match: " + matchDate);
+        
+        if(matchDate <= now || match.status === 'live') {
 
-        return (days && days + "d ") + hours + "h " + (days ? "" : minutes + "m");
+          return 'Live';
+        }
+        else {
+          const diff = matchDate - now;
+          console.log(new Date(diff));
+
+          const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+          return (days && days + "d ") + hours + "h " + (days ? "" : minutes + "m");
+        }
       };
 
       const updateETA = () => {

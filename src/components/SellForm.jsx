@@ -99,7 +99,6 @@ const SellForm = ({ symbol, userStocks }) => {
   return (
     <Box alignItems="center" justifyContent="center" w="200px">
     <FormControl as="form" onSubmit={handleSubmit}>
-      <FormLabel>Amount</FormLabel>
       <NumberInput
         defaultValue={0}
         min={0}

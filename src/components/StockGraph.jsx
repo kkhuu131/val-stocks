@@ -3,15 +3,30 @@ import { Line } from "react-chartjs-2";
 import Chart from "chart.js/auto";
 import { Box } from "@chakra-ui/react";
 
+
 const StockGraph = ({ symbol, stockData, timeRange }) => {
   
   const formatTimestamp = (timestamp) => {
     const date = new Date(timestamp);
-    return date.toLocaleString("en-US", {
-      hour: "numeric",
-      minute: "numeric",
-      hour12: true,
-    });
+    let options;
+
+    if (timeRange === 2) {
+      options = {
+        month: "short",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        hour12: true,
+      };
+    } else {
+      options = {
+        hour: "numeric",
+        minute: "numeric",
+        hour12: true,
+      };
+    }
+
+    return date.toLocaleString("en-US", options);
   };
 
   const data = {

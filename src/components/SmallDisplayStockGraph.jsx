@@ -23,6 +23,7 @@ const SmallDisplayStockGraph = ({ stockData }) => {
           return condition ? "#0ea371" : "#dc4a41";
         },
         tension: 0.1,
+        borderWidth: 2,
       },
     ],
   };

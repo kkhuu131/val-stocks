@@ -313,10 +313,11 @@ async function getMatchData(url) {
         .replace("Bo", "")
     );
 
-    const match_date = $('div[class="match-header-date"]')
-      .children()
-      .first()
-      .attr("data-utc-ts");
+    const match_date = new Date(
+      $('div[class="match-header-date"]').children().first().attr("data-utc-ts")
+    );
+
+    match_date.setHours(match_date.getHours() - 3);
 
     const matchData = {
       match_link: url,
@@ -325,7 +326,7 @@ async function getMatchData(url) {
       match_event_img: match_event_img,
       team1_name: team1_name,
       team2_name: team2_name,
-      match_date: new Date(match_date).toISOString(),
+      match_date: match_date.toISOString(),
       best_of: best_of,
       team1_score: 0,
       team2_score: 0,

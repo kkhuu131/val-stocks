@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import StockDisplayRow from "./StockDisplayRow";
 import teamData from "../teamMappings.json";
 import { supabase } from "../supabase";
