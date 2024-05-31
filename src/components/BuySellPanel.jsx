@@ -22,6 +22,7 @@ const BuySellPanel = ({ symbol, currStockData }) => {
           setLoading(false);
         } catch (error) {
           console.error('Error fetching user metadata:', error.message);
+          setLoading(false);
         }
       };
 
@@ -41,6 +42,13 @@ const BuySellPanel = ({ symbol, currStockData }) => {
   if (!userData || !userProfile) {
     return(
         <Box minHeight="300px">
+          <Grid templateRows="80px 100px 120px">
+            <Flex></Flex>
+            <Flex justifyContent="center" alignItems={"center"} mt="">
+              <Text fontSize={20} fontWeight="bold" color="white">Login to trade stocks</Text>
+            </Flex>
+            <Flex></Flex>
+          </Grid>
         </Box>
     );
   }

@@ -6,7 +6,7 @@ import UpcomingMatchesContainer from "./UpcomingMatchesContainer";
 
 export default function Home() {
   useEffect(() => {
-    document.title = "VALORANT Stocks";
+    document.title = "VALSTONKS";
   });
 
   return (

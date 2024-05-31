@@ -25,7 +25,7 @@ export default function Rankings() {
   const [isLargerThan425] = useMediaQuery("(min-width: 425px)")
 
   useEffect(() => {
-    document.title = "VALORANT Stocks";
+    document.title = "VALSTONKS";
 
     const fetchProfiles = async () => {
       const { data, error } = await supabase
