@@ -61,25 +61,31 @@ const UpcomingMatchesRow = ({match}) => {
             </Flex>
             <Grid templateColumns="50% 50%">
               <Flex>
-                <Image
-                src={teamData["teamByNameMap"][match.team1_name].img}
-                alt={`Team logo for ${match.team1_name}`}
-                width="25"
-                height="25"
-                objectFit="cover"
-                m="1"
-                />
-                <Text color="white" fontSize="14" m="1" fontWeight="bold">{match.team1_name}</Text>
-              </Flex>
-              <Flex>
-                <Image
-                  src={teamData["teamByNameMap"][match.team2_name].img}
-                  alt={`Team logo for ${match.team2_name}`}
+                {
+                  teamData["teamByNameMap"][match.team1_name] &&
+                  <Image
+                  src={teamData["teamByNameMap"][match.team1_name].img}
+                  alt={`Team logo for ${match.team1_name}`}
                   width="25"
                   height="25"
                   objectFit="cover"
                   m="1"
-                />
+                  />
+                }
+                <Text color="white" fontSize="14" m="1" fontWeight="bold">{match.team1_name}</Text>
+              </Flex>
+              <Flex>
+                {
+                  teamData["teamByNameMap"][match.team2_name] &&
+                  <Image
+                    src={teamData["teamByNameMap"][match.team2_name].img}
+                    alt={`Team logo for ${match.team2_name}`}
+                    width="25"
+                    height="25"
+                    objectFit="cover"
+                    m="1"
+                  />
+                }
                 <Text color="white" fontSize="14" m="1" fontWeight="bold">{match.team2_name}</Text>
               </Flex>
             </Grid>
@@ -97,14 +103,17 @@ const UpcomingMatchesRow = ({match}) => {
         <Flex m={2} pt={2} pb={2} backgroundColor="grayAlpha.700" alignItems="center" justifyContent="center" borderRadius="md" >
           <Grid gridTemplateColumns="75px 275px 200px 50px 100px">
                 <Flex alignItems="center" justifyContent="left">
-                  <Image
-                    src={match.match_event_img}
-                    alt={`Team logo for ${match.team1_name}`}
-                    width="50"
-                    height="50"
-                    objectFit="cover"
-                    m="1"
-                  />
+                  {
+                    teamData["teamByNameMap"][match.team1_name] &&
+                    <Image
+                      src={match.match_event_img}
+                      alt={`Team logo for ${match.team1_name}`}
+                      width="50"
+                      height="50"
+                      objectFit="cover"
+                      m="1"
+                    />
+                  }
                 </Flex>
             <Flex alignItems="center" justifyContent="left">
               <Grid gridTemplateRows="50% 25% 25%" justifyContent="left">
@@ -119,14 +128,17 @@ const UpcomingMatchesRow = ({match}) => {
             <Flex alignItems="center" justifyContent="left">
               <Grid gridTemplateRows="50%">
                 <Flex alignItems="center">
-                  <Image
-                    src={teamData["teamByNameMap"][match.team1_name].img}
-                    alt={`Team logo for ${match.team1_name}`}
-                    width="45"
-                    height="45"
-                    objectFit="cover"
-                    m="1"
-                  />
+                  {
+                    teamData["teamByNameMap"][match.team2_name] &&
+                    <Image
+                      src={teamData["teamByNameMap"][match.team1_name].img}
+                      alt={`Team logo for ${match.team1_name}`}
+                      width="45"
+                      height="45"
+                      objectFit="cover"
+                      m="1"
+                    />
+                  }
                   <Text color="white" fontSize="18" m="1" fontWeight="bold">{match.team1_name}</Text>
                 </Flex>
                 <Flex alignItems="center">

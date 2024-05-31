@@ -270,6 +270,8 @@ async function getMatchData(url) {
     const { data } = await axios.get(url);
     const $ = cheerio.load(data);
 
+    const parsedUrl = url.split("/").slice(0, 5).join("/");
+
     const match_event_img = $('div[class="match-header-super"]')
       .children()
       .first()
@@ -320,7 +322,7 @@ async function getMatchData(url) {
     match_date.setHours(match_date.getHours() + 4);
 
     const matchData = {
-      match_link: url,
+      match_link: parsedUrl,
       match_event: match_event,
       match_series: match_series,
       match_event_img: match_event_img,
