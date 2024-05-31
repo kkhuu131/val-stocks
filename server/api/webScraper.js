@@ -317,7 +317,7 @@ async function getMatchData(url) {
       $('div[class="match-header-date"]').children().first().attr("data-utc-ts")
     );
 
-    match_date.setHours(match_date.getHours() - 3);
+    match_date.setHours(match_date.getHours() + 4);
 
     const matchData = {
       match_link: url,
