@@ -64,7 +64,7 @@ const StockDisplayContainer = () => {
   }, []);
 
     setFilteredStocks(filtered);
-  }, [searchQuery, stocks]);
+  }, [searchQuery, selectedRegion, stocks]);
 
   if(loading) {
     return(
