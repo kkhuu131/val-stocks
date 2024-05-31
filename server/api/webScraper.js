@@ -217,8 +217,9 @@ async function getRelevantUpcomingMatches() {
     divElements.each((index, element) => {
       const links = $(element).children("a");
       links.each((i, link) => {
-        const href = "https://www.vlr.gg" + $(link).attr("href");
-        const parsedHref = href.split("/").slice(0, 5).join("/");
+        let href = "https://www.vlr.gg" + $(link).attr("href");
+        const parsedHref = href.split("/").slice(0, 4).join("/");
+        console.log(parsedHref);
         const team1_name = $(link)
           .children()
           .eq(1)

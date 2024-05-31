@@ -113,7 +113,7 @@ async function updateStockEloPrice(symbol, elo, price) {
 }
 
 async function updateStockAlgorithm(io, timestamp) {
-  const randomnessWeight = 0.007;
+  const randomnessWeight = 0.01;
   const demandWeight = 0.003;
 
   try {
