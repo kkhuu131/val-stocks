@@ -178,7 +178,16 @@ async function updateMatches() {
     }
 
     for (const match of completedMatches) {
-      processCompletedMatch(match);
+      await processCompletedMatch(match);
+
+      const { error: matchStatusError } = await supabase
+        .from("matches")
+        .update({ status: "processed" })
+        .eq("match_link", match.match_link);
+
+      if (matchStatusError) {
+        console.error("Error updating match status: ", matchStatusError);
+      }
     }
 
     // delete matches that were more than 24 hours ago
