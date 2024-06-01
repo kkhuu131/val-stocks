@@ -231,10 +231,10 @@ async function processCompletedMatch(match) {
   const newRa = Ra + K * (Sa - Ea) + L * Pa + Sa * V;
   const newRb = Rb + K * (Sb - Eb) + L * Pb + Sb * V;
 
-  const priceChangeDuration = 60; // minutes that the price increase/decrease should last for
+  const priceChangeDuration = 120; // minutes that the price increase/decrease should last for
 
   if (team1Stock) {
-    const totalPriceChange = (newRa / Ra - 1) * 1.75;
+    const totalPriceChange = (newRa / Ra - 1) * 2;
     const priceChange = parseFloat(
       (totalPriceChange / priceChangeDuration).toFixed(6)
     );
@@ -249,7 +249,7 @@ async function processCompletedMatch(match) {
   }
 
   if (team2Stock) {
-    const totalPriceChange = (newRb / Rb - 1) * 1.75;
+    const totalPriceChange = (newRb / Rb - 1) * 2;
     const priceChange = parseFloat(
       (totalPriceChange / priceChangeDuration).toFixed(6)
     );
