@@ -25,9 +25,12 @@ const StockDisplayRow = ({ stock }) => {
           }
 
           const now = new Date();
-          const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
+          const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
           const filtered = data.filter(dataPoint =>
-            new Date(dataPoint.timestamp) >= oneHourAgo
+            {
+              const ts = new Date(dataPoint.timestamp)
+              return ts >= oneDayAgo && (ts.getMinutes() == 30 || ts.getMinutes() == 0);
+            }
           );
   
           setStockData(filtered);
