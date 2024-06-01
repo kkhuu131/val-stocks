@@ -129,7 +129,7 @@ const UpcomingMatchesRow = ({match}) => {
               <Grid gridTemplateRows="50%">
                 <Flex alignItems="center">
                   {
-                    teamData["teamByNameMap"][match.team2_name] &&
+                    teamData["teamByNameMap"][match.team1_name] &&
                     <Image
                       src={teamData["teamByNameMap"][match.team1_name].img}
                       alt={`Team logo for ${match.team1_name}`}
@@ -142,14 +142,17 @@ const UpcomingMatchesRow = ({match}) => {
                   <Text color="white" fontSize="18" m="1" fontWeight="bold">{match.team1_name}</Text>
                 </Flex>
                 <Flex alignItems="center">
-                  <Image
-                    src={teamData["teamByNameMap"][match.team2_name].img}
-                    alt={`Team logo for ${match.team2_name}`}
-                    width="45"
-                    height="45"
-                    objectFit="cover"
-                    m="1"
-                  />
+                  {
+                    teamData["teamByNameMap"][match.team2_name] &&
+                    <Image
+                      src={teamData["teamByNameMap"][match.team2_name].img}
+                      alt={`Team logo for ${match.team2_name}`}
+                      width="45"
+                      height="45"
+                      objectFit="cover"
+                      m="1"
+                    />
+                  } 
                   <Text color="white" fontSize="18" m="1" fontWeight="bold">{match.team2_name}</Text>
                 </Flex>
                 

@@ -58,13 +58,16 @@ const StockDisplayRow = ({ stock }) => {
           >
             <Box display="grid" gridTemplateColumns="1fr 1fr 1fr" p="3">
               <Flex alignItems="center">
-                  <Image
+                  {
+                    
+                    <Image
                     src={teamData["teamBySymbolMap"][stock.symbol].img}
                     alt={`Team logo for ${stock.symbol}`}
                     width="50"
                     height="50"
                     objectFit="cover"
                   />
+                  }
               </Flex>
               <Flex
                 alignItems="center"
