@@ -45,14 +45,16 @@ const UpcomingMatchesContainer = () => {
     const fetchUpcomingMatches = async () => {
       const { data, error } = await supabase
         .from("matches")
-        .select("*")
-        .neq("status", "completed");
+        .select("*");
 
       if (error) {
         console.error("Error fetching matches:", error.message);
         return;
       }
-      setMatches(data);
+
+      const filteredMatches = data.filter(match => match.status == "live" || match.status == "upcoming");
+
+      setMatches(filteredMatches);
       setLoading(false);
     };
 

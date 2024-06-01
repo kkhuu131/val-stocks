@@ -15,12 +15,13 @@ async function initializeStocks() {
   for (const symbol of teams) {
     const newStock = await createStock(symbol, 1000, 0, S0);
   }
+  console.log("Stocks created");
 }
 
 async function initializeElo() {
   try {
+    console.log("Processing matches...");
     const allStocks = await getAllStocks();
-    console.log(allStocks);
     for (const stocks of allStocks) {
       updateStockElo(stocks.symbol, S0);
     }
@@ -113,7 +114,7 @@ async function initializeElo() {
       }
     }
 
-    console.log("DONE");
+    console.log("Done");
 
     return;
   } catch (error) {
@@ -122,7 +123,7 @@ async function initializeElo() {
 }
 
 async function getAndFilterMatches() {
-  const page = 17;
+  const page = 18;
   const matchData = [];
 
   for (let i = 1; i < page + 1; i++) {

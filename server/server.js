@@ -18,6 +18,8 @@ const cron = require("node-cron");
 const socketIo = require("socket.io");
 const http = require("http");
 
+// SERVER INITIALIZATION
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -43,6 +45,8 @@ io.on("connection", (socket) => {
     console.log("User disconnected.");
   });
 });
+
+// UPDATE FUNCTIONS
 
 async function updateStocks() {
   const now = new Date();
@@ -130,15 +134,17 @@ async function deleteOldNonIntervalRecords() {
 
 async function updateMatches() {
   try {
+    // Fetch upcoming matches and union with matches already known
     const matchLinks = await getRelevantUpcomingMatches();
 
-    const { data, error } = await supabase.from("matches").select("match_link");
+    const { data, error } = await supabase
+      .from("matches")
+      .select("match_link, status");
 
     if (error) {
       console.error("Error fetching matches table: ", error);
     }
     const linksData = data.map((match) => match.match_link);
-
     const allLinks = [...new Set([...matchLinks, ...linksData])];
 
     const matchesData = [];
@@ -154,6 +160,16 @@ async function updateMatches() {
       const matchData = await getMatchData(link);
       matchesData.push(matchData);
     }
+
+    // filter out matches already known to be finished as they do not need to be updated anymore
+    const finishedMatches = new Set(
+      data
+        .filter(
+          (match) => match.status == "completed" || match.status == "processed"
+        )
+        .map((match) => match.match_link)
+    );
+    matchesData.filter((match) => !finishedMatches.has(match.match_link));
 
     // update existing or insert new matches
     const { error: upsertError } = await supabase
@@ -208,6 +224,16 @@ async function updateMatches() {
   }
 }
 
+async function testProcessMatch() {
+  const matchData = await getMatchData("https://www.vlr.gg/348463");
+  console.log(matchData);
+
+  await processCompletedMatch(matchData);
+  console.log("Done");
+}
+
+// CRON SCHEDULE
+
 updateMatches();
 
 cron.schedule("*/10 * * * *", async () => {
@@ -225,14 +251,6 @@ cron.schedule("* * * * *", async () => {
     console.error("Error updating stocks:", error);
   }
 });
-
-async function testProcessMatch() {
-  const matchData = await getMatchData("https://www.vlr.gg/348463");
-  console.log(matchData);
-
-  await processCompletedMatch(matchData);
-  console.log("Done");
-}
 
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
