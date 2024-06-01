@@ -115,7 +115,7 @@ async function updateStockEloPrice(symbol, elo, price) {
 }
 
 async function updateStockAlgorithm(io, timestamp) {
-  const randomnessWeight = 0.01;
+  const randomnessWeight = 0.007;
   const demandWeight = 0.003;
 
   try {
@@ -231,7 +231,7 @@ async function processCompletedMatch(match) {
   const newRa = Ra + K * (Sa - Ea) + L * Pa + Sa * V;
   const newRb = Rb + K * (Sb - Eb) + L * Pb + Sb * V;
 
-  const priceChangeDuration = 120; // minutes that the price increase/decrease should last for
+  const priceChangeDuration = 60 * 2; // minutes that the price increase/decrease should last for
 
   if (team1Stock) {
     const totalPriceChange = (newRa / Ra - 1) * 2;
@@ -241,6 +241,10 @@ async function processCompletedMatch(match) {
 
     const updatedSchedule = team1Stock.schedule;
     updatedSchedule.push([Number(priceChange), Number(priceChangeDuration)]);
+    updatedSchedule.push([
+      Number(priceChange / 10),
+      Number(priceChangeDuration * 12),
+    ]);
 
     const { data, error } = await supabase
       .from("current_stock_prices")
@@ -256,6 +260,10 @@ async function processCompletedMatch(match) {
 
     const updatedSchedule = team2Stock.schedule;
     updatedSchedule.push([priceChange, priceChangeDuration]);
+    updatedSchedule.push([
+      Number(priceChange / 10),
+      Number(priceChangeDuration * 12),
+    ]);
 
     const { data, error } = await supabase
       .from("current_stock_prices")

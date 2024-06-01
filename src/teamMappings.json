@@ -102,7 +102,7 @@
       "name": "T1",
       "img": "https://owcdn.net/img/62fe0b8f6b084.png",
       "country": "South Korea",
-      "symbol": ""
+      "symbol": "T1"
     },
     "17": {
       "id": "17",
@@ -534,7 +534,7 @@
       "name": "DRX",
       "img": "https://owcdn.net/img/63b17abd77fc0.png",
       "country": "South Korea",
-      "symbol": ""
+      "symbol": "DRX"
     },
     "8448": {
       "id": "8448",
@@ -1512,7 +1512,7 @@
       "name": "DRX",
       "img": "https://owcdn.net/img/63b17abd77fc0.png",
       "country": "South Korea",
-      "symbol": ""
+      "symbol": "DRX"
     },
     "Gen.G": {
       "id": "17",
@@ -1528,7 +1528,7 @@
       "name": "T1",
       "img": "https://owcdn.net/img/62fe0b8f6b084.png",
       "country": "South Korea",
-      "symbol": ""
+      "symbol": "T1"
     },
     "LFG Portal": {
       "id": "14590",
@@ -2196,6 +2196,22 @@
     }
   },
   "teamBySymbolMap": {
+    "T1": {
+      "id": "14",
+      "url": "https://www.vlr.gg/team/14/t1",
+      "name": "T1",
+      "img": "https://owcdn.net/img/62fe0b8f6b084.png",
+      "country": "South Korea",
+      "symbol": "T1"
+    },
+    "DRX": {
+      "id": "8185",
+      "url": "https://www.vlr.gg/team/8185/drx",
+      "name": "DRX",
+      "img": "https://owcdn.net/img/63b17abd77fc0.png",
+      "country": "South Korea",
+      "symbol": "DRX"
+    },
     "TLN": {
       "id": "8304",
       "url": "https://www.vlr.gg/team/8304/talon-esports",

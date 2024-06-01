@@ -8,7 +8,6 @@ const {
 const { performVLRScraping } = require("./api/webScraper");
 const teamData = require("../src/teamMappings.json");
 const teams = require("./teams.json");
-const { supabase } = require("../supabase");
 
 const S0 = 1000; // Starting Elo
 
@@ -54,12 +53,14 @@ async function initializeElo() {
       }
 
       // https://stanislav-stankovic.medium.com/elo-rating-system-6196cc59941e#:~:text=After%20each%20match%2C%20the%20Elo,the%20match%20and%20SA%20is
-      const c = 400;
+      const c = 600;
       const K = 90;
-      const L = 50;
+      const L = 35;
       let V = 16;
 
-      if (match["match_series"].includes("Semifinals")) {
+      if (match["match_series"].includes("Quarterfinals")) {
+        V *= 1.25;
+      } else if (match["match_series"].includes("Semifinals")) {
         V *= 1.5;
       } else if (
         match["match_series"].includes("Upper Final") ||
@@ -121,7 +122,7 @@ async function initializeElo() {
 }
 
 async function getAndFilterMatches() {
-  const page = 10;
+  const page = 17;
   const matchData = [];
 
   for (let i = 1; i < page + 1; i++) {
