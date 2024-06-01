@@ -1,4 +1,6 @@
 const { supabase } = require("../supabase");
+const teams = require("../teams.json");
+const teamData = require("../../src/teamMappings.json");
 
 async function checkSymbolExists(symbol = "NRG") {
   const { data, error } = await supabase
@@ -75,7 +77,7 @@ async function getCurrentStockData(symbol = "NRG") {
     .select("*")
     .eq("symbol", symbol)
     .limit(1)
-    .single();
+    .maybeSingle();
 
   if (error) {
     console.error("Error fetching current stock price:", error);
@@ -127,7 +129,21 @@ async function updateStockAlgorithm(io, timestamp) {
 
       let randomness = Math.random() - 0.5;
 
-      const priceChange = demand * demandWeight + randomness * randomnessWeight;
+      let netScheduleChange = 0;
+      let schedule = stock.schedule;
+      for (let i = 0; i < schedule.length; i++) {
+        pair = schedule[i];
+        if (pair[1] > 0) {
+          netScheduleChange += pair[0];
+          pair[1]--;
+        }
+      }
+      schedule = schedule.filter((pair) => pair[1] > 0);
+
+      const priceChange =
+        demand * demandWeight +
+        randomness * randomnessWeight +
+        netScheduleChange;
 
       let newPrice = Number(stock.price) * Number(1 + priceChange);
       newPrice = Math.round((newPrice + Number.EPSILON) * 100) / 100;
@@ -149,7 +165,7 @@ async function updateStockAlgorithm(io, timestamp) {
 
       const { data: updatedData, error: updateError } = await supabase
         .from("current_stock_prices")
-        .update({ price: newPrice, demand: 0 })
+        .update({ price: newPrice, demand: 0, schedule })
         .eq("symbol", stock.symbol);
 
       if (updateError) {
@@ -163,6 +179,91 @@ async function updateStockAlgorithm(io, timestamp) {
   }
 }
 
+async function processCompletedMatch(match) {
+  const team1Data = teamData["teamByNameMap"][match.team1_name];
+  const team2Data = teamData["teamByNameMap"][match.team2_name];
+
+  const team1Stock = team1Data
+    ? await getCurrentStockData(team1Data.symbol)
+    : undefined;
+  const team2Stock = team2Data
+    ? await getCurrentStockData(team2Data.symbol)
+    : undefined;
+
+  // https://stanislav-stankovic.medium.com/elo-rating-system-6196cc59941e#:~:text=After%20each%20match%2C%20the%20Elo,the%20match%20and%20SA%20is
+  const c = 600;
+  const K = 90;
+  const L = 35;
+  let V = 16;
+
+  if (match["match_series"].includes("Quarterfinals")) {
+    V *= 1.25;
+  } else if (match["match_series"].includes("Semifinals")) {
+    V *= 1.5;
+  } else if (
+    match["match_series"].includes("Upper Final") ||
+    match["match_series"].includes("Lower Final")
+  ) {
+    V *= 4;
+  } else if (match["match_series"].includes("Grand Final")) {
+    V *= 8;
+  }
+
+  let Ra = 1000;
+  let Rb = 1000;
+
+  if (team1Stock) {
+    Ra = Number(team1Stock.elo);
+  }
+  if (team2Stock) {
+    Rb = Number(team2Stock.elo);
+  }
+
+  const Sa = match.team1_score > match.team2_score ? 1 : 0;
+  const Sb = match.team2_score > match.team1_score ? 1 : 0;
+  const Pa = match.team1_score / (match.team1_score + match.team2_score);
+  const Pb = match.team2_score / (match.team1_score + match.team2_score);
+  const Qa = Math.pow(10, Ra / c);
+  const Qb = Math.pow(10, Rb / c);
+  const Ea = Qa / (Qa + Qb);
+  const Eb = Qb / (Qa + Qb);
+
+  const newRa = Ra + K * (Sa - Ea) + L * Pa + Sa * V;
+  const newRb = Rb + K * (Sb - Eb) + L * Pb + Sb * V;
+
+  const priceChangeDuration = 60; // minutes that the price increase/decrease should last for
+
+  if (team1Stock) {
+    const totalPriceChange = (newRa / Ra - 1) * 1.75;
+    const priceChange = parseFloat(
+      (totalPriceChange / priceChangeDuration).toFixed(6)
+    );
+
+    const updatedSchedule = team1Stock.schedule;
+    updatedSchedule.push([Number(priceChange), Number(priceChangeDuration)]);
+
+    const { data, error } = await supabase
+      .from("current_stock_prices")
+      .update({ elo: Math.round(newRa), schedule: updatedSchedule })
+      .eq("symbol", team1Stock.symbol);
+  }
+
+  if (team2Stock) {
+    const totalPriceChange = (newRb / Rb - 1) * 1.75;
+    const priceChange = parseFloat(
+      (totalPriceChange / priceChangeDuration).toFixed(6)
+    );
+
+    const updatedSchedule = team2Stock.schedule;
+    updatedSchedule.push([priceChange, priceChangeDuration]);
+
+    const { data, error } = await supabase
+      .from("current_stock_prices")
+      .update({ elo: Math.round(newRb), schedule: updatedSchedule })
+      .eq("symbol", team2Stock.symbol);
+  }
+}
+
 module.exports = {
   createStock,
   getStockData,
@@ -171,4 +272,5 @@ module.exports = {
   updateStockElo,
   updateStockEloPrice,
   updateStockAlgorithm,
+  processCompletedMatch,
 };

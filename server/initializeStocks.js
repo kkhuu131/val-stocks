@@ -8,6 +8,7 @@ const {
 const { performVLRScraping } = require("./api/webScraper");
 const teamData = require("../src/teamMappings.json");
 const teams = require("./teams.json");
+const { supabase } = require("../supabase");
 
 const S0 = 1000; // Starting Elo
 
