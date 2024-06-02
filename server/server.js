@@ -228,7 +228,7 @@ async function updateMatches() {
 }
 
 async function testProcessMatch() {
-  const matchData = await getMatchData("https://www.vlr.gg/348463");
+  const matchData = await getMatchData("https://www.vlr.gg/348470");
   console.log(matchData);
 
   await processCompletedMatch(matchData);

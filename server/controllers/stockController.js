@@ -250,6 +250,11 @@ async function processCompletedMatch(match) {
       .from("current_stock_prices")
       .update({ elo: Math.round(newRa), schedule: updatedSchedule })
       .eq("symbol", team1Stock.symbol);
+
+    if(error) {
+      console.error("Error processing match: ", error);
+    }
+    console.log("Schedule and elo updated for " + match.team1_name);
   }
 
   if (team2Stock) {
@@ -269,6 +274,12 @@ async function processCompletedMatch(match) {
       .from("current_stock_prices")
       .update({ elo: Math.round(newRb), schedule: updatedSchedule })
       .eq("symbol", team2Stock.symbol);
+
+    if(error) {
+      console.error("Error processing match: ", error);
+    }
+
+    console.log("Schedule and elo updated for " + match.team2_name);
   }
 }
 
