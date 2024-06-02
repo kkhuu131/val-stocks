@@ -147,7 +147,7 @@ async function updateMatches() {
     const linksData = data.map((match) => match.match_link);
     const allLinks = [...new Set([...matchLinks, ...linksData])];
 
-    const matchesData = [];
+    let matchesData = [];
 
     const twentyFourHoursAgo = new Date(
       new Date().getTime() - 24 * 60 * 60 * 1000
@@ -169,7 +169,9 @@ async function updateMatches() {
         )
         .map((match) => match.match_link)
     );
-    matchesData.filter((match) => !finishedMatches.has(match.match_link));
+    matchesData = matchesData.filter(
+      (match) => !finishedMatches.has(match.match_link)
+    );
 
     // update existing or insert new matches
     const { error: upsertError } = await supabase
@@ -194,6 +196,7 @@ async function updateMatches() {
     }
 
     for (const match of completedMatches) {
+      console.log(match);
       await processCompletedMatch(match);
 
       const { error: matchStatusError } = await supabase
