@@ -231,7 +231,7 @@ async function processCompletedMatch(match) {
   const newRa = Ra + K * (Sa - Ea) + L * Pa + Sa * V;
   const newRb = Rb + K * (Sb - Eb) + L * Pb + Sb * V;
 
-  const priceChangeDuration = 60 * 2; // minutes that the price increase/decrease should last for
+  const priceChangeDuration = 60; // minutes that the price increase/decrease should last for
 
   if (team1Stock) {
     const totalPriceChange = (newRa / Ra - 1) * 2;
@@ -243,7 +243,7 @@ async function processCompletedMatch(match) {
     updatedSchedule.push([Number(priceChange), Number(priceChangeDuration)]);
     updatedSchedule.push([
       Number(priceChange / 10),
-      Number(priceChangeDuration * 12),
+      Number(priceChangeDuration * 24),
     ]);
 
     const { data, error } = await supabase
@@ -267,7 +267,7 @@ async function processCompletedMatch(match) {
     updatedSchedule.push([priceChange, priceChangeDuration]);
     updatedSchedule.push([
       Number(priceChange / 10),
-      Number(priceChangeDuration * 12),
+      Number(priceChangeDuration * 24),
     ]);
 
     const { data, error } = await supabase
