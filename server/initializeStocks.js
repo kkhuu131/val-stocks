@@ -152,5 +152,9 @@ async function getAndFilterMatches() {
   return filteredMatchData;
 }
 
-initializeStocks();
-initializeElo();
+async function initialize() {
+  await initializeStocks();
+  await initializeElo();
+}
+
+initialize();

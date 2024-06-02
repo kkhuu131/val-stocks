@@ -1,6 +1,5 @@
 // BuyForm.js (React component)
 import React, { useState } from "react";
-import axios from "axios";
 import teamData from "../teamMappings.json";
 import {
   FormControl,
@@ -22,17 +21,11 @@ const BuyForm = ({ symbol, stockPrice, userBalance}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const stockResponse = await axios.get("http://localhost:5000/currentStockData/" + symbol);
-      const stockPrice = stockResponse.data.price;
-
-      console.log(stockPrice);
-      
+    try {   
       const { data: userResponse, error: userError} = await supabase.auth.getUser();
       if (userError) throw userError;
 
       const user = userResponse.user;
-      console.log(user.id);
 
       if (user) {
         const { data: currentStockData, error: fetchStockError } = await supabase

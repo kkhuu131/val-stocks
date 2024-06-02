@@ -1,6 +1,5 @@
 // SellForm.js (React component)
 import React, { useState } from "react";
-import axios from "axios";
 import teamData from "../teamMappings.json";
 import {
   FormControl,
@@ -24,9 +23,6 @@ const SellForm = ({ symbol, userStocks }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const stockResponse = await axios.get("http://localhost:5000/currentStockData/" + symbol);
-      const stockPrice = stockResponse.data.price;
-      
       const { data: userResponse, error: userError} = await supabase.auth.getUser();
       if (userError) throw userError;
 
