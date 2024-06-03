@@ -62,9 +62,10 @@ async function updateStocks() {
     const { error } = await supabase.rpc("update_user_net_worth");
     if (error) {
       throw error;
-    } else {
-      console.log("Stock update completed successfully.");
     }
+    // else {
+    //   console.log("Stock update completed successfully.");
+    // }
 
     // delete stock records that were more than 24 hours ago
     const { error: deleteError } = await supabase
@@ -74,16 +75,17 @@ async function updateStocks() {
 
     if (deleteError) {
       console.error("Error deleting old stock prices: ", deleteError);
-    } else {
-      console.log("Delete operation completed successfully.");
     }
+    // else {
+    //   console.log("Delete operation completed successfully.");
+    // }
 
     await deleteOldNonIntervalRecords();
   } catch (error) {
     console.error(`Error updating stocks: `, error);
   }
 
-  console.log("All stock updates completed successfully.");
+  // console.log("All stock updates completed successfully.");
 }
 
 async function deleteOldNonIntervalRecords() {
@@ -123,9 +125,10 @@ async function deleteOldNonIntervalRecords() {
           "Error occurred during bulk non-interval deletion: ",
           bulkDeleteError
         );
-      } else {
-        console.log("Non interval records delete successfully");
       }
+      // else {
+      //   console.log("Non interval records delete successfully");
+      // }
     }
   } catch (error) {
     console.error("Error deleting non-interval records", error);
@@ -181,9 +184,10 @@ async function updateMatches() {
 
     if (upsertError) {
       console.error("Error upserting matches: ", upsertError);
-    } else {
-      console.log("Upsert operation completed successfully.");
     }
+    // else {
+    //   console.log("Upsert operation completed successfully.");
+    // }
 
     // Process completed matches and update team elo and apply stock price changes
     const { data: completedMatches, error: matchesError } = await supabase
@@ -196,7 +200,7 @@ async function updateMatches() {
     }
 
     for (const match of completedMatches) {
-      console.log(match);
+      // console.log(match);
       await processCompletedMatch(match);
 
       const { error: matchStatusError } = await supabase
@@ -217,11 +221,12 @@ async function updateMatches() {
 
     if (deleteError) {
       console.error("Error deleting old matches: ", deleteError);
-    } else {
-      console.log("Delete operation completed successfully.");
     }
+    // else {
+    //   console.log("Delete operation completed successfully.");
+    // }
 
-    console.log("Successfully updated matches data!");
+    // console.log("Successfully updated matches data!");
   } catch (error) {
     console.error("Error updating matches:", error);
   }

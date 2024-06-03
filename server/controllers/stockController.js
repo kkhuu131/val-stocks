@@ -180,6 +180,7 @@ async function updateStockAlgorithm(io, timestamp) {
 }
 
 async function processCompletedMatch(match) {
+  console.log("Processing a completed match");
   const team1Data = teamData["teamByNameMap"][match.team1_name];
   const team2Data = teamData["teamByNameMap"][match.team2_name];
 
@@ -251,7 +252,7 @@ async function processCompletedMatch(match) {
       .update({ elo: Math.round(newRa), schedule: updatedSchedule })
       .eq("symbol", team1Stock.symbol);
 
-    if(error) {
+    if (error) {
       console.error("Error processing match: ", error);
     }
     console.log("Schedule and elo updated for " + match.team1_name);
@@ -275,7 +276,7 @@ async function processCompletedMatch(match) {
       .update({ elo: Math.round(newRb), schedule: updatedSchedule })
       .eq("symbol", team2Stock.symbol);
 
-    if(error) {
+    if (error) {
       console.error("Error processing match: ", error);
     }
 
