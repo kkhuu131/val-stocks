@@ -43,6 +43,19 @@ async function createStock(
   return data;
 }
 
+async function getAllSchedules() {
+  const { data, error } = await supabase
+    .from("stock_schedules")
+    .select("symbol, percentage, duration");
+
+  if (error) {
+    console.error("Error fetching schedules:", error);
+    throw error;
+  }
+
+  return data;
+}
+
 async function getAllStocks() {
   const { data, error } = await supabase
     .from("current_stock_prices")
@@ -115,38 +128,33 @@ async function updateStockEloPrice(symbol, elo, price) {
 }
 
 async function updateStockAlgorithm(io, timestamp) {
-  const randomnessWeight = 0.007;
-  const demandWeight = 0.003;
+  const randomnessWeight = 0.006;
+  const demandWeight = 0.005;
 
   try {
     const currentStocks = await getAllStocks();
+    const schedules = await getAllSchedules();
+
+    const stockUpdates = {};
 
     for (const stock of currentStocks) {
-      // Update the price for each document
-
-      // Compare how demand changed % from minute-to-minute
       let demand = stock.demand;
-
       let randomness = Math.random() - 0.5;
 
-      let netScheduleChange = 0;
-      let schedule = stock.schedule;
-      for (let i = 0; i < schedule.length; i++) {
-        pair = schedule[i];
-        if (pair[1] > 0) {
-          netScheduleChange += pair[0];
-          pair[1]--;
-        }
-      }
-      schedule = schedule.filter((pair) => pair[1] > 0);
+      const priceChange = demand * demandWeight + randomness * randomnessWeight;
 
-      const priceChange =
-        demand * demandWeight +
-        randomness * randomnessWeight +
-        netScheduleChange;
+      stockUpdates[stock.symbol] = priceChange;
+    }
 
-      let newPrice = Number(stock.price) * Number(1 + priceChange);
-      newPrice = Math.round((newPrice + Number.EPSILON) * 100) / 100;
+    for (const schedule of schedules) {
+      stockUpdates[schedule.symbol] += schedule.percentage;
+    }
+
+    for (const stock of currentStocks) {
+      let newPrice =
+        Math.round(
+          Number(stock.price) * Number(1 + stockUpdates[stock.symbol]) * 100
+        ) / 100;
 
       const updatedStockPrice = {
         symbol: stock.symbol,
@@ -154,7 +162,7 @@ async function updateStockAlgorithm(io, timestamp) {
         timestamp,
       };
 
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from("stock_prices")
         .insert([updatedStockPrice]);
 
@@ -163,16 +171,23 @@ async function updateStockAlgorithm(io, timestamp) {
         throw error;
       }
 
-      const { data: updatedData, error: updateError } = await supabase
+      const { error: updateError } = await supabase
         .from("current_stock_prices")
-        .update({ price: newPrice, demand: 0, schedule })
+        .update({ price: newPrice, demand: 0 })
         .eq("symbol", stock.symbol);
 
       if (updateError) {
         console.error("Error updating stock price:", updateError);
       }
+    }
 
-      io.emit("newStockData", updatedStockPrice);
+    // call rpc that decrements and removes any finished durations
+    const { applyStockSchedulesError } = await supabase.rpc(
+      "apply_stock_schedules"
+    );
+
+    if (applyStockSchedulesError) {
+      console.error("Error updating schedules:", applyStockSchedulesError);
     }
   } catch (error) {
     console.error("Error finding or updating stocks:", error);
@@ -240,16 +255,31 @@ async function processCompletedMatch(match) {
       (totalPriceChange / priceChangeDuration).toFixed(6)
     );
 
-    const updatedSchedule = team1Stock.schedule;
-    updatedSchedule.push([Number(priceChange), Number(priceChangeDuration)]);
-    updatedSchedule.push([
-      Number(priceChange / 10),
-      Number(priceChangeDuration * 24),
-    ]);
+    const updatedSchedule = [];
+    // short initial spike
+    updatedSchedule.push({
+      symbol: team1Stock.symbol,
+      percentage: Number(priceChange),
+      duration: Number(priceChangeDuration),
+    });
+    // long smaller spike
+    updatedSchedule.push({
+      symbol: team1Stock.symbol,
+      percentage: Number(priceChange / 10),
+      duration: Number(priceChangeDuration * 24),
+    });
 
-    const { data, error } = await supabase
+    const { error: insertScheduleError } = await supabase
+      .from("stock_schedules")
+      .insert(updatedSchedule);
+
+    if (insertScheduleError) {
+      console.error("Error adding schedule entry:", insertScheduleError);
+    }
+
+    const { error } = await supabase
       .from("current_stock_prices")
-      .update({ elo: Math.round(newRa), schedule: updatedSchedule })
+      .update({ elo: Math.round(newRa) })
       .eq("symbol", team1Stock.symbol);
 
     if (error) {
@@ -264,28 +294,43 @@ async function processCompletedMatch(match) {
       (totalPriceChange / priceChangeDuration).toFixed(6)
     );
 
-    const updatedSchedule = team2Stock.schedule;
-    updatedSchedule.push([priceChange, priceChangeDuration]);
-    updatedSchedule.push([
-      Number(priceChange / 10),
-      Number(priceChangeDuration * 24),
-    ]);
+    const updatedSchedule = [];
+    // short initial spike
+    updatedSchedule.push({
+      symbol: team2Stock.symbol,
+      percentage: Number(priceChange),
+      duration: Number(priceChangeDuration),
+    });
+    // long smaller spike
+    updatedSchedule.push({
+      symbol: team2Stock.symbol,
+      percentage: Number(priceChange / 10),
+      duration: Number(priceChangeDuration * 24),
+    });
 
-    const { data, error } = await supabase
+    const { error: insertScheduleError } = await supabase
+      .from("stock_schedules")
+      .insert(updatedSchedule);
+
+    if (insertScheduleError) {
+      console.error("Error adding schedule entry:", insertScheduleError);
+    }
+
+    const { error } = await supabase
       .from("current_stock_prices")
-      .update({ elo: Math.round(newRb), schedule: updatedSchedule })
+      .update({ elo: Math.round(newRb) })
       .eq("symbol", team2Stock.symbol);
 
     if (error) {
       console.error("Error processing match: ", error);
     }
-
     console.log("Schedule and elo updated for " + match.team2_name);
   }
 }
 
 module.exports = {
   createStock,
+  getAllSchedules,
   getStockData,
   getCurrentStockData,
   getAllStocks,
