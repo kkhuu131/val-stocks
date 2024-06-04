@@ -262,11 +262,12 @@ async function processCompletedMatch(match) {
       percentage: Number(priceChange),
       duration: Number(priceChangeDuration),
     });
+
     // long smaller spike
     updatedSchedule.push({
       symbol: team1Stock.symbol,
       percentage: Number(priceChange / 10),
-      duration: Number(priceChangeDuration * 24),
+      duration: Number(priceChangeDuration * 12),
     });
 
     const { error: insertScheduleError } = await supabase
@@ -305,7 +306,7 @@ async function processCompletedMatch(match) {
     updatedSchedule.push({
       symbol: team2Stock.symbol,
       percentage: Number(priceChange / 10),
-      duration: Number(priceChangeDuration * 24),
+      duration: Number(priceChangeDuration * 12),
     });
 
     const { error: insertScheduleError } = await supabase
