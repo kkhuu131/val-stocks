@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import teamData from "../teamMappings.json";
 import {
+  Grid,
   FormControl,
   FormLabel,
   Button,
@@ -17,7 +18,7 @@ import {
 } from "@chakra-ui/react";
 import { supabase } from '../supabase';
 
-const SellForm = ({ symbol, userStocks }) => {
+const SellForm = ({ symbol, stockPrice, userStocks }) => {
   const [amount, setAmount] = useState(0);
 
   const handleSubmit = async (e) => {
@@ -122,11 +123,18 @@ const SellForm = ({ symbol, userStocks }) => {
           <NumberDecrementStepper children='-' color='grayAlpha.100' borderColor="grayAlpha.500"/>
         </NumberInputStepper>
       </NumberInput>
+      <Grid templateRows="auto"color="grayAlpha.50" m="2" fontSize="14">
+          <Grid templateColumns="50% 50%">
+            <Flex justifyContent="center">
+              <Text>Total: </Text>
+            </Flex>
+            <Text>${(amount * stockPrice).toFixed(2)}</Text>
+          </Grid>
+      </Grid>
       <Flex alignItems="center" justifyContent="center">
         <Button
           type="submit"
           m={1}
-          mt={3}
           borderRadius="md"
           border="0px"
           backgroundColor="grayAlpha.500"

@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import teamData from "../teamMappings.json";
 import {
+  Grid,
   FormControl,
   Button,
   NumberInput,
@@ -55,7 +56,7 @@ const BuyForm = ({ symbol, stockPrice, userBalance}) => {
         }
 
         const userBalance = Number(userProfile.balance);
-        const transactionAmount = Number(amount * stockPrice);
+        const transactionAmount = Number((amount * stockPrice).toFixed(2));
 
         if (transactionAmount > userBalance) {
           console.log("Insufficient balance.");
@@ -77,7 +78,7 @@ const BuyForm = ({ symbol, stockPrice, userBalance}) => {
           .update({ demand: currentStockData.demand + Number(amount) })
           .eq("symbol", symbol);
 
-        console.log("Stock bought");
+        setAmount(0);
       } else {
         console.error("User not authenticated");
       }
@@ -116,11 +117,18 @@ const BuyForm = ({ symbol, stockPrice, userBalance}) => {
             <NumberDecrementStepper children='-' color='grayAlpha.100' borderColor="grayAlpha.500"/>
           </NumberInputStepper>
         </NumberInput>
+        <Grid templateRows="auto"color="grayAlpha.50" m="2" fontSize="14">
+            <Grid templateColumns="50% 50%">
+              <Flex justifyContent="center">
+                <Text>Total: </Text>
+              </Flex>
+              <Text>${(amount * stockPrice).toFixed(2)}</Text>
+            </Grid>
+        </Grid>
         <Flex alignItems="center" justifyContent="center">
           <Button
             type="submit"
             m={1}
-            mt={3}
             borderRadius="md"
             border="0px"
             backgroundColor="grayAlpha.500"
