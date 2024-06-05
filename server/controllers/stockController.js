@@ -127,8 +127,8 @@ async function updateStockEloPrice(symbol, elo, price) {
   return data;
 }
 
-async function updateStockAlgorithm(io, timestamp) {
-  const randomnessWeight = 0.006;
+async function updateStockAlgorithm(timestamp) {
+  const randomnessWeight = 0.005;
   const demandWeight = 0.005;
 
   try {
@@ -195,7 +195,10 @@ async function updateStockAlgorithm(io, timestamp) {
 }
 
 async function processCompletedMatch(match) {
-  console.log("Processing a completed match");
+  console.log(
+    "Processing " + match.team1_name + " vs " + match.team2_name + "..."
+  );
+
   const team1Data = teamData["teamByNameMap"][match.team1_name];
   const team2Data = teamData["teamByNameMap"][match.team2_name];
 
@@ -247,36 +250,32 @@ async function processCompletedMatch(match) {
   const newRa = Ra + K * (Sa - Ea) + L * Pa + Sa * V;
   const newRb = Rb + K * (Sb - Eb) + L * Pb + Sb * V;
 
-  const priceChangeDuration = 60; // minutes that the price increase/decrease should last for
+  const updatedSchedule = [];
+  const priceChangeDuration = 60;
 
   if (team1Stock) {
-    const totalPriceChange = (newRa / Ra - 1) * 2;
-    const priceChange = parseFloat(
+    const totalPriceChange = newRa / Ra - 1;
+    const basePriceChange = parseFloat(
       (totalPriceChange / priceChangeDuration).toFixed(6)
     );
 
-    const updatedSchedule = [];
-    // short initial spike
     updatedSchedule.push({
       symbol: team1Stock.symbol,
-      percentage: Number(priceChange),
+      percentage: Number(basePriceChange * 2),
       duration: Number(priceChangeDuration),
     });
 
-    // long smaller spike
     updatedSchedule.push({
       symbol: team1Stock.symbol,
-      percentage: Number(priceChange / 10),
-      duration: Number(priceChangeDuration * 12),
+      percentage: Number(basePriceChange),
+      duration: Number(priceChangeDuration * 2),
     });
 
-    const { error: insertScheduleError } = await supabase
-      .from("stock_schedules")
-      .insert(updatedSchedule);
-
-    if (insertScheduleError) {
-      console.error("Error adding schedule entry:", insertScheduleError);
-    }
+    updatedSchedule.push({
+      symbol: team1Stock.symbol,
+      percentage: Number(priceChange / 8),
+      duration: Number(priceChangeDuration * 12),
+    });
 
     const { error } = await supabase
       .from("current_stock_prices")
@@ -286,36 +285,33 @@ async function processCompletedMatch(match) {
     if (error) {
       console.error("Error processing match: ", error);
     }
+
     console.log("Schedule and elo updated for " + match.team1_name);
   }
 
   if (team2Stock) {
-    const totalPriceChange = (newRb / Rb - 1) * 2;
+    const totalPriceChange = newRb / Rb - 1;
     const priceChange = parseFloat(
       (totalPriceChange / priceChangeDuration).toFixed(6)
     );
 
-    const updatedSchedule = [];
-    // short initial spike
+    updatedSchedule.push({
+      symbol: team2Stock.symbol,
+      percentage: Number(priceChange * 2),
+      duration: Number(priceChangeDuration),
+    });
+
     updatedSchedule.push({
       symbol: team2Stock.symbol,
       percentage: Number(priceChange),
-      duration: Number(priceChangeDuration),
+      duration: Number(priceChangeDuration * 2),
     });
-    // long smaller spike
+
     updatedSchedule.push({
       symbol: team2Stock.symbol,
-      percentage: Number(priceChange / 10),
+      percentage: Number(priceChange / 8),
       duration: Number(priceChangeDuration * 12),
     });
-
-    const { error: insertScheduleError } = await supabase
-      .from("stock_schedules")
-      .insert(updatedSchedule);
-
-    if (insertScheduleError) {
-      console.error("Error adding schedule entry:", insertScheduleError);
-    }
 
     const { error } = await supabase
       .from("current_stock_prices")
@@ -325,7 +321,16 @@ async function processCompletedMatch(match) {
     if (error) {
       console.error("Error processing match: ", error);
     }
+
     console.log("Schedule and elo updated for " + match.team2_name);
+  }
+
+  const { error: insertScheduleError } = await supabase
+    .from("stock_schedules")
+    .insert(updatedSchedule);
+
+  if (insertScheduleError) {
+    console.error("Error adding schedule entry:", insertScheduleError);
   }
 }
 

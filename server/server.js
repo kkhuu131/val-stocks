@@ -15,7 +15,6 @@ const {
 } = require("./api/webScraper");
 const { supabase } = require("./supabase");
 const cron = require("node-cron");
-const socketIo = require("socket.io");
 const http = require("http");
 
 // SERVER INITIALIZATION
@@ -32,19 +31,6 @@ app.get("/healthcheck", (req, res) => {
 });
 
 const server = http.createServer(app);
-const io = socketIo(server, {
-  cors: {
-    origin: "*",
-  },
-});
-
-io.on("connection", (socket) => {
-  console.log("A user connected");
-
-  socket.on("disconnect", () => {
-    console.log("User disconnected.");
-  });
-});
 
 // UPDATE FUNCTIONS
 
@@ -58,7 +44,7 @@ async function updateStocks() {
   const utcNow = now.toISOString();
 
   try {
-    await updateStockAlgorithm(io, now);
+    await updateStockAlgorithm(now);
     const { error } = await supabase.rpc("update_user_net_worth");
     if (error) {
       throw error;
