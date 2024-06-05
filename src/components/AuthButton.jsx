@@ -41,9 +41,9 @@ const AuthButton = () => {
         } else {
             await supabase.auth.signInWithOAuth({
                 provider: 'discord',
-                options: {
-                    redirectTo: getURL(),
-                }
+                // options: {
+                //     redirectTo: getURL(),
+                // }
             })
         }
     };
