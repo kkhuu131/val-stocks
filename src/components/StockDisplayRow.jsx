@@ -29,7 +29,7 @@ const StockDisplayRow = ({ stock }) => {
           const filtered = data.filter(dataPoint =>
             {
               const ts = new Date(dataPoint.timestamp)
-              return ts >= oneDayAgo && (ts.getMinutes() == 30 || ts.getMinutes() == 0);
+              return ts >= oneDayAgo && (ts.getMinutes() === 30 || ts.getMinutes() === 0);
             }
           );
   
@@ -77,7 +77,7 @@ const StockDisplayRow = ({ stock }) => {
               >
                 <Grid templateRows="1fr">
                   <Text m={1} fontSize={16} fontWeight="bold" color="white">
-                    ${stock.price}
+                    ${(stock.price).toFixed(2)}
                   </Text>
                   {stockData[0] && (
                     <>
@@ -165,7 +165,7 @@ const StockDisplayRow = ({ stock }) => {
               marginRight={2}
             >
               <Text m={1} fontSize={16} fontWeight="bold" color="white">
-                ${stock.price}
+                ${(stock.price).toFixed(2)}
               </Text>
             </Flex>
             <Flex
