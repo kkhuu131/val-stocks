@@ -1,70 +1,21 @@
-# Getting Started with Create React App
+# Valorant Stocks Simulation Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Project Overview
 
-## Available Scripts
+[ValStocks](https://val-stocks.vercel.app/) is a full-stack web application that allows users to monitor and predict stock prices corresponding to VALORANT esports teams, including real-time updates and visualizations. Implemented user authentication and profile management with Discord OAuth2 using Supabase. Utilized a PostgreSQL database for storing and updating stock prices and user predictions efficiently, with scheduling and data manipulation tasks. Stock prices are updated on a minute-by-minute basis using an algorithm dependent on 3 factors: user demand (buying and selling), recent match results, and a randomness factor.
 
-In the project directory, you can run:
+This project consists of 3 main components:
 
-### `npm start`
+1. **Backend Server**: A server whose main purpose is to continually update both stock data and match data every minute and 5 minutes and writing it to the Supabase database, respectively. This is hosted on Render.
+2. **Supabase**: For both authentication and data storage. The data model consists of the following PostgreSQL tables:
+   - current_stock_prices: hold the most up to date stock price and fields that are used in the update algorithm such as demand and elo
+   - stock_prices: hold archived and timestamped stock prices, mainly used to display changes over time
+   - stock_schedules: hold scheduled changes to stock prices over time, primarily from match results
+   - matches: hold recent and upcoming matches, which get processed once completed where updates to stock_schedules are made
+   - profiles: hold user information, including balance, stocks owned, and networth
+3. **React Frontend**: Data is then fetched using Supabase API and a webpage consisting of components displays real-time stock prices and changes over time using Chart.js. In addition, users can view rankings and both their own and other users' portfolios.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Improvements
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Sentiment Analysis: In order to better model the stock price of a team the algorithm should take into account overall community sentiment. For example, reading the live comments of the r/ValorantCompetitive subreddit to determine an average sentiment of each team.
+- Testing: There is no formal testing in this project, but implementing this would allow me to efficently test each component independently.
