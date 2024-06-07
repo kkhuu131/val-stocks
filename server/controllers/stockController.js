@@ -273,7 +273,7 @@ async function processCompletedMatch(match) {
 
     updatedSchedule.push({
       symbol: team1Stock.symbol,
-      percentage: Number(priceChange / 8),
+      percentage: Number(basePriceChange / 8),
       duration: Number(priceChangeDuration * 12),
     });
 
@@ -291,25 +291,25 @@ async function processCompletedMatch(match) {
 
   if (team2Stock) {
     const totalPriceChange = newRb / Rb - 1;
-    const priceChange = parseFloat(
+    const basePriceChange = parseFloat(
       (totalPriceChange / priceChangeDuration).toFixed(6)
     );
 
     updatedSchedule.push({
       symbol: team2Stock.symbol,
-      percentage: Number(priceChange * 2),
+      percentage: Number(basePriceChange * 2),
       duration: Number(priceChangeDuration),
     });
 
     updatedSchedule.push({
       symbol: team2Stock.symbol,
-      percentage: Number(priceChange),
+      percentage: Number(basePriceChange),
       duration: Number(priceChangeDuration * 2),
     });
 
     updatedSchedule.push({
       symbol: team2Stock.symbol,
-      percentage: Number(priceChange / 8),
+      percentage: Number(basePriceChange / 8),
       duration: Number(priceChangeDuration * 12),
     });
 
