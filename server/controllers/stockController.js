@@ -261,19 +261,19 @@ async function processCompletedMatch(match) {
 
     updatedSchedule.push({
       symbol: team1Stock.symbol,
-      percentage: Number(basePriceChange * 2),
+      percentage: Number(basePriceChange * 1.5),
       duration: Number(priceChangeDuration),
     });
 
     updatedSchedule.push({
       symbol: team1Stock.symbol,
-      percentage: Number(basePriceChange),
+      percentage: Number(basePriceChange * 0.5),
       duration: Number(priceChangeDuration * 2),
     });
 
     updatedSchedule.push({
       symbol: team1Stock.symbol,
-      percentage: Number(basePriceChange / 8),
+      percentage: Number(basePriceChange / 12),
       duration: Number(priceChangeDuration * 12),
     });
 

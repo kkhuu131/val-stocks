@@ -2,11 +2,11 @@
 
 ## Project Overview
 
-[ValStocks](https://val-stocks.vercel.app/) is a full-stack web application that allows users to monitor and predict stock prices corresponding to VALORANT esports teams, including real-time updates and visualizations. Implemented user authentication and profile management with Discord OAuth2 using Supabase. Utilized a PostgreSQL database for storing and updating stock prices and user predictions efficiently, with scheduling and data manipulation tasks. Stock prices are updated on a minute-by-minute basis using an algorithm dependent on 3 factors: user demand (buying and selling), recent match results, and a randomness factor.
+[ValStocks](https://val-stocks.vercel.app/) is a full-stack web application that allows users to monitor and predict stock prices corresponding to VALORANT esports teams, including real-time updates and visualizations. Implemented user authentication and profile management with Discord OAuth2 using Supabase. Utilized a PostgreSQL database for storing and updating stock prices and user predictions efficiently, with scheduling and data manipulation tasks. Stock prices are updated on a minute-by-minute basis using an algorithm dependent on 3 factors: user demand (buying and selling), recent match results, and a randomness factor. Match data and team data (name, symbol, img, etc.) is fetched from [vlr.gg](https://www.vlr.gg/).
 
 This project consists of 3 main components:
 
-1. **Backend Server**: A server whose main purpose is to continually update both stock data and match data every minute and 5 minutes and writing it to the Supabase database, respectively. This is hosted on Render.
+1. **Backend Server**: A server whose main purpose is to continually update both stock data and match data every minute and 5 minutes using cronjobs and writing it to the Supabase database, respectively. This is hosted on Render.
 2. **Supabase**: For both authentication and data storage. The data model consists of the following PostgreSQL tables:
    - current_stock_prices: hold the most up to date stock price and fields that are used in the update algorithm such as demand and elo
    - stock_prices: hold archived and timestamped stock prices, mainly used to display changes over time
