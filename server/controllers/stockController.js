@@ -292,19 +292,19 @@ async function processCompletedMatch(match) {
   if (team2Stock) {
     const totalPriceChange = newRb / Rb - 1;
     const basePriceChange = parseFloat(
-      (totalPriceChange / priceChangeDuration).toFixed(6)
+      (totalPriceChange / priceChangeDuration).toFixed(8)
     );
 
     updatedSchedule.push({
       symbol: team2Stock.symbol,
-      percentage: Number(basePriceChange * 2),
+      percentage: Number(basePriceChange * 2.5),
       duration: Number(priceChangeDuration),
     });
 
     updatedSchedule.push({
       symbol: team2Stock.symbol,
       percentage: Number(basePriceChange),
-      duration: Number(priceChangeDuration * 2),
+      duration: Number(priceChangeDuration * 3),
     });
 
     updatedSchedule.push({
