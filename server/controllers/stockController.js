@@ -128,7 +128,7 @@ async function updateStockEloPrice(symbol, elo, price) {
 }
 
 async function updateStockAlgorithm(timestamp) {
-  const randomnessWeight = 0.005;
+  const randomnessWeight = 0.004;
   const demandWeight = 0.005;
 
   try {
@@ -254,29 +254,28 @@ async function processCompletedMatch(match) {
   const priceChangeDuration = 60;
 
   if (team1Stock) {
-    const totalPriceChange = newRa / Ra - 1;
-    const basePriceChange = parseFloat(
-      (totalPriceChange / priceChangeDuration).toFixed(6)
-    );
+    const basePriceChange = newRa / Ra - 1;
 
     updatedSchedule.push({
       symbol: team1Stock.symbol,
-      percentage: Number(basePriceChange * 1.5),
+      percentage:
+        Number((1 + basePriceChange * 2) ** (1 / priceChangeDuration)) - 1,
       duration: Number(priceChangeDuration),
     });
 
     updatedSchedule.push({
       symbol: team1Stock.symbol,
-      percentage: Number(basePriceChange * 0.5),
+      percentage:
+        Number((1 + basePriceChange / 2) ** (1 / priceChangeDuration)) - 1,
       duration: Number(priceChangeDuration * 2),
     });
 
     updatedSchedule.push({
       symbol: team1Stock.symbol,
-      percentage: Number(basePriceChange / 12),
+      percentage:
+        Number((1 + basePriceChange / 12) ** (1 / priceChangeDuration)) - 1,
       duration: Number(priceChangeDuration * 12),
     });
-
     const { error } = await supabase
       .from("current_stock_prices")
       .update({ elo: Math.round(newRa) })
@@ -290,26 +289,26 @@ async function processCompletedMatch(match) {
   }
 
   if (team2Stock) {
-    const totalPriceChange = newRb / Rb - 1;
-    const basePriceChange = parseFloat(
-      (totalPriceChange / priceChangeDuration).toFixed(8)
-    );
+    const basePriceChange = newRb / Rb - 1;
 
     updatedSchedule.push({
       symbol: team2Stock.symbol,
-      percentage: Number(basePriceChange * 2.5),
+      percentage:
+        Number((1 + basePriceChange * 2) ** (1 / priceChangeDuration)) - 1,
       duration: Number(priceChangeDuration),
     });
 
     updatedSchedule.push({
       symbol: team2Stock.symbol,
-      percentage: Number(basePriceChange),
-      duration: Number(priceChangeDuration * 3),
+      percentage:
+        Number((1 + basePriceChange / 2) ** (1 / priceChangeDuration)) - 1,
+      duration: Number(priceChangeDuration * 2),
     });
 
     updatedSchedule.push({
       symbol: team2Stock.symbol,
-      percentage: Number(basePriceChange / 8),
+      percentage:
+        Number((1 + basePriceChange / 12) ** (1 / priceChangeDuration)) - 1,
       duration: Number(priceChangeDuration * 12),
     });
 
@@ -334,6 +333,120 @@ async function processCompletedMatch(match) {
   }
 }
 
+async function testProcessCompletedMatch(match) {
+  console.log(
+    "Processing " + match.team1_name + " vs " + match.team2_name + "..."
+  );
+
+  const team1Data = teamData["teamByNameMap"][match.team1_name];
+  const team2Data = teamData["teamByNameMap"][match.team2_name];
+
+  const team1Stock = team1Data
+    ? await getCurrentStockData(team1Data.symbol)
+    : undefined;
+  const team2Stock = team2Data
+    ? await getCurrentStockData(team2Data.symbol)
+    : undefined;
+
+  // https://stanislav-stankovic.medium.com/elo-rating-system-6196cc59941e#:~:text=After%20each%20match%2C%20the%20Elo,the%20match%20and%20SA%20is
+  const c = 600;
+  const K = 90;
+  const L = 35;
+  let V = 16;
+
+  if (match["match_series"].includes("Quarterfinals")) {
+    V *= 1.25;
+  } else if (match["match_series"].includes("Semifinals")) {
+    V *= 1.5;
+  } else if (
+    match["match_series"].includes("Upper Final") ||
+    match["match_series"].includes("Lower Final")
+  ) {
+    V *= 4;
+  } else if (match["match_series"].includes("Grand Final")) {
+    V *= 8;
+  }
+
+  let Ra = 1000;
+  let Rb = 1000;
+
+  if (team1Stock) {
+    Ra = Number(team1Stock.elo);
+  }
+  if (team2Stock) {
+    Rb = Number(team2Stock.elo);
+  }
+
+  const Sa = match.team1_score > match.team2_score ? 1 : 0;
+  const Sb = match.team2_score > match.team1_score ? 1 : 0;
+  const Pa = match.team1_score / (match.team1_score + match.team2_score);
+  const Pb = match.team2_score / (match.team1_score + match.team2_score);
+  const Qa = Math.pow(10, Ra / c);
+  const Qb = Math.pow(10, Rb / c);
+  const Ea = Qa / (Qa + Qb);
+  const Eb = Qb / (Qa + Qb);
+
+  const newRa = Ra + K * (Sa - Ea) + L * Pa + Sa * V;
+  const newRb = Rb + K * (Sb - Eb) + L * Pb + Sb * V;
+
+  const updatedSchedule = [];
+  const priceChangeDuration = 60;
+
+  if (team1Stock) {
+    const basePriceChange = newRa / Ra - 1;
+    console.log(basePriceChange * 3.5);
+
+    updatedSchedule.push({
+      symbol: team1Stock.symbol,
+      percentage:
+        Number((1 + basePriceChange) ** (1 / priceChangeDuration)) - 1,
+      duration: Number(priceChangeDuration),
+    });
+
+    updatedSchedule.push({
+      symbol: team1Stock.symbol,
+      percentage:
+        Number((1 + basePriceChange / 2) ** (1 / priceChangeDuration)) - 1,
+      duration: Number(priceChangeDuration * 2),
+    });
+
+    updatedSchedule.push({
+      symbol: team1Stock.symbol,
+      percentage:
+        Number((1 + basePriceChange / 12) ** (1 / priceChangeDuration)) - 1,
+      duration: Number(priceChangeDuration * 12),
+    });
+  }
+
+  if (team2Stock) {
+    const basePriceChange = newRb / Rb - 1;
+    console.log(basePriceChange * 3.5);
+
+    updatedSchedule.push({
+      symbol: team2Stock.symbol,
+      percentage:
+        Number((1 + basePriceChange) ** (1 / priceChangeDuration)) - 1,
+      duration: Number(priceChangeDuration),
+    });
+
+    updatedSchedule.push({
+      symbol: team2Stock.symbol,
+      percentage:
+        Number((1 + basePriceChange / 2) ** (1 / priceChangeDuration)) - 1,
+      duration: Number(priceChangeDuration * 2),
+    });
+
+    updatedSchedule.push({
+      symbol: team2Stock.symbol,
+      percentage:
+        Number((1 + basePriceChange / 12) ** (1 / priceChangeDuration)) - 1,
+      duration: Number(priceChangeDuration * 12),
+    });
+  }
+
+  console.log(updatedSchedule);
+}
+
 module.exports = {
   createStock,
   getAllSchedules,
@@ -344,4 +457,5 @@ module.exports = {
   updateStockEloPrice,
   updateStockAlgorithm,
   processCompletedMatch,
+  testProcessCompletedMatch,
 };

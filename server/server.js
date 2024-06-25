@@ -7,6 +7,7 @@ const {
   updateStockEloPrice,
   getCurrentStockData,
   processCompletedMatch,
+  testProcessCompletedMatch,
   updateStockAlgorithm,
 } = require("./controllers/stockController");
 const {
@@ -226,10 +227,10 @@ async function updateMatches() {
 }
 
 async function testProcessMatch() {
-  const matchData = await getMatchData("https://www.vlr.gg/348470");
+  const matchData = await getMatchData("https://www.vlr.gg/312779");
   console.log(matchData);
 
-  await processCompletedMatch(matchData);
+  await testProcessCompletedMatch(matchData);
   console.log("Done");
 }
 

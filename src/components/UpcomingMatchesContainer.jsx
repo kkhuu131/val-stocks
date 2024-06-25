@@ -54,7 +54,7 @@ const UpcomingMatchesContainer = () => {
 
       const filteredMatches = data.filter(match => match.status == "live" || match.status == "upcoming");
 
-      setMatches(filteredMatches);
+      setMatches(filteredMatches.slice(0, 5));
       setLoading(false);
     };
 
