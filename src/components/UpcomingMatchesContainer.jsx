@@ -52,9 +52,10 @@ const UpcomingMatchesContainer = () => {
         return;
       }
 
-      const filteredMatches = data.filter(match => match.status == "live" || match.status == "upcoming");
-
-      setMatches(filteredMatches.slice(0, 5));
+      let filteredMatches = data.filter(match => match.status == "live" || match.status == "upcoming");
+      filteredMatches = filteredMatches.slice(0, 5);
+      
+      setMatches(filteredMatches);
       setLoading(false);
     };
 

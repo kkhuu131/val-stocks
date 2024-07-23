@@ -8,7 +8,7 @@ const Logo = () => {
             <Grid gridTemplateColumns={["50px 200px", "70px 250px"]} alignItems="center">
                 <Image src={valorantLogo} alt={"valorantlogo"} h={["50px", "70px"]}/>
                 <Text fontSize={["24", "32"]} fontWeight="bold">
-                    valstonks
+                    valstocks
                     <Badge variant='solid' colorScheme='red' m={2}>
                         Beta
                     </Badge>
