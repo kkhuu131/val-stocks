@@ -32,9 +32,9 @@ const SellForm = ({ symbol, stockPrice, userStocks }) => {
   
       if (user) {
         const { error } = await supabase.rpc('sell_stock', {
-          symbol: symbol,
-          user_id: user.id,
-          amount: amount
+          in_symbol: symbol,
+          in_user_id: user.id,
+          in_amount: amount
         });
   
         if (error) {
