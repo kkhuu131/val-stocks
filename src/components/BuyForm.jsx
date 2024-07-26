@@ -22,69 +22,98 @@ const BuyForm = ({ symbol, stockPrice, userBalance}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {   
-      const { data: userResponse, error: userError} = await supabase.auth.getUser();
+    
+    try {
+      const { data: userResponse, error: userError } = await supabase.auth.getUser();
       if (userError) throw userError;
 
       const user = userResponse.user;
 
-      if (user) {
-        const { data: currentStockData, error: fetchStockError } = await supabase
-          .from("current_stock_prices")
-          .select("*")
-          .eq("symbol", symbol)
-          .single();
-        
-        if (fetchStockError) {
-          console.error("Error fetching current stock price:", fetchStockError);
+      if(user) {
+        const { error } = await supabase.rpc('buy_stock', {
+          symbol: symbol,
+          user_id: user.id,
+          amount: amount
+        });
 
+        if (error) {
+          console.error("Error buying stock:", error);
           return;
         }
 
-        const stockPrice = Number(currentStockData.price);
-
-        const { data: userProfile, error: fetchUserError } = await supabase
-          .from("profiles")
-          .select("*")
-          .eq("id", user.id)
-          .single();
-
-        if (fetchUserError) {
-          console.error("Error fetching user profile:", fetchUserError);
-
-          return;
-        }
-
-        const userBalance = Number(userProfile.balance);
-        const transactionAmount = Number((amount * stockPrice).toFixed(2));
-
-        if (transactionAmount > userBalance) {
-          console.log("Insufficient balance.");
-
-          return;
-        }
-
-        const updatedBalance = Math.round(Number(userBalance - transactionAmount) * 100) / 100;
-        const updatedStocks = { ...userProfile.stocks };
-        updatedStocks[symbol] = Math.round(((Number(updatedStocks[symbol]) || 0) + Number(amount)) * 1000) / 1000;
-
-        await supabase
-          .from("profiles")
-          .update({ balance: updatedBalance, stocks: updatedStocks })
-          .eq("id", user.id);
-
-        await supabase
-          .from("current_stock_prices")
-          .update({ demand: currentStockData.demand + Number(amount) })
-          .eq("symbol", symbol);
-
+        console.log("Stock purchased successfully.");
         setAmount(0);
       } else {
         console.error("User not authenticated");
       }
     } catch (error) {
-      console.error("Error buying stock:", error);
+      console.error("Error buying stock:", error)
     }
+
+
+    // try {   
+    //   const { data: userResponse, error: userError} = await supabase.auth.getUser();
+    //   if (userError) throw userError;
+
+    //   const user = userResponse.user;
+
+    //   if (user) {
+    //     const { data: currentStockData, error: fetchStockError } = await supabase
+    //       .from("current_stock_prices")
+    //       .select("*")
+    //       .eq("symbol", symbol)
+    //       .single();
+        
+    //     if (fetchStockError) {
+    //       console.error("Error fetching current stock price:", fetchStockError);
+
+    //       return;
+    //     }
+
+    //     const stockPrice = Number(currentStockData.price);
+
+    //     const { data: userProfile, error: fetchUserError } = await supabase
+    //       .from("profiles")
+    //       .select("*")
+    //       .eq("id", user.id)
+    //       .single();
+
+    //     if (fetchUserError) {
+    //       console.error("Error fetching user profile:", fetchUserError);
+
+    //       return;
+    //     }
+
+    //     const userBalance = Number(userProfile.balance);
+    //     const transactionAmount = Number((amount * stockPrice).toFixed(2));
+
+    //     if (transactionAmount > userBalance) {
+    //       console.log("Insufficient balance.");
+
+    //       return;
+    //     }
+
+    //     const updatedBalance = Math.round(Number(userBalance - transactionAmount) * 100) / 100;
+    //     const updatedStocks = { ...userProfile.stocks };
+    //     updatedStocks[symbol] = Math.round(((Number(updatedStocks[symbol]) || 0) + Number(amount)) * 1000) / 1000;
+
+    //     await supabase
+    //       .from("profiles")
+    //       .update({ balance: updatedBalance, stocks: updatedStocks })
+    //       .eq("id", user.id);
+
+    //     await supabase
+    //       .from("current_stock_prices")
+    //       .update({ demand: currentStockData.demand + Number(amount) })
+    //       .eq("symbol", symbol);
+
+    //     setAmount(0);
+    //   } else {
+    //     console.error("User not authenticated");
+    //   }
+    // } catch (error) {
+    //   console.error("Error buying stock:", error);
+    // }
   };
 
   return (
