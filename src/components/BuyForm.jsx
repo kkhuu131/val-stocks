@@ -65,7 +65,7 @@ const BuyForm = ({ symbol, stockPrice, userBalance}) => {
   return (
     <Box alignItems="center" justifyContent="center" w="200px">
       <AlertDialog
-        isOpen={onOpen}
+        isOpen={isOpen}
         onClose={onClose}
         leastDestructiveRef={cancelRef}
       >
