@@ -2,6 +2,13 @@
 import React, { useState } from "react";
 import teamData from "../teamMappings.json";
 import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
+  AlertDialogCloseButton,
   Grid,
   FormControl,
   Button,
@@ -13,12 +20,15 @@ import {
   Box,
   Flex,
   Image,
-  Text
+  Text,
+  useDisclosure
 } from "@chakra-ui/react";
 import { supabase } from '../supabase';
 
 const BuyForm = ({ symbol, stockPrice, userBalance}) => {
   const [amount, setAmount] = useState(0);
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const cancelRef = React.useRef()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -50,75 +60,69 @@ const BuyForm = ({ symbol, stockPrice, userBalance}) => {
       console.error("Error buying stock:", error)
     }
 
-
-    // try {   
-    //   const { data: userResponse, error: userError} = await supabase.auth.getUser();
-    //   if (userError) throw userError;
-
-    //   const user = userResponse.user;
-
-    //   if (user) {
-    //     const { data: currentStockData, error: fetchStockError } = await supabase
-    //       .from("current_stock_prices")
-    //       .select("*")
-    //       .eq("symbol", symbol)
-    //       .single();
-        
-    //     if (fetchStockError) {
-    //       console.error("Error fetching current stock price:", fetchStockError);
-
-    //       return;
-    //     }
-
-    //     const stockPrice = Number(currentStockData.price);
-
-    //     const { data: userProfile, error: fetchUserError } = await supabase
-    //       .from("profiles")
-    //       .select("*")
-    //       .eq("id", user.id)
-    //       .single();
-
-    //     if (fetchUserError) {
-    //       console.error("Error fetching user profile:", fetchUserError);
-
-    //       return;
-    //     }
-
-    //     const userBalance = Number(userProfile.balance);
-    //     const transactionAmount = Number((amount * stockPrice).toFixed(2));
-
-    //     if (transactionAmount > userBalance) {
-    //       console.log("Insufficient balance.");
-
-    //       return;
-    //     }
-
-    //     const updatedBalance = Math.round(Number(userBalance - transactionAmount) * 100) / 100;
-    //     const updatedStocks = { ...userProfile.stocks };
-    //     updatedStocks[symbol] = Math.round(((Number(updatedStocks[symbol]) || 0) + Number(amount)) * 1000) / 1000;
-
-    //     await supabase
-    //       .from("profiles")
-    //       .update({ balance: updatedBalance, stocks: updatedStocks })
-    //       .eq("id", user.id);
-
-    //     await supabase
-    //       .from("current_stock_prices")
-    //       .update({ demand: currentStockData.demand + Number(amount) })
-    //       .eq("symbol", symbol);
-
-    //     setAmount(0);
-    //   } else {
-    //     console.error("User not authenticated");
-    //   }
-    // } catch (error) {
-    //   console.error("Error buying stock:", error);
-    // }
   };
 
   return (
     <Box alignItems="center" justifyContent="center" w="200px">
-      <FormControl as="form" onSubmit={handleSubmit}>
+      <AlertDialog
+        isOpen={onOpen}
+        onClose={onClose}
+        leastDestructiveRef={cancelRef}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent backgroundColor="grayAlpha.900" color="white" p="2">
+            <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+              Buy {amount} {symbol} Stock
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Are you sure? You can't undo this action afterwards.
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button
+                ref={cancelRef}
+                onClick={onClose}
+                m={1}
+                borderRadius="md"
+                border="0px"
+                backgroundColor="grayAlpha.500"
+                color="white"
+                fontSize="14"
+                h="35px"
+                w="70px"
+                fontWeight={"bold"}
+                _hover={{
+                  backgroundColor:"grayAlpha.400"
+                }}
+              >
+                Cancel
+              </Button>
+              <FormControl as="form" onSubmit={handleSubmit}>
+                <Button
+                  type="submit"
+                  onClick={onClose}
+                  m={1}
+                  borderRadius="md"
+                  border="0px"
+                  backgroundColor="#0ea371"
+                  color="white"
+                  fontSize="14"
+                  h="35px"
+                  w="70px"
+                  fontWeight={"bold"}
+                  _hover={{
+                    backgroundColor:"#11c286"
+                  }}
+                >
+                  Buy
+                </Button>
+              </FormControl>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
+
         <NumberInput
           defaultValue={0}
           min={0}
@@ -156,7 +160,7 @@ const BuyForm = ({ symbol, stockPrice, userBalance}) => {
         </Grid>
         <Flex alignItems="center" justifyContent="center">
           <Button
-            type="submit"
+            onClick={onOpen}
             m={1}
             borderRadius="md"
             border="0px"
@@ -174,7 +178,6 @@ const BuyForm = ({ symbol, stockPrice, userBalance}) => {
             <Text>Buy</Text>
           </Button>
         </Flex>
-      </FormControl>
     </Box>
   );
 };
