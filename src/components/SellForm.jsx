@@ -2,6 +2,14 @@
 import React, { useState } from "react";
 import teamData from "../teamMappings.json";
 import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
+  AlertDialogCloseButton,
+  useDisclosure,
   Grid,
   FormControl,
   FormLabel,
@@ -20,6 +28,8 @@ import { supabase } from '../supabase';
 
 const SellForm = ({ symbol, stockPrice, userStocks }) => {
   const [amount, setAmount] = useState(0);
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const cancelRef = React.useRef()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,80 +59,68 @@ const SellForm = ({ symbol, stockPrice, userStocks }) => {
     } catch (error) {
       console.error("Error selling stock:", error);
     }
-
-    // try {
-    //   const { data: userResponse, error: userError} = await supabase.auth.getUser();
-    //   if (userError) throw userError;
-
-    //   const user = userResponse.user;
-
-    //   if (user) {
-    //     const { data: currentStockData, error: fetchStockError } = await supabase
-    //       .from("current_stock_prices")
-    //       .select("*")
-    //       .eq("symbol", symbol)
-    //       .single();
-        
-    //     if (fetchStockError) {
-    //       console.error("Error fetching current stock price:", fetchStockError);
-
-    //       return;
-    //     }
-
-    //     const stockPrice = Number(currentStockData.price);
-
-    //     const { data: userProfile, error: fetchUserError } = await supabase
-    //       .from("profiles")
-    //       .select("*")
-    //       .eq("id", user.id)
-    //       .single();
-
-    //     if (fetchUserError) {
-    //       console.error("Error fetching user profile:", fetchUserError);
-
-    //       return;
-    //     }
-
-    //     const userBalance = Number(userProfile.balance);
-    //     const transactionAmount = Number(amount * stockPrice);
-
-    //     const userStockAmount = (userProfile.stocks && userProfile.stocks[symbol]) ? Number(userProfile.stocks[symbol]) : 0;
-
-    //     if (amount > userStockAmount) {
-    //       console.log("User doesn't own enough stocks: " + amount + " " + userStockAmount);
-
-    //       return;
-    //     }
-
-    //     const updatedBalance = Math.round(Number(userBalance + transactionAmount) * 100) / 100;
-    //     const updatedStocks = { ...userProfile.stocks };
-    //     updatedStocks[symbol] = Math.round(((Number(updatedStocks[symbol]) || 0) - Number(amount)) * 1000) / 1000;
-    //     if(Number(updatedStocks[symbol]) == 0) {
-    //       delete updatedStocks[symbol];
-    //     }
-
-    //     await supabase
-    //       .from("profiles")
-    //       .update({ balance: updatedBalance, stocks: updatedStocks })
-    //       .eq("id", user.id);
-
-    //     await supabase
-    //       .from("current_stock_prices")
-    //       .update({ demand: currentStockData.demand + Number(amount) })
-    //       .eq("symbol", symbol);
-
-    //     console.log("Stock sold");
-    //   } else {
-    //     console.error("User not authenticated");
-    //   }
-    // } catch (error) {
-    //   console.error("Error selling stock:", error);
-    // }
   };
 
   return (
     <Box alignItems="center" justifyContent="center" w="200px">
-    <FormControl as="form" onSubmit={handleSubmit}>
+      <AlertDialog
+        isOpen={isOpen}
+        onClose={onClose}
+        leastDestructiveRef={cancelRef}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent backgroundColor="grayAlpha.900" color="white" p="2">
+            <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+              Sell {amount} {symbol} Stock
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Are you sure? You can't undo this action afterwards.
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button 
+                ref={cancelRef}
+                onClick={onClose}
+                m={1}
+                borderRadius="md"
+                border="0px"
+                backgroundColor="grayAlpha.500"
+                color="white"
+                fontSize="14"
+                h="35px"
+                w="70px"
+                fontWeight={"bold"}
+                _hover={{
+                  backgroundColor:"grayAlpha.400"
+                }}
+              >
+                Cancel
+              </Button>
+              <FormControl as="form" onSubmit={handleSubmit}>
+                <Button
+                  type="submit"
+                  onClick={onClose}
+                  m={1}
+                  borderRadius="md"
+                  border="0px"
+                  backgroundColor="#dc4a41"
+                  color="white"
+                  fontSize="14"
+                  h="35px"
+                  w="70px"
+                  fontWeight={"bold"}
+                  _hover={{
+                    backgroundColor:"#df5c54"
+                  }}
+                >
+                  Sell
+                </Button>
+              </FormControl>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
       <NumberInput
         defaultValue={0}
         min={0}
@@ -160,7 +158,7 @@ const SellForm = ({ symbol, stockPrice, userStocks }) => {
       </Grid>
       <Flex alignItems="center" justifyContent="center">
         <Button
-          type="submit"
+          onClick={onOpen}
           m={1}
           borderRadius="md"
           border="0px"
@@ -174,10 +172,9 @@ const SellForm = ({ symbol, stockPrice, userStocks }) => {
             backgroundColor:"grayAlpha.400"
           }}
         >
-                      <Text>Sell</Text>
+          <Text>Sell</Text>
         </Button>
       </Flex>
-    </FormControl>
     </Box>
   );
 };
