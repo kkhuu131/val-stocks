@@ -37,7 +37,7 @@ const UpcomingMatchesContainer = () => {
         },
         (payload) => {
           const updatedMatch = payload.new;
-          updateMatchesArray(updatedMatch);
+          updateMatchesArray(updatedMatch.slice(0, 5));
         }
       )
       .subscribe();
