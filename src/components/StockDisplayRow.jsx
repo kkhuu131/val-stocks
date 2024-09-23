@@ -238,7 +238,7 @@ const StockDisplayRow = ({ stock }) => {
                 )) ||
                   <StatHelpText m={1} fontWeight="bold" color="gray.500">
                     <StatArrow type='increase' color="gray.500"/>
-                    {String(0)}%
+                    0%
                   </StatHelpText>
                 }
               </Stat>

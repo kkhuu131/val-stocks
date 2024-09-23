@@ -12,7 +12,14 @@ import { Box, Heading, Text, Grid, Flex, Image, Tabs, TabList, TabPanels, Tab, T
   AlertDialogCloseButton,
   Button,
   Alert,
-  useDisclosure, } from "@chakra-ui/react";
+  useDisclosure, 
+  Stat,
+  StatLabel,
+  StatNumber,
+  StatHelpText,
+  StatArrow,
+  StatGroup, 
+} from "@chakra-ui/react";
 
 const StockDetailContainer = ({ symbol }) => {
   const [stockData, setStockData] = useState([]);
@@ -172,11 +179,6 @@ const StockDetailContainer = ({ symbol }) => {
                       height="50px"
                       m={1}
                   />
-                  {/* <Flex>
-                    <Text m={1} fontSize={16} color={"grayAlpha.50"} fontWeight="bold">
-                        {symbol}
-                    </Text>
-                  </Flex> */}
               </Flex>
               <Tabs ml="auto" variant='soft-rounded' alignContent="center" onChange={(index) => setTimeRange(index)}>
                 <Grid templateColumns="30px 30px 30px">
@@ -186,13 +188,11 @@ const StockDetailContainer = ({ symbol }) => {
                 </Grid>
               </Tabs>
               <Flex alignItems="center" justifyContent="right">
-                <Grid templateRows="50% 50%">
-                  <Flex justifyContent={"right"}>
-                    <Heading color="white" fontSize={20} >
+                <Flex justifyContent={"right"}>
+                  <Stat>
+                    <StatNumber color="white" fontSize={[16, 16, 20, 26, 30]}  fontWeight="bold">
                       ${currStockData.price ? currStockData.price.toFixed(2) : '0.00'}
-                    </Heading>
-                  </Flex>
-                  <Flex justifyContent={"right"}>
+                    </StatNumber>
                     {filteredData[0] && (
                       <>
                         {(() => {
@@ -204,30 +204,45 @@ const StockDetailContainer = ({ symbol }) => {
                                 100 *
                                 100
                             ) / 100;
-
-                          if(percentageChange > 0) {
+                          
+                          if(percentageChange == 0) {
                             return (
-                              <Text fontSize={16} fontWeight="bold" color="green.500">
+                              <StatHelpText fontSize={16} fontWeight="bold" color="gray.500">
+                                <StatArrow type='increase' color="gray.500"/>
+                                0%
+                              </StatHelpText>
+                            );
+                          }
+                          else if(percentageChange > 0) {
+                            return (
+                              <StatHelpText fontSize={16} fontWeight="bold" color="green.500">
+                                <StatArrow type='increase'/>
                                 +{String(percentageChange)}%
-                              </Text>
+                              </StatHelpText>
                             );
                           }
                           else {
                             return (
-                              <Text fontSize={16} fontWeight="bold" color="red.500">
-                                {String(percentageChange)}%
-                              </Text>
+                              <StatHelpText fontSize={16} fontWeight="bold" color="green.500">
+                                <StatArrow type='decrease'/>
+                                -{String(percentageChange)}%
+                              </StatHelpText>
                             );
                           }
                         })()}
                       </>
-                    )}  
-                  </Flex>
-                </Grid>
+                    ) || 
+                    <StatHelpText fontSize={16} fontWeight="bold" color="gray.500">
+                      <StatArrow type='increase' color="gray.500"/>
+                      0%
+                    </StatHelpText>
+                    }  
+                  </Stat>
+                </Flex>
               </Flex>      
             </Grid>
             <Box h="100%" w="100%" aspectRatio="2">
-              <StockGraph stock={stockData.symbol} stockData={filteredData} timeRange={timeRange}/>
+            <StockGraph symbol={symbol} stockData={filteredData.length > 1 ? filteredData : [currStockData]} timeRange={timeRange}/>
             </Box>
             <Flex
               alignItems="center"
@@ -276,48 +291,61 @@ const StockDetailContainer = ({ symbol }) => {
               </Grid>
             </Tabs>
             <Flex alignItems="center" justifyContent="right">
-              <Grid templateRows="auto auto">
                 <Flex justifyContent={"right"}>
-                  <Heading color="white" fontSize={[16, 16, 20, 26, 30]} >
-                    ${currStockData.price ? currStockData.price.toFixed(2) : '0.00'}
-                  </Heading>
+                  <Stat>
+                    <StatNumber color="white" fontSize={[16, 16, 20, 26, 30]}  fontWeight="bold">
+                      ${currStockData.price ? currStockData.price.toFixed(2) : '0.00'}
+                    </StatNumber>
+                    {filteredData[0] && (
+                      <>
+                        {(() => {
+                          const percentageChange =
+                            Math.round(
+                              (filteredData[filteredData.length - 1].price /
+                              filteredData[0].price -
+                                1) *
+                                100 *
+                                100
+                            ) / 100;
+                          
+                          if(percentageChange == 0) {
+                            return (
+                              <StatHelpText fontSize={16} fontWeight="bold" color="gray.500">
+                                <StatArrow type='increase' color="gray.500"/>
+                                0%
+                              </StatHelpText>
+                            );
+                          }
+                          else if(percentageChange > 0) {
+                            return (
+                              <StatHelpText fontSize={16} fontWeight="bold" color="green.500">
+                                <StatArrow type='increase'/>
+                                +{String(percentageChange)}%
+                              </StatHelpText>
+                            );
+                          }
+                          else {
+                            return (
+                              <StatHelpText fontSize={16} fontWeight="bold" color="green.500">
+                                <StatArrow type='decrease'/>
+                                -{String(percentageChange)}%
+                              </StatHelpText>
+                            );
+                          }
+                        })()}
+                      </>
+                    ) || 
+                    <StatHelpText fontSize={16} fontWeight="bold" color="gray.500">
+                      <StatArrow type='increase' color="gray.500"/>
+                      0%
+                    </StatHelpText>
+                    }  
+                  </Stat>
                 </Flex>
-                <Flex justifyContent={"right"}>
-                  {filteredData[0] && (
-                    <>
-                      {(() => {
-                        const percentageChange =
-                          Math.round(
-                            (filteredData[filteredData.length - 1].price /
-                            filteredData[0].price -
-                              1) *
-                              100 *
-                              100
-                          ) / 100;
-
-                        if(percentageChange > 0) {
-                          return (
-                            <Text fontSize={16} fontWeight="bold" color="green.500">
-                              +{String(percentageChange)}%
-                            </Text>
-                          );
-                        }
-                        else {
-                          return (
-                            <Text fontSize={16} fontWeight="bold" color="red.500">
-                              {String(percentageChange)}%
-                            </Text>
-                          );
-                        }
-                      })()}
-                    </>
-                  )}  
-                </Flex>
-              </Grid>
             </Flex>   
           </Grid>
           <Box h="0%" w="100%" aspectRatio="2">
-            <StockGraph symbol={symbol} stockData={filteredData.length > 0 ? filteredData : [currStockData] } timeRange={timeRange}/>
+            <StockGraph symbol={symbol} stockData={filteredData.length > 1 ? filteredData : [currStockData]} timeRange={timeRange}/>
           </Box>
         </Box>
         <Box
