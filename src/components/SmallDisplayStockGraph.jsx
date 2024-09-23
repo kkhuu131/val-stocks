@@ -4,12 +4,21 @@ import Chart from "chart.js/auto"; // important
 import { Box } from "@chakra-ui/react";
 
 const SmallDisplayStockGraph = ({ stockData }) => {
+  const isSinglePoint = stockData.length <= 1;
+
+  const adjustedData = isSinglePoint
+    ? [
+        { timestamp: stockData[0]?.timestamp || "0", price: stockData[0]?.price || 0 }, 
+        { timestamp: stockData[0]?.timestamp || "1", price: stockData[0]?.price || 0 }
+      ]
+    : stockData;
+
   const data = {
-    labels: stockData.map((dataPoint) => dataPoint.timestamp),
+    labels: adjustedData.map((dataPoint) => dataPoint.timestamp),
     datasets: [
       {
         label: [],
-        data: stockData.map((dataPoint) => dataPoint.price),
+        data: adjustedData.map((dataPoint) => dataPoint.price),
         fill: false,
         borderColor: (context) => {
           const latestPoint = context.chart.data.datasets[0].data[0];
@@ -19,7 +28,10 @@ const SmallDisplayStockGraph = ({ stockData }) => {
           if (latestPoint && mostRecentPoint) {
             condition = latestPoint < mostRecentPoint.price;
           }
-
+          
+          if (isSinglePoint) {
+            return '#757575'
+          }
           return condition ? "#0ea371" : "#dc4a41";
         },
         tension: 0.1,

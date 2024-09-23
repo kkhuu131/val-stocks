@@ -317,7 +317,7 @@ const StockDetailContainer = ({ symbol }) => {
             </Flex>   
           </Grid>
           <Box h="0%" w="100%" aspectRatio="2">
-            <StockGraph symbol={symbol} stockData={filteredData} timeRange={timeRange}/>
+            <StockGraph symbol={symbol} stockData={filteredData.length > 0 ? filteredData : [currStockData] } timeRange={timeRange}/>
           </Box>
         </Box>
         <Box
