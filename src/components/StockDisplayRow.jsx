@@ -61,19 +61,22 @@ const StockDisplayRow = ({ stock }) => {
             href={`/stock/${stock.symbol}`}
             style={{ textDecoration: "none", color: "black" }}
           >
-            <Box display="grid" gridTemplateColumns="1fr 1fr 1fr" p="3">
+            <Box display="grid" gridTemplateColumns="1fr 2fr 1fr" p="3">
               <Flex alignItems="center">
                   {
-                    
                     <Image
-                    src={teamData["teamBySymbolMap"][stock.symbol].img}
-                    alt={`Team logo for ${stock.symbol}`}
-                    width="50"
-                    height="50"
-                    objectFit="cover"
-                  />
+                      src={teamData["teamBySymbolMap"][stock.symbol].img}
+                      alt={`Team logo for ${stock.symbol}`}
+                      width="50"
+                      height="50"
+                      minW="50"
+                      minH="50"
+                    />
                   }
               </Flex>
+              
+              <Flex/>
+
               <Flex
                 alignItems="center"
                 justifyContent="flex-end"
@@ -138,14 +141,14 @@ const StockDisplayRow = ({ stock }) => {
                     </Stat>
                   </Flex>
                 </Grid>
-              </Flex>
-              <Flex
-                alignItems="center"
-                justifyContent="flex-end"
-                marginLeft={2}
-                marginRight={2}
-              >
-                <SmallDisplayStockGraph stockData={stockData} />
+                <Flex
+                  alignItems="center"
+                  justifyContent="flex-end"
+                  marginLeft={2}
+                  marginRight={2}
+                >
+                  <SmallDisplayStockGraph stockData={stockData} />
+                </Flex>
               </Flex>
             </Box>
           </LinkOverlay>
@@ -166,32 +169,30 @@ const StockDisplayRow = ({ stock }) => {
           href={`/stock/${stock.symbol}`}
           style={{ textDecoration: "none", color: "black" }}
         >
-          <Box display="grid" gridTemplateColumns="1fr 2fr 16fr 4fr 3fr 3fr 1fr">
-            <Flex />
+          <Box display="grid" gridTemplateColumns="2fr 10fr 4fr 3fr" px="5" maxWidth="600px">
             <Flex alignItems="center" justifyContent="left">
               <Image
                 src={teamData["teamBySymbolMap"][stock.symbol].img}
                 alt={`Team logo for ${stock.symbol}`}
                 width="50"
                 height="50"
-                objectFit="cover"
-                marginTop={4}
-                marginBottom={4}
+                minW="50"
+                minH="50"
+                my="4"
               />
             </Flex>
             <Flex alignItems="center" justifyContent="left">
-              <Text m={1} fontSize={20} fontWeight="bold" color="white">
+              <Text ml={3} fontSize={20} fontWeight="bold" color="white">
                 {teamData["teamBySymbolMap"][stock.symbol].name}
               </Text>
-              <Text m={1} fontSize={16} color={"grayAlpha.50"}>
+              <Text m={2} fontSize={16} color={"grayAlpha.50"}>
                 {stock.symbol}
               </Text>
             </Flex>
+            <Flex/>
             <Flex
               alignItems="center"
-              justifyContent="flex-end"
-              marginLeft={2}
-              marginRight={2}
+              justifyContent="right"
             >
               <Stat>
                 <StatNumber fontSize={16} fontWeight="bold" color="white">
@@ -242,16 +243,14 @@ const StockDisplayRow = ({ stock }) => {
                   </StatHelpText>
                 }
               </Stat>
+              <Flex
+                alignItems="center"
+                justifyContent="right"
+                ml="5"
+              >
+                <SmallDisplayStockGraph stockData={stockData} />
+              </Flex>
             </Flex>
-            <Flex
-              alignItems="center"
-              justifyContent="flex-end"
-              marginLeft={2}
-              marginRight={2}
-            >
-              <SmallDisplayStockGraph stockData={stockData} />
-            </Flex>
-            <Flex />
           </Box>
         </LinkOverlay>
       </LinkBox>
