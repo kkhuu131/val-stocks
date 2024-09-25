@@ -174,7 +174,6 @@ const BuyForm = ({ symbol, stockPrice, userBalance}) => {
               backgroundColor:"grayAlpha.400"
             }}
           >
-
             <Text>Buy</Text>
           </Button>
         </Flex>

@@ -12,9 +12,6 @@ const UpcomingMatchesRow = ({match}) => {
       const calculateETA = () => {
         const now = new Date().getTime();
         const matchDate = new Date(match.match_date).getTime();
-
-        // console.log("now: " + now);
-        // console.log("match: " + matchDate);
         
         if(matchDate <= now || match.status === 'live') {
 
@@ -94,8 +91,8 @@ const UpcomingMatchesRow = ({match}) => {
     }
 
     return (
-        <Flex m={2} pt={2} pb={2} backgroundColor="grayAlpha.700" alignItems="center" justifyContent="center" borderRadius="md" >
-          <Grid gridTemplateColumns="75px 275px 200px 50px 100px">
+        <Flex m={2} p={2} backgroundColor="grayAlpha.700" alignItems="center" justifyContent="center" borderRadius="md" >
+          <Grid gridTemplateColumns="75px 100px 200px 50px 75px">
                 <Flex alignItems="center" justifyContent="left">
                   <Image
                     src={match.match_event_img}
