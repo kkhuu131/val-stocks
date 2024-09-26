@@ -191,7 +191,11 @@ const StockDetailContainer = ({ symbol }) => {
                 <Flex justifyContent={"right"}>
                   <Stat>
                     <StatNumber color="white" fontSize={[16, 16, 20, 26, 30]}  fontWeight="bold">
-                      ${currStockData.price ? currStockData.price.toFixed(2) : '0.00'}
+                      {new Intl.NumberFormat('en-US', {
+                        style: 'currency',
+                        currency: 'USD',
+                        minimumFractionDigits: 2,
+                      }).format(currStockData.price ? currStockData.price : 0)}
                     </StatNumber>
                     {filteredData[0] && (
                       <>
@@ -262,91 +266,101 @@ const StockDetailContainer = ({ symbol }) => {
   }
 
   return (
-    <Box py="5" mx="auto" maxW={["90%", "90%", "80%", "85%", "80%"]} minW="auto" backgroundColor="grayAlpha.900" borderRadius="lg">
-      <Grid templateColumns={["auto 250px", "auto 250px", "auto 300px", "auto 350px"]}>
-        <Box>
-          <Grid templateColumns="auto auto auto">
-            <Flex alignItems="center" justifyContent={"left"}>
-                <Image
-                    src={teamData["teamBySymbolMap"][symbol].img}
-                    alt={"{symbol} Logo"}
-                    width={["50px", "55px", "60px", "75px"]}
-                    height={["50px", "55px", "60px", "75px"]}
-                    m={1}
-                />
-                <Grid templateRows="auto auto">
-                  <Text fontSize={[16, 16, 20, 26, 32]} fontWeight="bold" color="white">
-                      {teamData["teamBySymbolMap"][symbol].name}
-                  </Text>
-                  <Text fontSize={16} color={"grayAlpha.50"}>
-                      {symbol}
-                  </Text>
-                </Grid>
-            </Flex>
-            <Tabs variant='soft-rounded' alignContent="center" onChange={(index) => setTimeRange(index)}>
-              <Grid templateColumns="50px 50px 50px">
-                <Tab _selected={{color:"white"}} value="1H">1H</Tab>
-                <Tab _selected={{color:"white"}} value="1D">1D</Tab>
-                <Tab _selected={{color:"white"}} value="1W">1W</Tab>
-              </Grid>
-            </Tabs>
-            <Flex alignItems="center" justifyContent="right">
-                <Flex justifyContent={"right"}>
-                  <Stat>
-                    <StatNumber color="white" fontSize={[16, 16, 20, 26, 30]}  fontWeight="bold">
-                      ${currStockData.price ? currStockData.price.toFixed(2) : '0.00'}
-                    </StatNumber>
-                    {filteredData[0] && (
-                      <>
-                        {(() => {
-                          const percentageChange =
-                            Math.round(
-                              (filteredData[filteredData.length - 1].price /
-                              filteredData[0].price -
-                                1) *
-                                100 *
-                                100
-                            ) / 100;
-                          
-                          if(percentageChange == 0) {
-                            return (
-                              <StatHelpText fontSize={16} fontWeight="bold" color="gray.500">
-                                <StatArrow type='increase' color="gray.500"/>
-                                0%
-                              </StatHelpText>
-                            );
-                          }
-                          else if(percentageChange > 0) {
-                            return (
-                              <StatHelpText fontSize={16} fontWeight="bold" color="green.500">
-                                <StatArrow type='increase'/>
-                                +{String(percentageChange)}%
-                              </StatHelpText>
-                            );
-                          }
-                          else {
-                            return (
-                              <StatHelpText fontSize={16} fontWeight="bold" color="green.500">
-                                <StatArrow type='decrease'/>
-                                -{String(percentageChange)}%
-                              </StatHelpText>
-                            );
-                          }
-                        })()}
-                      </>
-                    ) || 
-                    <StatHelpText fontSize={16} fontWeight="bold" color="gray.500">
-                      <StatArrow type='increase' color="gray.500"/>
-                      0%
-                    </StatHelpText>
-                    }  
-                  </Stat>
+    <Grid gridTemplateRows="auto auto" justifyContent="center">
+        <Flex alignItems="center" justifyContent={"left"} m="1">
+            <Image
+                src={teamData["teamBySymbolMap"][symbol].img}
+                alt={"{symbol} Logo"}
+                width={["50px", "55px", "60px", "70px"]}
+                height={["50px", "55px", "60px", "70px"]}
+                m={1}
+            />
+              <Text fontSize={[16, 16, 20, 26, 32]} fontWeight="bold" color="white" mx="2">
+                  {teamData["teamBySymbolMap"][symbol].name}
+              </Text>
+              <Text fontSize={16} color={"grayAlpha.50"}>
+                  {symbol}
+              </Text>
+        </Flex>
+        <Grid gridTemplateColumns="900px 350px" justifyContent="center">
+        <Box p="5" backgroundColor="grayAlpha.900" borderRadius="lg">
+            <Box>
+              <Grid templateColumns="auto auto">
+                <Flex alignItems="center" justifyContent="left">
+                    <Flex justifyContent={"left"}>
+                      <Stat m = "2">
+                        <StatNumber color="white" fontSize={[16, 16, 20, 26, 30]}  fontWeight="bold">
+                          {new Intl.NumberFormat('en-US', {
+                            style: 'currency',
+                            currency: 'USD',
+                            minimumFractionDigits: 2,
+                          }).format(currStockData.price ? currStockData.price : 0.00)}
+                        </StatNumber>
+                      </Stat>
+                      <Flex justifyContent="center">
+                        <Stat m="1">
+                          {filteredData[0] && (
+                            <>
+                              {(() => {
+                                const percentageChange =
+                                  Math.round(
+                                    (filteredData[filteredData.length - 1].price /
+                                    filteredData[0].price -
+                                      1) *
+                                      100 *
+                                      100
+                                  ) / 100;
+                                
+                                if(percentageChange == 0) {
+                                  return (
+                                    <StatHelpText fontSize={16} fontWeight="bold" color="gray.500">
+                                      <StatArrow type='increase' color="gray.500"/>
+                                      0%
+                                    </StatHelpText>
+                                  );
+                                }
+                                else if(percentageChange > 0) {
+                                  return (
+                                    <StatHelpText fontSize={16} fontWeight="bold" color="green.500">
+                                      <StatArrow type='increase'/>
+                                      +{String(percentageChange)}%
+                                    </StatHelpText>
+                                  );
+                                }
+                                else {
+                                  return (
+                                    <StatHelpText fontSize={16} fontWeight="bold" color="green.500">
+                                      <StatArrow type='decrease'/>
+                                      -{String(percentageChange)}%
+                                    </StatHelpText>
+                                  );
+                                }
+                              })()}
+                            </>
+                          ) || 
+                          <StatHelpText fontSize={16} fontWeight="bold" color="gray.500">
+                            <StatArrow type='increase' color="gray.500"/>
+                            0%
+                          </StatHelpText>
+                          }  
+                        </Stat>
+                      </Flex>
+                    </Flex>
+                </Flex>   
+                <Flex justifyContent="right">
+                  <Tabs variant='soft-rounded' alignContent="center" onChange={(index) => setTimeRange(index)}>
+                    <Grid templateColumns="50px 50px 50px">
+                      <Tab _selected={{color:"white"}} value="1H">1H</Tab>
+                      <Tab _selected={{color:"white"}} value="1D">1D</Tab>
+                      <Tab _selected={{color:"white"}} value="1W">1W</Tab>
+                    </Grid>
+                  </Tabs>
                 </Flex>
-            </Flex>   
-          </Grid>
-          <Box h="0%" w="100%" aspectRatio="2">
-            <StockGraph symbol={symbol} stockData={filteredData.length > 1 ? filteredData : [currStockData]} timeRange={timeRange}/>
-          </Box>
+              </Grid>
+              <Box h="0%" w="100%" aspectRatio="2">
+                <StockGraph symbol={symbol} stockData={filteredData.length > 1 ? filteredData : [currStockData]} timeRange={timeRange}/>
+              </Box>
+            </Box>
         </Box>
         <Box
           alignItems="center"
@@ -361,7 +375,7 @@ const StockDetailContainer = ({ symbol }) => {
           <BuySellPanel symbol={symbol} currStockData={currStockData}/>
         </Box>
       </Grid>
-    </Box>
+  </Grid>
   );
 };
 

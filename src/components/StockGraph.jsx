@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Line } from "react-chartjs-2";
 import Chart from "chart.js/auto";
-import { Box } from "@chakra-ui/react";
+import { Box, useTheme } from "@chakra-ui/react";
 
 
 const StockGraph = ({ symbol, stockData, timeRange }) => {
   const isSinglePoint = stockData.length <= 1;
+  const theme = useTheme();
+  
 
   const adjustedData = isSinglePoint
     ? [
@@ -80,6 +82,14 @@ const StockGraph = ({ symbol, stockData, timeRange }) => {
           },
         },
         displayColors: false,
+        titleFont: {
+          family: theme.fonts.heading,
+          size: 12,
+        },
+        bodyFont: {
+          family: theme.fonts.body,
+          size: 12,
+        },
       },
     },
     elements: {
@@ -94,7 +104,25 @@ const StockGraph = ({ symbol, stockData, timeRange }) => {
         grid: {
           display: false,
         },
+        ticks: {
+          font: {
+            family: theme.fonts.body
+          }
+        },
       },
+      y: {
+        grid: {
+          borderDash: [5, 5], // Creates a dashed grid line [5px dash, 5px gap]
+          color: "rgba(238, 238, 238, 0.2)", // Set the color of the dashed lines
+        },
+        ticks: {
+          font: {
+            family: theme.fonts.body
+          },
+          maxTicksLimit: 5,
+        },
+        min: 0,
+      }
     },
   };
 

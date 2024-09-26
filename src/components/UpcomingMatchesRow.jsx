@@ -91,20 +91,21 @@ const UpcomingMatchesRow = ({match}) => {
     }
 
     return (
-        <Flex m={2} p={2} backgroundColor="grayAlpha.700" alignItems="center" justifyContent="center" borderRadius="md" >
-          <Grid gridTemplateColumns="75px 100px 200px 50px 75px">
-                <Flex alignItems="center" justifyContent="left">
-                  <Image
-                    src={match.match_event_img}
-                    alt={`Team logo for ${match.team1_name}`}
-                    width="50"
-                    height="50"
-                    objectFit="cover"
-                    m="1"
-                  />
-                </Flex>
-            <Flex alignItems="center" justifyContent="left">
-              <Grid gridTemplateRows="50% 25% 25%" justifyContent="left">
+        <Flex m={2} p={3} backgroundColor="grayAlpha.700" alignItems="center" justifyContent="center" borderRadius="md">
+          <Grid gridTemplateColumns="200px 50px 100px">
+            {/* <Flex alignItems="center" justifyContent="center">
+              <Image
+                src={match.match_event_img}
+                alt={`Team logo for ${match.team1_name}`}
+                width="30"
+                height="30"
+                minWidth="30"
+                minHeight="30"
+                m="1"
+              />
+            </Flex> */}
+            {/* <Flex alignItems="center" justifyContent="left">
+              <Grid>
                 <Flex alignItems="center" justifyContent="center">
                   <Text color="white" fontSize="12" m="1" fontWeight="bold">{match.match_event}</Text>
                 </Flex>
@@ -112,41 +113,41 @@ const UpcomingMatchesRow = ({match}) => {
                   <Text color="white" fontSize="12" m="1">{match.match_series}</Text>
                 </Flex>
               </Grid>
-            </Flex>
+            </Flex> */}
             <Flex alignItems="center" justifyContent="left">
               <Grid gridTemplateRows="50%">
                 <Flex alignItems="center">
                     <Image
                       src={teamData["teamByNameMap"][match.team1_name] ? teamData["teamByNameMap"][match.team1_name].img : valorantLogo}
                       alt={`Team logo for ${match.team1_name}`}
-                      width="45"
-                      height="45"
-                      objectFit="cover"
-                      m="1"
+                      width="30"
+                      height="30"
+                      minwidth="30"
+                      minHeight="30"
                     />
-                  <Text color="white" fontSize="18" m="1" fontWeight="bold">{match.team1_name}</Text>
+                  <Text color="white" fontSize="14" m="1" fontWeight="bold">{match.team1_name}</Text>
                 </Flex>
                 <Flex alignItems="center">
                   <Image
                     src={teamData["teamByNameMap"][match.team2_name] ? teamData["teamByNameMap"][match.team2_name].img : valorantLogo}
                     alt={`Team logo for ${match.team2_name}`}
-                    width="45"
-                    height="45"
-                    objectFit="cover"
-                    m="1"
+                    width="30"
+                    height="30"
+                    minwidth="30"
+                    minHeight="30"
                   />
-                  <Text color="white" fontSize="18" m="1" fontWeight="bold">{match.team2_name}</Text>
+                  <Text color="white" fontSize="14" m="1" fontWeight="bold">{match.team2_name}</Text>
                 </Flex>
                 
               </Grid>
             </Flex>
             <Flex alignItems="center" justifyContent="center">
-              {(match.status === "live") ? <Text color="white" fontSize="20" m="1">{match.team1_score}</Text> : <Text color="grayAlpha.500" fontSize="20" m="1">-</Text>}
+              {(match.status === "live") ? <Text color="white" fontSize="16" m="1">{match.team1_score}</Text> : <Text color="grayAlpha.500" fontSize="20" m="1">-</Text>}
               <Text color="white" fontSize="20" m="1">:</Text>
-              {(match.status === "live") ? <Text color="white" fontSize="20" m="1">{match.team2_score}</Text> : <Text color="grayAlpha.500" fontSize="20" m="1">-</Text>}
+              {(match.status === "live") ? <Text color="white" fontSize="16" m="1">{match.team2_score}</Text> : <Text color="grayAlpha.500" fontSize="20" m="1">-</Text>}
             </Flex>
-            <Flex alignItems="center" justifyContent="right">
-              {(match.status === "live") ? <Text color="red.500" fontSize="20">Live</Text> : <Text color="green.500" fontSize="20">{eta}</Text>}
+            <Flex alignItems="center" justifyContent="center">
+              {(match.status === "live") ? <Text color="red.500" fontSize="16">Live</Text> : <Text color="green.500" fontSize="16">{eta}</Text>}
             </Flex>
           </Grid>
         </Flex>

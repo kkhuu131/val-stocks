@@ -33,8 +33,20 @@ export default function HomeUserPanel() {
 
   return (
     <Flex>
-        <Text color="white" fontSize={[18, 24, 28]} m="5" fontWeight={"bold"}>Net Worth: ${userProfile.networth.toFixed(2)}</Text>
-        <Text color="white" fontSize={[18, 24, 28]} m="5" fontWeight={"bold"}>Balance: ${userProfile.balance.toFixed(2)}</Text>
+        <Text color="white" fontSize={[18, 24, 28]} m="5" fontWeight={"bold"}>
+          Net Worth: {new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 2,
+          }).format(userProfile.networth)}
+        </Text>
+        <Text color="white" fontSize={[18, 24, 28]} m="5" fontWeight={"bold"}>Balance: 
+          {new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 2,
+          }).format(userProfile.balance)}
+        </Text>
     </Flex>
   );
 }

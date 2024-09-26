@@ -128,7 +128,7 @@ const SellForm = ({ symbol, stockPrice, userStocks }) => {
         onChange={(e) => setAmount(e)}
         precision={3}
         isRequired={true}
-        step={0.001}
+        step={1}
         borderColor={"grayAlpha.50"}
         backgroundColor="grayAlpha.700"
         color="white"

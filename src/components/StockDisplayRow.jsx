@@ -196,7 +196,11 @@ const StockDisplayRow = ({ stock }) => {
             >
               <Stat>
                 <StatNumber fontSize={16} fontWeight="bold" color="white">
-                  ${(stock.price).toFixed(2)}
+                  {new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                    minimumFractionDigits: 2,
+                  }).format(stock.price)}
                 </StatNumber>
                 {(stockData[0] && (
                   <>

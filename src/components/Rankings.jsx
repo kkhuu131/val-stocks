@@ -97,7 +97,13 @@ export default function Rankings() {
                             <Text>{item.username}</Text>
                           </Flex>
                         </Td>
-                        {isLargerThan425 && <Td verticalAlign="middle">${item.networth}</Td>}
+                          {isLargerThan425 && <Td verticalAlign="middle">
+                            {new Intl.NumberFormat('en-US', {
+                              style: 'currency',
+                              currency: 'USD',
+                              minimumFractionDigits: 2,
+                            }).format(item.networth)}
+                          </Td>}
                       </Tr>
                     </Link>
                   );
