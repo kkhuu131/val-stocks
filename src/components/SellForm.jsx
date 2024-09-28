@@ -126,7 +126,7 @@ const SellForm = ({ symbol, stockPrice, userStocks }) => {
         min={0}
         max={userStocks[symbol] || 0}
         onChange={(e) => setAmount(e)}
-        precision={3}
+        precision={0}
         isRequired={true}
         step={1}
         borderColor={"grayAlpha.50"}
@@ -148,12 +148,12 @@ const SellForm = ({ symbol, stockPrice, userStocks }) => {
           <NumberDecrementStepper children='-' color='grayAlpha.100' borderColor="grayAlpha.500"/>
         </NumberInputStepper>
       </NumberInput>
-      <Grid templateRows="auto"color="grayAlpha.50" m="2" fontSize="14">
+      <Grid templateRows="auto" color="green.400" m="2" fontSize="14">
           <Grid templateColumns="50% 50%">
             <Flex justifyContent="center">
               <Text>Total: </Text>
             </Flex>
-            <Text>${(amount * stockPrice).toFixed(2)}</Text>
+            <Text>+${(amount * stockPrice).toFixed(2)}</Text>
           </Grid>
       </Grid>
       <Flex alignItems="center" justifyContent="center">

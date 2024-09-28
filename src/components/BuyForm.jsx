@@ -70,7 +70,7 @@ const BuyForm = ({ symbol, stockPrice, userBalance}) => {
         leastDestructiveRef={cancelRef}
       >
         <AlertDialogOverlay>
-          <AlertDialogContent backgroundColor="grayAlpha.900" color="white" p="2">
+          <AlertDialogContent backgroundColor="grayAlpha.900" color="white" p="2" >
             <AlertDialogHeader fontSize='lg' fontWeight='bold'>
               Buy {amount} {symbol} Stock
             </AlertDialogHeader>
@@ -128,7 +128,7 @@ const BuyForm = ({ symbol, stockPrice, userBalance}) => {
           min={0}
           max={Math.round(userBalance/stockPrice * 1000) / 1000}
           onChange={(e) => setAmount(e)}
-          precision={3}
+          precision={0}
           isRequired={true}
           step={1}
           backgroundColor="grayAlpha.700"
@@ -150,12 +150,12 @@ const BuyForm = ({ symbol, stockPrice, userBalance}) => {
             <NumberDecrementStepper children='-' color='grayAlpha.100' borderColor="grayAlpha.500"/>
           </NumberInputStepper>
         </NumberInput>
-        <Grid templateRows="auto"color="grayAlpha.50" m="2" fontSize="14">
+        <Grid templateRows="auto" color="red.400" m="2" fontSize="14">
             <Grid templateColumns="50% 50%">
               <Flex justifyContent="center">
                 <Text>Total: </Text>
               </Flex>
-              <Text>${(amount * stockPrice).toFixed(2)}</Text>
+              <Text>-${(amount * stockPrice).toFixed(2)}</Text>
             </Grid>
         </Grid>
         <Flex alignItems="center" justifyContent="center">

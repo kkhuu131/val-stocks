@@ -227,9 +227,9 @@ const StockDetailContainer = ({ symbol }) => {
                           }
                           else {
                             return (
-                              <StatHelpText fontSize={16} fontWeight="bold" color="green.500">
+                              <StatHelpText fontSize={16} fontWeight="bold" color="red.500">
                                 <StatArrow type='decrease'/>
-                                -{String(percentageChange)}%
+                                {String(percentageChange)}%
                               </StatHelpText>
                             );
                           }
@@ -251,9 +251,6 @@ const StockDetailContainer = ({ symbol }) => {
             <Flex
               alignItems="center"
               justifyContent="center"
-              border="1px solid"
-              borderColor="grayAlpha.500"
-              borderRadius="lg"
               m={2}
               mx="auto"
               maxWidth="325px"
@@ -329,9 +326,9 @@ const StockDetailContainer = ({ symbol }) => {
                                 }
                                 else {
                                   return (
-                                    <StatHelpText fontSize={16} fontWeight="bold" color="green.500">
+                                    <StatHelpText fontSize={16} fontWeight="bold" color="red.500">
                                       <StatArrow type='decrease'/>
-                                      -{String(percentageChange)}%
+                                      {String(percentageChange)}%
                                     </StatHelpText>
                                   );
                                 }
@@ -362,18 +359,7 @@ const StockDetailContainer = ({ symbol }) => {
               </Box>
             </Box>
         </Box>
-        <Box
-          alignItems="center"
-          justifyContent="center"
-          border="1px solid"
-          borderColor="grayAlpha.500"
-          borderRadius="lg"
-          m={5}
-          my="auto"
-          w={["200px", "200px", "250px", "300px"]}
-        >
-          <BuySellPanel symbol={symbol} currStockData={currStockData}/>
-        </Box>
+        <BuySellPanel symbol={symbol} currStockData={currStockData}/>
       </Grid>
   </Grid>
   );

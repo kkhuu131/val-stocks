@@ -54,25 +54,49 @@ const BuySellPanel = ({ symbol, currStockData }) => {
   }
 
   return (
-    <Grid templateRows="auto" py="5">
+    <Box>
+      <Box
+        alignItems="center"
+        justifyContent="center"
+        backgroundColor="grayAlpha.800"
+        borderRadius="lg"
+        m={5}
+        mt="0"
+        p="2"
+        w={["200px", "200px", "250px", "300px"]}
+      >
         <Flex alignItems="center" justifyContent={"center"}>
-            <Text fontSize={24} fontWeight="bold" color="white">Networth: ${userProfile.networth ? userProfile.networth.toFixed(2) : '0.00'}</Text>
+          <Text fontSize={24} fontWeight="bold" color="white">Networth: ${userProfile.networth ? userProfile.networth.toFixed(2) : '0.00'}</Text>
         </Flex>
         <Flex alignItems="center" justifyContent={"center"}>
-            <Text fontSize={20} fontWeight="bold" color="white">Balance: ${userProfile.balance ? userProfile.balance.toFixed(2) : '0.00'}</Text>
+          <Text fontSize={24} fontWeight="bold" color="white">Balance: ${userProfile.balance ? userProfile.balance.toFixed(2) : '0.00'}</Text>
         </Flex>
         <Flex alignItems="center" justifyContent={"center"} m="2">
-            <Text fontSize={12} color={"grayAlpha.50"}>{symbol} Owned: {userProfile.stocks[symbol] || '0'}</Text>
+          <Text fontSize={16} color={"grayAlpha.50"}>Shares Owned: {userProfile.stocks[symbol] || '0'}</Text>
         </Flex>
-        <Flex alignItems="center" justifyContent={"center"}>
-        </Flex>
-        <Flex alignItems="center" justifyContent={"center"} m="2">
-            <BuyForm symbol={symbol} stockPrice={currStockData.price} userBalance={userProfile.balance}/>
-        </Flex>
-        <Flex alignItems="center" justifyContent={"center"} m="2">
-            <SellForm symbol={symbol} stockPrice={currStockData.price} userStocks={userProfile.stocks}/>
-        </Flex>
-    </Grid>
+      </Box>
+      <Box
+        alignItems="center"
+        justifyContent="center"
+        backgroundColor="grayAlpha.800"
+        borderRadius="lg"
+        m={5}
+        my="auto"
+        w={["200px", "200px", "250px", "300px"]}
+      >
+        <Grid templateRows="auto" py="5">
+            <Flex alignItems="center" justifyContent={"center"}>
+            </Flex>
+            <Flex alignItems="center" justifyContent={"center"} m="2">
+                <BuyForm symbol={symbol} stockPrice={currStockData.price} userBalance={userProfile.balance}/>
+            </Flex>
+            <Flex alignItems="center" justifyContent={"center"} m="2">
+                <SellForm symbol={symbol} stockPrice={currStockData.price} userStocks={userProfile.stocks}/>
+            </Flex>
+        </Grid>
+      </Box>
+
+    </Box>
   );
 };
 
