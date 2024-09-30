@@ -126,7 +126,7 @@ const StockDisplayRow = ({ stock }) => {
                               return (
                                 <StatHelpText m={1} fontWeight="bold" color="red.500">
                                   <StatArrow type='decrease'/>
-                                  -{String(percentageChange)}%
+                                  {String(percentageChange)}%
                                 </StatHelpText>
                               );
                             }
@@ -169,7 +169,7 @@ const StockDisplayRow = ({ stock }) => {
           href={`/stock/${stock.symbol}`}
           style={{ textDecoration: "none", color: "black" }}
         >
-          <Box display="grid" gridTemplateColumns="2fr 10fr 4fr 3fr" px="5" maxWidth="600px">
+          <Box display="grid" gridTemplateColumns="2fr 10fr 4fr 200px" px="5" maxWidth="600px">
             <Flex alignItems="center" justifyContent="left">
               <Image
                 src={teamData["teamBySymbolMap"][stock.symbol].img}
@@ -234,7 +234,7 @@ const StockDisplayRow = ({ stock }) => {
                         return (
                           <StatHelpText m={1} fontWeight="bold" color="red.500">
                             <StatArrow type='decrease'/>
-                            -{String(percentageChange)}%
+                            {String(percentageChange)}%
                           </StatHelpText>
                         );
                       }

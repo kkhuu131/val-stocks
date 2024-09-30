@@ -68,7 +68,7 @@ const StockDisplayContainer = () => {
 
   if(loading) {
     return(
-      <Box m={1} mx="auto" maxW={["90%", "80%", "70%"]} minW={["90%", "80%", "750px"]} minH="500px" backgroundColor="grayAlpha.900" borderRadius="lg">
+      <Box m={1} mx="auto" maxW={["90%", "80%", "50%"]} minW={["90%", "80%", "500px"]} minH="800px" backgroundColor="grayAlpha.900" borderRadius="lg">
         <Flex justifyContent="center" minHeight="100px" size="md" m="auto">
         </Flex>
       </Box>
@@ -76,7 +76,7 @@ const StockDisplayContainer = () => {
   }
 
   return (
-    <Box m={1} mx="auto" maxW={["90%", "80%", "50%"]} minW={["90%", "80%", "500px"]}>
+    <Box m={1} mx="auto" w={["90%", "80%", "600px"]} minH="800px">
       <Grid gridTemplateColumns={["1fr 1fr", "1fr 1fr","3fr 2fr"]}>
         <Flex justifyContent="center" alignItems="center" w="100%" mb="4">
           <Input borderColor="grayAlpha.500" color="white" fontSize={["14", "20"]} h="50px" placeholder="Search stocks..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>

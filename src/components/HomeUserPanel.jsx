@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Flex, Text, Box, CSSReset } from "@chakra-ui/react";
+import { Grid, Flex, Text, Box, CSSReset } from "@chakra-ui/react";
 import RealTimeUserProfile from "./RealTimeUserProfile";
 import { supabase } from '../supabase';
 
@@ -32,21 +32,55 @@ export default function HomeUserPanel() {
   }
 
   return (
-    <Flex>
-        <Text color="white" fontSize={[18, 24, 28]} m="5" fontWeight={"bold"}>
-          Net Worth: {new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-            minimumFractionDigits: 2,
-          }).format(userProfile.networth)}
-        </Text>
-        <Text color="white" fontSize={[18, 24, 28]} m="5" fontWeight={"bold"}>Balance: 
-          {new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-            minimumFractionDigits: 2,
-          }).format(userProfile.balance)}
-        </Text>
-    </Flex>
+    <Grid 
+      gridTemplateRows={"auto auto"}
+      w="600px"
+      m={5}
+      mt="0"
+      px="8"
+      py="4"
+    >
+        <Box w="400px" justifyContent="center" mx="auto">
+          <Grid
+            gridTemplateColumns="auto auto"
+            color="white"
+            fontSize={[18, 24, 28]}
+            fontWeight={"bold"}
+          >
+            <Flex justifyContent="left"><Text>Net Worth:</Text></Flex>
+            <Flex justifyContent="right">
+              <Text>
+                {new Intl.NumberFormat('en-US', {
+                  style: 'currency',
+                  currency: 'USD',
+                  minimumFractionDigits: 2,
+                }).format(userProfile.networth)}
+              </Text>
+            </Flex>
+          </Grid>
+          <Grid
+            gridTemplateColumns="auto auto"
+            color="white"
+            fontSize={[18, 24, 28]}
+            fontWeight={"bold"}
+          >
+            <Flex justifyContent="left"><Text>Balance:</Text></Flex>
+            <Flex justifyContent="right">
+              <Text color="white" fontSize={[18, 24, 28]}fontWeight={"bold"}> 
+                {new Intl.NumberFormat('en-US', {
+                  style: 'currency',
+                  currency: 'USD',
+                  minimumFractionDigits: 2,
+                }).format(userProfile.balance)}
+              </Text>
+            </Flex>
+          </Grid>
+        </Box>
+        <Flex mt="4">
+          <Text color="white" fontSize={[18]}>
+            Click on any of the stocks below to navigate to their page and start investing! A team's stock closes when their match starts and reopen within a day of the match's completion.
+          </Text>
+        </Flex>
+    </Grid>
   );
 }
