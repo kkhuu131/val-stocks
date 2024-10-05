@@ -88,10 +88,10 @@ const BuySellPanel = ({ symbol, currStockData }) => {
             <Flex alignItems="center" justifyContent={"center"}>
             </Flex>
             <Flex alignItems="center" justifyContent={"center"} m="2">
-                <BuyForm symbol={symbol} stockPrice={currStockData.price} userBalance={userProfile.balance}/>
+                <BuyForm symbol={symbol} stockPrice={currStockData.price} locked={currStockData.locked} userBalance={userProfile.balance}/>
             </Flex>
             <Flex alignItems="center" justifyContent={"center"} m="2">
-                <SellForm symbol={symbol} stockPrice={currStockData.price} userStocks={userProfile.stocks}/>
+                <SellForm symbol={symbol} stockPrice={currStockData.price} locked={currStockData.locked} userStocks={userProfile.stocks}/>
             </Flex>
         </Grid>
       </Box>

@@ -24,9 +24,10 @@ import {
   Image,
   Text
 } from "@chakra-ui/react";
+import { LockIcon } from '@chakra-ui/icons';
 import { supabase } from '../supabase';
 
-const SellForm = ({ symbol, stockPrice, userStocks }) => {
+const SellForm = ({ symbol, stockPrice, locked, userStocks }) => {
   const [amount, setAmount] = useState(0);
   const { isOpen, onOpen, onClose } = useDisclosure()
   const cancelRef = React.useRef()
@@ -157,23 +158,47 @@ const SellForm = ({ symbol, stockPrice, userStocks }) => {
           </Grid>
       </Grid>
       <Flex alignItems="center" justifyContent="center">
-        <Button
-          onClick={onOpen}
-          m={1}
-          borderRadius="md"
-          border="0px"
-          backgroundColor="grayAlpha.500"
-          color="white"
-          fontSize="14"
-          h="35px"
-          w="60px"
-          fontWeight={"bold"}
-          _hover={{
-            backgroundColor:"grayAlpha.400"
-          }}
-        >
-          <Text>Sell</Text>
-        </Button>
+        {
+          locked ? (
+            <Button
+              m={1}
+              borderRadius="md"
+              border="0px"
+              backgroundColor="grayAlpha.600"
+              color="white"
+              fontSize="14"
+              h="35px"
+              w="70px"
+              fontWeight={"bold"}
+              _hover={{
+                backgroundColor:"grayAlpha.600"
+              }}
+            >
+              <Box justifyContent="left" alignItems="left">
+                <LockIcon color="yellow.500" mr="2"/>
+              </Box>
+              <Text>Sell</Text>
+            </Button>
+          ) : (
+            <Button
+              onClick={onOpen}
+              m={1}
+              borderRadius="md"
+              border="0px"
+              backgroundColor="grayAlpha.500"
+              color="white"
+              fontSize="14"
+              h="35px"
+              w="60px"
+              fontWeight={"bold"}
+              _hover={{
+                backgroundColor:"grayAlpha.400"
+              }}
+            >
+              <Text>Sell</Text>
+            </Button>
+          )
+        }
       </Flex>
     </Box>
   );

@@ -23,9 +23,11 @@ import {
   Text,
   useDisclosure
 } from "@chakra-ui/react";
+import { LockIcon } from '@chakra-ui/icons';
 import { supabase } from '../supabase';
 
-const BuyForm = ({ symbol, stockPrice, userBalance}) => {
+
+const BuyForm = ({ symbol, stockPrice, locked, userBalance}) => {
   const [amount, setAmount] = useState(0);
   const { isOpen, onOpen, onClose } = useDisclosure()
   const cancelRef = React.useRef()
@@ -159,23 +161,47 @@ const BuyForm = ({ symbol, stockPrice, userBalance}) => {
             </Grid>
         </Grid>
         <Flex alignItems="center" justifyContent="center">
-          <Button
-            onClick={onOpen}
-            m={1}
-            borderRadius="md"
-            border="0px"
-            backgroundColor="grayAlpha.500"
-            color="white"
-            fontSize="14"
-            h="35px"
-            w="60px"
-            fontWeight={"bold"}
-            _hover={{
-              backgroundColor:"grayAlpha.400"
-            }}
-          >
-            <Text>Buy</Text>
-          </Button>
+          {
+            locked ? (
+              <Button
+                m={1}
+                borderRadius="md"
+                border="0px"
+                backgroundColor="grayAlpha.600"
+                color="white"
+                fontSize="14"
+                h="35px"
+                w="70px"
+                fontWeight={"bold"}
+                _hover={{
+                  backgroundColor:"grayAlpha.600"
+                }}
+              >
+                <Box justifyContent="left" alignItems="left">
+                  <LockIcon color="yellow.500" mr="2"/>
+                </Box>
+                <Text>Buy</Text>
+              </Button>
+            ) : (
+              <Button
+                onClick={onOpen}
+                m={1}
+                borderRadius="md"
+                border="0px"
+                backgroundColor="grayAlpha.500"
+                color="white"
+                fontSize="14"
+                h="35px"
+                w="60px"
+                fontWeight={"bold"}
+                _hover={{
+                  backgroundColor:"grayAlpha.400"
+                }}
+              >
+                <Text>Buy</Text>
+              </Button>
+            )
+          }
         </Flex>
     </Box>
   );

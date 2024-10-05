@@ -180,9 +180,6 @@ async function updateMatches() {
     if (upsertError) {
       console.error("Error upserting matches: ", upsertError);
     }
-    // else {
-    //   console.log("Upsert operation completed successfully.");
-    // }
 
     // Process completed matches and update team elo and apply stock price changes
     const { data: completedMatches, error: matchesError } = await supabase
@@ -195,7 +192,6 @@ async function updateMatches() {
     }
 
     for (const match of completedMatches) {
-      // console.log(match);
       await processCompletedMatch(match);
 
       const { error: matchStatusError } = await supabase

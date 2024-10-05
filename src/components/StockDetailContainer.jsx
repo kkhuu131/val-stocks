@@ -130,7 +130,28 @@ const StockDetailContainer = ({ symbol }) => {
       (payload) => {
         payload.new.localTimestamp = new Date(payload.new.timestamp);
         setStockData((prevStockData) => [...prevStockData, payload.new]);
-        setCurrStockData(payload.new);
+        console.log("TESTING");
+      }
+    )
+    .subscribe();
+
+    const current_channel = supabase
+    .channel("current_stock-updates")
+    .on("postgres_changes", 
+      {
+        event: "UPDATE",
+        schema: "public",
+        table: "current_stock_prices",
+        filter: `symbol=eq.${symbol}`,
+      },  
+      (payload) => {
+        const updatedStockData = {
+          ...payload.new,
+          timestamp: Date.now(),
+          localTimestamp: new Date()
+        };
+
+        setCurrStockData(updatedStockData);
       }
     )
     .subscribe();
@@ -152,8 +173,25 @@ const StockDetailContainer = ({ symbol }) => {
         localizedData.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
 
         await setStockData(localizedData);
+        
+      } catch (error) {
+        console.error("Error fetching stock data:", error);
+      }
+    };
 
-        setCurrStockData(localizedData[localizedData.length - 1]);
+    const fetchCurrentStockData = async () => {
+      try {
+        const { data, error } = await supabase
+        .from("current_stock_prices")
+        .select("price, locked")
+        .eq("symbol", symbol);
+
+      if (error) {
+        console.error("Error fetching current stock data:", error);
+        throw error;
+      }
+      
+      await setCurrStockData(data[0]);
         
       } catch (error) {
         console.error("Error fetching stock data:", error);
@@ -161,9 +199,11 @@ const StockDetailContainer = ({ symbol }) => {
     };
 
     fetchStockData();
+    fetchCurrentStockData();
 
     return () => {
       supabase.removeChannel(channel);
+      supabase.removeChannel(current_channel);
     };
   }, []);
 

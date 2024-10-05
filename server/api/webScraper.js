@@ -292,11 +292,19 @@ async function getMatchData(url) {
       .text()
       .trim();
 
+    const team1_symbol = teamData.teamByNameMap[team1_name]
+      ? teamData.teamByNameMap[team1_name].symbol
+      : null;
+
     const team2_name = $('div[class="match-header-link-name mod-2"]')
       .children()
       .first()
       .text()
       .trim();
+
+    const team2_symbol = teamData.teamByNameMap[team2_name]
+      ? teamData.teamByNameMap[team2_name].symbol
+      : null;
 
     const eta = $('div[class="match-header-vs-score"]')
       .children()
@@ -326,7 +334,9 @@ async function getMatchData(url) {
       match_series: match_series,
       match_event_img: match_event_img,
       team1_name: team1_name,
+      team1_symbol: team1_symbol,
       team2_name: team2_name,
+      team2_symbol: team2_symbol,
       match_date: match_date.toISOString(),
       best_of: best_of,
       team1_score: 0,

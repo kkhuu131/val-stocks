@@ -41,7 +41,7 @@ const StockDisplayContainer = () => {
     const fetchStocks = async () => {
       const { data, error } = await supabase
         .from("current_stock_prices")
-        .select("symbol, price")
+        .select("symbol, price, locked")
         .order("price", { ascending: false});
 
       if (error) {

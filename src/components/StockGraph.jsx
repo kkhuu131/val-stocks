@@ -121,7 +121,6 @@ const StockGraph = ({ symbol, stockData, timeRange }) => {
           },
           maxTicksLimit: 5,
         },
-        min: 0,
       }
     },
   };

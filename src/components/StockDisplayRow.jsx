@@ -7,7 +7,10 @@ import { Box, Grid, Flex, Image, Text, LinkBox, LinkOverlay, Tooltip, useMediaQu
   StatNumber,
   StatHelpText,
   StatArrow,
-  StatGroup, } from "@chakra-ui/react";
+  StatGroup,
+  Icon,
+} from "@chakra-ui/react";
+import { LockIcon } from '@chakra-ui/icons';
 
 const StockDisplayRow = ({ stock }) => {
   const [stockData, setStockData] = useState([]);
@@ -37,7 +40,6 @@ const StockDisplayRow = ({ stock }) => {
               return ts >= oneDayAgo && (ts.getMinutes() === 30 || ts.getMinutes() === 0);
             }
           );
-  
           setStockData(filtered);
         } catch (error) {
           console.error("Error fetching stock data:", error);
@@ -194,59 +196,61 @@ const StockDisplayRow = ({ stock }) => {
               alignItems="center"
               justifyContent="right"
             >
-              <Stat>
-                <StatNumber fontSize={16} fontWeight="bold" color="white">
-                  {new Intl.NumberFormat('en-US', {
-                    style: 'currency',
-                    currency: 'USD',
-                    minimumFractionDigits: 2,
-                  }).format(stock.price)}
-                </StatNumber>
-                {(stockData[0] && (
-                  <>
-                    {(() => {
-                      const percentageChange =
-                        Math.round(
-                          (stockData[stockData.length - 1].price /
-                            stockData[0].price -
-                            1) *
+              {stock.locked && <LockIcon color="yellow.500"  ml="5" mr="2" justifyContent="right"/>}
+              <Flex>
+                <Stat textAlign="right">
+                  <Box width="100px">
+                    <StatNumber fontSize={16} fontWeight="bold" color="white">
+                      {new Intl.NumberFormat('en-US', {
+                        style: 'currency',
+                        currency: 'USD',
+                        minimumFractionDigits: 2,
+                      }).format(stock.price)}
+                    </StatNumber>
+                  </Box>
+                  {(stockData[0] && (
+                    <>
+                      {(() => {
+                        const percentageChange =
+                          Math.round(
+                            (stockData[stockData.length - 1].price /
+                              stockData[0].price - 1) *
                             100 *
                             100
-                        ) / 100;
-                      
-                      if(percentageChange == 0) {
-                        return (
-                          <StatHelpText m={1} fontWeight="bold" color="gray.500">
-                            <StatArrow type='increase' color="gray.500"/>
-                            {String(0)}%
-                          </StatHelpText>
-                        );
-                      }
-                      else if(percentageChange > 0) {
-                        return (
-                          <StatHelpText m={1} fontWeight="bold" color="green.500">
-                            <StatArrow type='increase'/>
-                            +{String(percentageChange)}%
-                          </StatHelpText>
-                        );
-                      }
-                      else {
-                        return (
-                          <StatHelpText m={1} fontWeight="bold" color="red.500">
-                            <StatArrow type='decrease'/>
-                            {String(percentageChange)}%
-                          </StatHelpText>
-                        );
-                      }
-                    })()}
-                  </>
-                )) ||
-                  <StatHelpText m={1} fontWeight="bold" color="gray.500">
-                    <StatArrow type='increase' color="gray.500"/>
-                    0%
-                  </StatHelpText>
-                }
-              </Stat>
+                          ) / 100;
+                        
+                        if(percentageChange == 0) {
+                          return (
+                            <StatHelpText m={1} fontWeight="bold" color="gray.500">
+                              <StatArrow type='increase' color="gray.500" />
+                              {String(0)}%
+                            </StatHelpText>
+                          );
+                        } else if(percentageChange > 0) {
+                          return (
+                            <StatHelpText m={1} fontWeight="bold" color="green.500">
+                              <StatArrow type='increase' />
+                              +{String(percentageChange)}%
+                            </StatHelpText>
+                          );
+                        } else {
+                          return (
+                            <StatHelpText m={1} fontWeight="bold" color="red.500">
+                              <StatArrow type='decrease' />
+                              {String(percentageChange)}%
+                            </StatHelpText>
+                          );
+                        }
+                      })()}
+                    </>
+                  )) || (
+                    <StatHelpText m={1} fontWeight="bold" color="gray.500">
+                      <StatArrow type='increase' color="gray.500" />
+                      0%
+                    </StatHelpText>
+                  )}
+                </Stat>
+              </Flex>
               <Flex
                 alignItems="center"
                 justifyContent="right"
