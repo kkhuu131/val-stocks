@@ -7,7 +7,6 @@ const {
   updateStockEloPrice,
   getCurrentStockData,
   processCompletedMatch,
-  testProcessCompletedMatch,
   updateStockAlgorithm,
 } = require("./controllers/stockController");
 const {
@@ -40,9 +39,7 @@ async function updateStocks() {
   now.setSeconds(0);
   now.setMilliseconds(0);
 
-  const oneWeekAgo = new Date(now - 7 * 24 * 60 * 60 * 1000).toISOString();
-
-  const utcNow = now.toISOString();
+  const deleteTime = new Date(now - 10 * 24 * 60 * 60 * 1000).toISOString();
 
   try {
     await updateStockAlgorithm(now);
@@ -57,7 +54,7 @@ async function updateStocks() {
     const { error: deleteError } = await supabase
       .from("stock_prices")
       .delete()
-      .lt("timestamp", oneWeekAgo);
+      .lt("timestamp", deleteTime);
 
     if (deleteError) {
       console.error("Error deleting old stock prices: ", deleteError);
@@ -220,14 +217,6 @@ async function updateMatches() {
   } catch (error) {
     console.error("Error updating matches:", error);
   }
-}
-
-async function testProcessMatch() {
-  const matchData = await getMatchData("https://www.vlr.gg/312779");
-  console.log(matchData);
-
-  await testProcessCompletedMatch(matchData);
-  console.log("Done");
 }
 
 // CRON SCHEDULE

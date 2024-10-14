@@ -266,6 +266,29 @@ async function getRelevantUpcomingMatches() {
   }
 }
 
+async function getMatchLinksFromEvent(link) {
+  try {
+    const { data } = await axios.get(link);
+    const $ = cheerio.load(data);
+
+    const href_prefix = "https://www.vlr.gg";
+
+    const hrefs = [];
+    $(
+      "a.wf-module-item.match-item.mod-color.mod-bg-after-striped_purple.mod-first"
+    ).each((index, element) => {
+      const href = $(element).attr("href");
+      if (href) {
+        hrefs.push(href_prefix + href);
+      }
+    });
+
+    return hrefs;
+  } catch (err) {
+    console.log(err.message);
+  }
+}
+
 async function getMatchData(url) {
   try {
     const { data } = await axios.get(url);
@@ -391,4 +414,5 @@ module.exports = {
   performVLRScraping,
   getRelevantUpcomingMatches,
   getMatchData,
+  getMatchLinksFromEvent,
 };

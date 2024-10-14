@@ -209,25 +209,6 @@ async function processCompletedMatch(match) {
     ? await getCurrentStockData(team2Data.symbol)
     : undefined;
 
-  // https://stanislav-stankovic.medium.com/elo-rating-system-6196cc59941e#:~:text=After%20each%20match%2C%20the%20Elo,the%20match%20and%20SA%20is
-  const c = 600;
-  const K = 90;
-  const L = 35;
-  let V = 16;
-
-  if (match["match_series"].includes("Quarterfinals")) {
-    V *= 1.25;
-  } else if (match["match_series"].includes("Semifinals")) {
-    V *= 1.5;
-  } else if (
-    match["match_series"].includes("Upper Final") ||
-    match["match_series"].includes("Lower Final")
-  ) {
-    V *= 4;
-  } else if (match["match_series"].includes("Grand Final")) {
-    V *= 8;
-  }
-
   let Ra = 1000;
   let Rb = 1000;
 
@@ -238,17 +219,7 @@ async function processCompletedMatch(match) {
     Rb = Number(team2Stock.elo);
   }
 
-  const Sa = match.team1_score > match.team2_score ? 1 : 0;
-  const Sb = match.team2_score > match.team1_score ? 1 : 0;
-  const Pa = match.team1_score / (match.team1_score + match.team2_score);
-  const Pb = match.team2_score / (match.team1_score + match.team2_score);
-  const Qa = Math.pow(10, Ra / c);
-  const Qb = Math.pow(10, Rb / c);
-  const Ea = Qa / (Qa + Qb);
-  const Eb = Qb / (Qa + Qb);
-
-  const newRa = Ra + K * (Sa - Ea) + L * Pa + Sa * V;
-  const newRb = Rb + K * (Sb - Eb) + L * Pb + Sb * V;
+  let [newRa, newRb] = calculateElo(match, Ra, Rb);
 
   const updatedSchedule = [];
   const priceChangeDuration = 60;
@@ -333,26 +304,14 @@ async function processCompletedMatch(match) {
   }
 }
 
-async function testProcessCompletedMatch(match) {
-  console.log(
-    "Processing " + match.team1_name + " vs " + match.team2_name + "..."
-  );
-
-  const team1Data = teamData["teamByNameMap"][match.team1_name];
-  const team2Data = teamData["teamByNameMap"][match.team2_name];
-
-  const team1Stock = team1Data
-    ? await getCurrentStockData(team1Data.symbol)
-    : undefined;
-  const team2Stock = team2Data
-    ? await getCurrentStockData(team2Data.symbol)
-    : undefined;
-
+async function calculateElo(match, elo1, elo2) {
   // https://stanislav-stankovic.medium.com/elo-rating-system-6196cc59941e#:~:text=After%20each%20match%2C%20the%20Elo,the%20match%20and%20SA%20is
-  const c = 600;
-  const K = 90;
-  const L = 35;
-  let V = 16;
+  const c = 400; // Sensitivity based on Rating difference (higher c -> difference in ratings is less significant)
+  const K = 90; // Sensitivity
+  const L = 40; // Volatility of Score Differential (higher L -> a 3-0 would have way more gain than a 3-2)
+  let V = 16; // Volatility (of Match Outcome, higher V -> higher match importance)
+  let Ra = elo1;
+  let Rb = elo2;
 
   if (match["match_series"].includes("Quarterfinals")) {
     V *= 1.25;
@@ -362,19 +321,9 @@ async function testProcessCompletedMatch(match) {
     match["match_series"].includes("Upper Final") ||
     match["match_series"].includes("Lower Final")
   ) {
-    V *= 4;
+    V *= 3;
   } else if (match["match_series"].includes("Grand Final")) {
-    V *= 8;
-  }
-
-  let Ra = 1000;
-  let Rb = 1000;
-
-  if (team1Stock) {
-    Ra = Number(team1Stock.elo);
-  }
-  if (team2Stock) {
-    Rb = Number(team2Stock.elo);
+    V *= 6;
   }
 
   const Sa = match.team1_score > match.team2_score ? 1 : 0;
@@ -386,65 +335,33 @@ async function testProcessCompletedMatch(match) {
   const Ea = Qa / (Qa + Qb);
   const Eb = Qb / (Qa + Qb);
 
-  const newRa = Ra + K * (Sa - Ea) + L * Pa + Sa * V;
-  const newRb = Rb + K * (Sb - Eb) + L * Pb + Sb * V;
+  let Ka = K;
+  let Kb = K;
 
-  const updatedSchedule = [];
-  const priceChangeDuration = 60;
-
-  if (team1Stock) {
-    const basePriceChange = newRa / Ra - 1;
-    console.log(basePriceChange * 3.5);
-
-    updatedSchedule.push({
-      symbol: team1Stock.symbol,
-      percentage:
-        Number((1 + basePriceChange) ** (1 / priceChangeDuration)) - 1,
-      duration: Number(priceChangeDuration),
-    });
-
-    updatedSchedule.push({
-      symbol: team1Stock.symbol,
-      percentage:
-        Number((1 + basePriceChange / 2) ** (1 / priceChangeDuration)) - 1,
-      duration: Number(priceChangeDuration * 2),
-    });
-
-    updatedSchedule.push({
-      symbol: team1Stock.symbol,
-      percentage:
-        Number((1 + basePriceChange / 12) ** (1 / priceChangeDuration)) - 1,
-      duration: Number(priceChangeDuration * 12),
-    });
+  if (Sa - Ea < 0) {
+    if (match["match_series"].includes("Lower Round")) {
+      Ka *= 2;
+    } else if (match["match_series"].includes("Elimination")) {
+      Ka *= 4;
+    } else if (match["match_series"].includes("Lower Final")) {
+      Ka *= 5;
+    }
   }
 
-  if (team2Stock) {
-    const basePriceChange = newRb / Rb - 1;
-    console.log(basePriceChange * 3.5);
-
-    updatedSchedule.push({
-      symbol: team2Stock.symbol,
-      percentage:
-        Number((1 + basePriceChange) ** (1 / priceChangeDuration)) - 1,
-      duration: Number(priceChangeDuration),
-    });
-
-    updatedSchedule.push({
-      symbol: team2Stock.symbol,
-      percentage:
-        Number((1 + basePriceChange / 2) ** (1 / priceChangeDuration)) - 1,
-      duration: Number(priceChangeDuration * 2),
-    });
-
-    updatedSchedule.push({
-      symbol: team2Stock.symbol,
-      percentage:
-        Number((1 + basePriceChange / 12) ** (1 / priceChangeDuration)) - 1,
-      duration: Number(priceChangeDuration * 12),
-    });
+  if (Sb - Eb < 0) {
+    if (match["match_series"].includes("Lower Round")) {
+      Kb *= 2;
+    } else if (match["match_series"].includes("Elimination")) {
+      Kb *= 4;
+    } else if (match["match_series"].includes("Lower Final")) {
+      Kb *= 5;
+    }
   }
 
-  console.log(updatedSchedule);
+  const newRa = Math.round(Ra + K * (Sa - Ea) + L * Pa + Sa * V);
+  const newRb = Math.round(Rb + K * (Sb - Eb) + L * Pb + Sb * V);
+
+  return [newRa, newRb];
 }
 
 module.exports = {
@@ -457,5 +374,5 @@ module.exports = {
   updateStockEloPrice,
   updateStockAlgorithm,
   processCompletedMatch,
-  testProcessCompletedMatch,
+  calculateElo,
 };

@@ -25,10 +25,7 @@ const CumulativeStockGraph = ({ }) => {
   useEffect(() => {
     const fetchStockData = async () => {
       try {
-        const { data, error } = await supabase
-        .from("stock_prices")
-        .select("*")
-        .order("timestamp", { ascending: true });
+        const { data, error } = await supabase.rpc('fetch_at_specific_hour', { hour: 10 })
 
       if (error) {
         console.error("Error fetching stock data:", error);
@@ -116,6 +113,9 @@ const CumulativeStockGraph = ({ }) => {
         }
     },
     animation: false,
+    hover: {
+      mode: null,
+    },
     plugins: {
       legend: {
         display: false,
@@ -124,6 +124,7 @@ const CumulativeStockGraph = ({ }) => {
         display: false,
       },
       tooltip: {
+        enabled: false,
         callbacks: {
           label: function (context) {
             return context.dataset.label + ": $" + context.dataset.data[context.dataIndex].toFixed(2);
