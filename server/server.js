@@ -6,7 +6,7 @@ const {
   processCompletedMatch,
   updateStockAlgorithm,
 } = require("./controllers/stockController");
-const { getSentiments } = require("server/sentiment/redditSentiment.js");
+const { getSentiments } = require("./sentiment/redditSentiment.js");
 const {
   getRelevantUpcomingMatches,
   getMatchData,
@@ -263,7 +263,8 @@ async function updateMatches() {
 
 // CRON SCHEDULE
 
-updateMatches();
+await updateMatches();
+await updateStocks();
 
 cron.schedule("*/10 * * * *", async () => {
   try {
