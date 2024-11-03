@@ -177,7 +177,7 @@ async function updateStockAlgorithm(timestamp) {
       const stockUpdate = { symbol: stock.symbol, price: newPrice };
 
       // Unlock stocks waiting to be unlocked
-      if (currentStocks.locked == 2) stockUpdate.locked = 0;
+      if (stock.locked == 2) stockUpdate.locked = 0;
 
       stockUpdates.push(stockUpdate);
 
