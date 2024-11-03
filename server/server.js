@@ -40,7 +40,7 @@ async function updateSentiments() {
     const { data, error } = await supabase
       .from("current_stock_prices")
       .select("sentiment")
-      .eq("symbol", symbol)
+      .eq("symbol", team)
       .single();
 
     if (error) {
