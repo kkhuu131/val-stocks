@@ -263,8 +263,8 @@ async function updateMatches() {
 
 // CRON SCHEDULE
 
-await updateMatches();
-await updateStocks();
+updateMatches();
+updateStocks();
 
 cron.schedule("*/10 * * * *", async () => {
   try {
