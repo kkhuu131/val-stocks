@@ -44,7 +44,7 @@ async function updateSentiments() {
       .single();
 
     if (error) {
-      console.error("Error fetching current stock for ${team}:", error);
+      console.error(`Error fetching current stock for ${team}:`, error);
       continue;
     }
 
@@ -53,9 +53,9 @@ async function updateSentiments() {
 
     // Update sentiment in database
     const { error: updateError } = await supabase
-      .from("teams")
+      .from("current_stock_prices")
       .update({ sentiment: updatedSentiment })
-      .eq("team_name", team);
+      .eq("symbol", team);
 
     if (updateError) {
       console.error(`Error updating sentiment for ${team}:`, updateError);
