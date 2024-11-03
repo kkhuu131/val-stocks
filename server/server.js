@@ -3,12 +3,10 @@ const cors = require("cors");
 const teams = require("./teams.json");
 const teamData = require("../src/teamMappings.json");
 const {
-  updateStockElo,
-  updateStockEloPrice,
-  getCurrentStockData,
   processCompletedMatch,
   updateStockAlgorithm,
 } = require("./controllers/stockController");
+const { getSentiments } = require("server/sentiment/redditSentiment.js");
 const {
   getRelevantUpcomingMatches,
   getMatchData,
@@ -34,15 +32,57 @@ const server = http.createServer(app);
 
 // UPDATE FUNCTIONS
 
+async function updateSentiments() {
+  const newSentiments = await getSentiments();
+
+  for (const [team, newSentiment] of Object.entries(newSentiments)) {
+    // Fetch the current sentiment from database
+    const { data, error } = await supabase
+      .from("current_stock_prices")
+      .select("sentiment")
+      .eq("symbol", symbol)
+      .single();
+
+    if (error) {
+      console.error("Error fetching current stock for ${team}:", error);
+      continue;
+    }
+
+    const currentSentiment = data?.sentiment || 0;
+    const updatedSentiment = currentSentiment + newSentiment;
+
+    // Update sentiment in database
+    const { error: updateError } = await supabase
+      .from("teams")
+      .update({ sentiment: updatedSentiment })
+      .eq("team_name", team);
+
+    if (updateError) {
+      console.error(`Error updating sentiment for ${team}:`, updateError);
+    }
+  }
+}
+
 async function updateStocks() {
+  // Get current time
   const now = new Date();
   now.setSeconds(0);
   now.setMilliseconds(0);
 
-  const deleteTime = new Date(now - 10 * 24 * 60 * 60 * 1000).toISOString();
+  // Get date to start deleting stock records
+  const daysToDeleteStockRecords = 10;
+  const deleteTime = new Date(
+    now - daysToDeleteStockRecords * 24 * 60 * 60 * 1000
+  ).toISOString();
 
   try {
+    // update sentiments before prices
+    await updateSentiments();
+
+    // update stock prices
     await updateStockAlgorithm(now);
+
+    // update all user's networths using new stock prices
     const { error } = await supabase.rpc("update_user_net_worth");
     if (error) {
       throw error;
@@ -50,7 +90,7 @@ async function updateStocks() {
       console.log("Stock update completed successfully.");
     }
 
-    // delete stock records that were more than a week ago
+    // delete stock records that are before the delete date
     const { error: deleteError } = await supabase
       .from("stock_prices")
       .delete()
@@ -62,6 +102,7 @@ async function updateStocks() {
       console.log("Delete operation completed successfully.");
     }
 
+    // delete more unneeded records
     await deleteOldNonIntervalRecords();
   } catch (error) {
     console.error(`Error updating stocks: `, error);
@@ -71,11 +112,12 @@ async function updateStocks() {
 }
 
 async function deleteOldNonIntervalRecords() {
+  // Get current time
   const now = new Date();
   now.setSeconds(0);
   now.setMilliseconds(0);
+
   const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000).toISOString();
-  const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000).toISOString();
 
   try {
     const { data: oldRecords, error } = await supabase
@@ -231,7 +273,7 @@ cron.schedule("*/10 * * * *", async () => {
   }
 });
 
-cron.schedule("* * * * *", async () => {
+cron.schedule("0 * * * *", async () => {
   try {
     await updateStocks();
   } catch (error) {

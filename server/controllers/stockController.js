@@ -127,35 +127,60 @@ async function updateStockEloPrice(symbol, elo, price) {
   return data;
 }
 
-async function updateStockAlgorithm(timestamp) {
-  const randomnessWeight = 0.004;
-  const demandWeight = 0.005;
+function calculateEloToPrice(elo) {
+  const A = 2.77;
+  const B = 0.000000281;
 
+  return (elo ** A * B).toFixed(2);
+}
+
+function calculateDemandToPrice(demand) {
+  const A = 1.55;
+  const B = 0.04;
+
+  return (demand ** A * B).toFixed(2);
+}
+
+function calculateSentimentToPrice(sentiment) {
+  const B = 12;
+
+  return (Math.sign(sentiment) * Math.log(Math.abs(sentiment) + 1) * B).toFixed(
+    2
+  );
+}
+
+function calculatePrice(stock) {
+  let elo = stock.elo ? stock.elo : 0;
+  let demand = stock.demand ? stock.demand : 0;
+  let sentiment = stock.sentiment ? stock.sentiment : 0;
+
+  let price =
+    calculateEloToPrice(elo) +
+    calculateDemandToPrice(demand) +
+    calculateSentimentToPrice(sentiment);
+
+  return price;
+}
+
+async function updateStockAlgorithm(timestamp) {
   try {
     const currentStocks = await getAllStocks();
-    const schedules = await getAllSchedules();
 
     const stockUpdates = {};
 
+    // Calculate new stocks
     for (const stock of currentStocks) {
-      let demand = stock.demand;
-      let randomness = Math.random() - 0.5;
+      const newPrice = calculatePrice(stock);
+      const stockUpdate = { symbol: stock.symbol, price: newPrice };
 
-      const priceChange = demand * demandWeight + randomness * randomnessWeight;
+      // Unlock stocks waiting to be unlocked
+      if (currentStocks.locked == 2) stockUpdate.locked = 0;
 
-      stockUpdates[stock.symbol] = priceChange;
+      stockUpdates.push(stockUpdate);
     }
 
-    for (const schedule of schedules) {
-      stockUpdates[schedule.symbol] += schedule.percentage;
-    }
-
+    // Archive these new stock prices into database
     for (const stock of currentStocks) {
-      let newPrice =
-        Math.round(
-          Number(stock.price) * Number(1 + stockUpdates[stock.symbol]) * 100
-        ) / 100;
-
       const updatedStockPrice = {
         symbol: stock.symbol,
         price: newPrice,
@@ -170,24 +195,15 @@ async function updateStockAlgorithm(timestamp) {
         console.error("Error creating new stock timestamp:", error);
         throw error;
       }
-
-      const { error: updateError } = await supabase
-        .from("current_stock_prices")
-        .update({ price: newPrice, demand: 0 })
-        .eq("symbol", stock.symbol);
-
-      if (updateError) {
-        console.error("Error updating stock price:", updateError);
-      }
     }
 
-    // call rpc that decrements and removes any finished durations
-    const { applyStockSchedulesError } = await supabase.rpc(
-      "apply_stock_schedules"
-    );
+    // Update database with these new current stocks
+    const { error: updateError } = await supabase
+      .from("current_stock_prices")
+      .upsert(stockUpdates, { onConflict: ["symbol"] });
 
-    if (applyStockSchedulesError) {
-      console.error("Error updating schedules:", applyStockSchedulesError);
+    if (updateError) {
+      console.error("Error updating stock price:", updateError);
     }
   } catch (error) {
     console.error("Error finding or updating stocks:", error);
@@ -375,4 +391,7 @@ module.exports = {
   updateStockAlgorithm,
   processCompletedMatch,
   calculateElo,
+  calculateEloToPrice,
+  calculateDemandToPrice,
+  calculateSentimentToPrice,
 };

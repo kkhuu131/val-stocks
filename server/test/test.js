@@ -1,7 +1,13 @@
 const teams = require("../teams.json");
 const teamData = require("../../src/teamMappings.json");
 const matchesData = require("./matches2024Data.json");
-const { calculateElo } = require("../controllers/stockController");
+const {
+  calculateElo,
+  calculateEloToPrice,
+  calculateDemandToPrice,
+  calculateSentimentToPrice,
+} = require("../controllers/stockController");
+const { getSentiments } = require("../sentiment/redditSentiment");
 const { getMatchData, getMatchLinksFromEvent } = require("../api/webScraper");
 
 const fs = require("fs");
@@ -110,15 +116,12 @@ async function test_simulate2024() {
 
   const teamEloPrices = new Map();
 
-  const A = 2.77;
-  const B = 0.000000281;
-
   const entries = Array.from(teamElos.entries());
   entries.sort((a, b) => b[1] - a[1]);
   const sortedMap = new Map(entries);
 
   sortedMap.forEach((elo, team) => {
-    const price = parseFloat((elo ** A * B).toFixed(2));
+    const price = parseFloat(calculateEloToPrice(elo));
     teamEloPrices.set(team, price);
   });
 
@@ -132,5 +135,41 @@ async function test_simulate2024() {
   console.table(combined);
 }
 
-test_simulate2024();
+async function test_simulateDemand() {
+  const demandPrices = new Map();
+
+  for (let i = 0; i < 20; i++) {
+    let demand = (i + 1) * 10;
+    let price = parseFloat(calculateDemandToPrice(demand));
+    demandPrices.set(demand, price);
+  }
+
+  const combined = Array.from(demandPrices.keys()).map((key) => ({
+    Demand: key,
+    Price: demandPrices.get(key),
+  }));
+
+  console.table(combined);
+}
+
+async function test_simulateSentiment() {
+  const sentimentPrices = new Map();
+
+  for (let i = 0; i < 10; i++) {
+    let sentiment = i - 5;
+    let price = parseFloat(calculateSentimentToPrice(sentiment));
+    sentimentPrices.set(sentiment, price);
+  }
+
+  const combined = Array.from(sentimentPrices.keys()).map((key) => ({
+    Sentiment: key,
+    Price: sentimentPrices.get(key),
+  }));
+
+  console.table(combined);
+}
+
+// test_simulate2024();
+// test_simulateDemand();
+test_simulateSentiment();
 // fetch2024MatchData();

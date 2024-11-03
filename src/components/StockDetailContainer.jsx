@@ -130,7 +130,6 @@ const StockDetailContainer = ({ symbol }) => {
       (payload) => {
         payload.new.localTimestamp = new Date(payload.new.timestamp);
         setStockData((prevStockData) => [...prevStockData, payload.new]);
-        console.log("TESTING");
       }
     )
     .subscribe();

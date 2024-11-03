@@ -12,7 +12,7 @@ import { Box, Grid, Flex, Image, Text, LinkBox, LinkOverlay, Tooltip, useMediaQu
 } from "@chakra-ui/react";
 import { LockIcon } from '@chakra-ui/icons';
 
-const StockDisplayRow = ({ stock }) => {
+const StockDisplayRow2 = ({ stock }) => {
   const [stockData, setStockData] = useState([]);
   const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
   const [hasMounted, setHasMounted] = useState(false);
@@ -143,14 +143,6 @@ const StockDisplayRow = ({ stock }) => {
                     </Stat>
                   </Flex>
                 </Grid>
-                <Flex
-                  alignItems="center"
-                  justifyContent="flex-end"
-                  marginLeft={2}
-                  marginRight={2}
-                >
-                  <SmallDisplayStockGraph stockData={stockData} />
-                </Flex>
               </Flex>
             </Box>
           </LinkOverlay>
@@ -160,110 +152,104 @@ const StockDisplayRow = ({ stock }) => {
   }
 
   return (
-    <Tooltip label={'Click to view ' + stock.symbol + ' details' } placement='right'>
       <LinkBox
         as="article"
         backgroundColor="grayAlpha.700"
         m={2}
         borderRadius="md"
+        width = "150px"
+        height = "150px"
+        _hover={{
+            bg:"grayAlpha.800"
+        }}
       >
         <LinkOverlay
           href={`/stock/${stock.symbol}`}
           style={{ textDecoration: "none", color: "black" }}
         >
-          <Box display="grid" gridTemplateColumns="2fr 10fr 4fr 200px" px="5" maxWidth="600px">
-            <Flex alignItems="center" justifyContent="left">
-              <Image
-                src={teamData["teamBySymbolMap"][stock.symbol].img}
-                alt={`Team logo for ${stock.symbol}`}
-                width="50"
-                height="50"
-                minW="50"
-                minH="50"
-                my="4"
-              />
-            </Flex>
-            <Flex alignItems="center" justifyContent="left">
-              <Text ml={3} fontSize={20} fontWeight="bold" color="white">
-                {teamData["teamBySymbolMap"][stock.symbol].name}
-              </Text>
-              <Text m={2} fontSize={16} color={"grayAlpha.50"}>
-                {stock.symbol}
-              </Text>
-            </Flex>
-            <Flex/>
+          <Grid gridTemplateRows="auto auto">
+            <Box display="grid" gridTemplateColumns="2fr 10fr" px="5" maxWidth="200px">
+                <Flex alignItems="center" justifyContent="left">
+                    <Image
+                        src={teamData["teamBySymbolMap"][stock.symbol].img}
+                        alt={`Team logo for ${stock.symbol}`}
+                        width="50"
+                        height="50"
+                        minW="50"
+                        minH="50"
+                        my="4"
+                    />
+                </Flex>
+                <Flex alignItems="center" justifyContent="left">
+                    <Text ml={3} fontSize={20} fontWeight="bold" color="white">
+                        {stock.symbol}
+                    </Text>
+                </Flex>
+            </Box>
             <Flex
-              alignItems="center"
-              justifyContent="right"
-            >
-              {stock.locked != 0 && <LockIcon color="yellow.500"  ml="5" mr="2" justifyContent="right"/>}
-              <Flex>
-                <Stat textAlign="right">
-                  <Box width="100px">
-                    <StatNumber fontSize={16} fontWeight="bold" color="white">
-                      {new Intl.NumberFormat('en-US', {
-                        style: 'currency',
-                        currency: 'USD',
-                        minimumFractionDigits: 2,
-                      }).format(stock.price)}
-                    </StatNumber>
-                  </Box>
-                  {(stockData[0] && (
-                    <>
-                      {(() => {
-                        const percentageChange =
-                          Math.round(
-                            (stockData[stockData.length - 1].price /
-                              stockData[0].price - 1) *
-                            100 *
-                            100
-                          ) / 100;
-                        
-                        if(percentageChange == 0) {
-                          return (
-                            <StatHelpText m={1} fontWeight="bold" color="gray.500">
-                              <StatArrow type='increase' color="gray.500" />
-                              {String(0)}%
-                            </StatHelpText>
-                          );
-                        } else if(percentageChange > 0) {
-                          return (
-                            <StatHelpText m={1} fontWeight="bold" color="green.500">
-                              <StatArrow type='increase' />
-                              +{String(percentageChange)}%
-                            </StatHelpText>
-                          );
-                        } else {
-                          return (
-                            <StatHelpText m={1} fontWeight="bold" color="red.500">
-                              <StatArrow type='decrease' />
-                              {String(percentageChange)}%
-                            </StatHelpText>
-                          );
-                        }
-                      })()}
-                    </>
-                  )) || (
-                    <StatHelpText m={1} fontWeight="bold" color="gray.500">
-                      <StatArrow type='increase' color="gray.500" />
-                      0%
-                    </StatHelpText>
-                  )}
-                </Stat>
-              </Flex>
-              <Flex
-                alignItems="center"
-                justifyContent="right"
-                ml="5"
-              >
-                <SmallDisplayStockGraph stockData={stockData} />
-              </Flex>
-            </Flex>
-          </Box>
+                    alignItems="center"
+                    justifyContent="center"
+                >
+                {stock.locked != 0 && <LockIcon color="yellow.500" justifyContent="center"/>}
+                <Flex>
+                    <Stat textAlign="center">
+                    <Box width="100px">
+                        <StatNumber fontSize={16} fontWeight="bold" color="white">
+                        {new Intl.NumberFormat('en-US', {
+                            style: 'currency',
+                            currency: 'USD',
+                            minimumFractionDigits: 2,
+                        }).format(stock.price)}
+                        </StatNumber>
+                    </Box>
+                    {(stockData[0] && (
+                        <>
+                        {(() => {
+                            const percentageChange =
+                            Math.round(
+                                (stockData[stockData.length - 1].price /
+                                stockData[0].price - 1) *
+                                100 *
+                                100
+                            ) / 100;
+                            
+                            if(percentageChange == 0) {
+                            return (
+                                <StatHelpText m={1} fontWeight="bold" color="gray.500">
+                                <StatArrow type='increase' color="gray.500" />
+                                {String(0)}%
+                                </StatHelpText>
+                            );
+                            } else if(percentageChange > 0) {
+                            return (
+                                <StatHelpText m={1} fontWeight="bold" color="green.500">
+                                <StatArrow type='increase' />
+                                +{String(percentageChange)}%
+                                </StatHelpText>
+                            );
+                            } else {
+                            return (
+                                <StatHelpText m={1} fontWeight="bold" color="red.500">
+                                <StatArrow type='decrease' />
+                                {String(percentageChange)}%
+                                </StatHelpText>
+                            );
+                            }
+                        })()}
+                        </>
+                    )) || (
+                        <StatHelpText m={1} fontWeight="bold" color="gray.500">
+                        <StatArrow type='increase' color="gray.500" />
+                        0%
+                        </StatHelpText>
+                    )}
+                    </Stat>
+                </Flex>
+                </Flex>
+          </Grid> 
         </LinkOverlay>
-      </LinkBox>
-    </Tooltip>
+        </LinkBox>
   );
 };
 
-export default StockDisplayRow;
+export default StockDisplayRow2;

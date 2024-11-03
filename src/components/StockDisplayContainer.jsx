@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import StockDisplayRow from "./StockDisplayRow";
+import StockDisplayRow2 from "./StockDisplayRow2";
 import teamData from "../teamMappings.json";
 import { supabase } from "../supabase";
 import { Box, Grid, Flex, Input, Select, useMediaQuery, Spinner } from "@chakra-ui/react";
@@ -76,7 +77,7 @@ const StockDisplayContainer = () => {
   }
 
   return (
-    <Box m={1} mx="auto" w={["90%", "80%", "600px"]} minH="800px">
+    <Box m={1} mx="auto" w={["90%", "80%", "800px"]} minH="800px">
       <Grid gridTemplateColumns={["1fr 1fr", "1fr 1fr","3fr 2fr"]}>
         <Flex justifyContent="center" alignItems="center" w="100%" mb="4">
           <Input borderColor="grayAlpha.500" color="white" fontSize={["14", "20"]} h="50px" placeholder="Search stocks..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
@@ -91,9 +92,17 @@ const StockDisplayContainer = () => {
           </Select>
         </Flex>
       </Grid>
-      {filteredStocks.length > 0 && filteredStocks.map((item, index) => {
-        return <StockDisplayRow key={index} stock={item} />;
-      })}
+      <Grid
+        mx="auto"
+        w={["90%", "80%", "700px"]}
+        templateColumns="repeat(auto-fill, minmax(150px, 1fr))"
+        gap={4}
+        mt={4}
+      >
+        {filteredStocks.length > 0 && filteredStocks.map((item, index) => {
+          return <StockDisplayRow2 key={index} stock={item} />;
+        })}
+      </Grid>
     </Box>
   );
 };
