@@ -35,7 +35,9 @@ const server = http.createServer(app);
 async function updateSentiments() {
   const newSentiments = await getSentiments();
 
-  for (const [team, newSentiment] of Object.entries(newSentiments)) {
+  for (const team in newSentiments) {
+    const newSentiment = newSentiments[team];
+
     // Fetch the current sentiment from database
     const { data, error } = await supabase
       .from("current_stock_prices")
@@ -49,7 +51,9 @@ async function updateSentiments() {
     }
 
     const currentSentiment = data?.sentiment || 0;
-    const updatedSentiment = currentSentiment + newSentiment;
+    const updatedSentiment = Number(
+      (currentSentiment + newSentiment).toFixed(6)
+    );
 
     // Update sentiment in database
     const { error: updateError } = await supabase
@@ -262,9 +266,7 @@ async function updateMatches() {
 }
 
 // CRON SCHEDULE
-
 updateMatches();
-updateStocks();
 
 cron.schedule("*/10 * * * *", async () => {
   try {

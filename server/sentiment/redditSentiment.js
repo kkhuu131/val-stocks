@@ -252,13 +252,13 @@ function analyzeComment(comment, teamKeywords) {
 }
 
 function calculateSentiments(allSentiments) {
-  const calculatedSentiments = {};
+  const calculatedSentiments = new Map();
 
   Object.keys(allSentiments).forEach((team) => {
     const scores = allSentiments[team];
     if (scores.length > 0) {
       const sumSentiment = scores.reduce((a, b) => a + b, 0);
-      calculatedSentiments[team] = sumSentiment;
+      calculatedSentiments[team] = Number(sumSentiment.toFixed(6));
     } else {
       calculatedSentiments[team] = 0;
     }
@@ -284,18 +284,9 @@ async function getSentiments(hourlyInterval) {
   });
 
   const calculatedSentiments = calculateSentiments(allSentiments);
-  const sortedSentiments = Object.entries(calculatedSentiments).sort(
-    (a, b) => b[1] - a[1]
-  );
 
-  sortedSentiments.forEach(([team, score]) => {
-    console.log(`${team}: ${score}`);
-  });
-
-  return sortedSentiments;
+  return calculatedSentiments;
 }
-
-getSentiments();
 
 module.exports = {
   getSentiments,

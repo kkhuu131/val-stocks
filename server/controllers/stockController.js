@@ -131,33 +131,36 @@ function calculateEloToPrice(elo) {
   const A = 2.77;
   const B = 0.000000281;
 
-  return (elo ** A * B).toFixed(2);
+  return Number((elo ** A * B).toFixed(2));
 }
 
 function calculateDemandToPrice(demand) {
   const A = 1.55;
   const B = 0.04;
 
-  return (demand ** A * B).toFixed(2);
+  return Number((demand ** A * B).toFixed(2));
 }
 
 function calculateSentimentToPrice(sentiment) {
   const B = 12;
 
-  return (Math.sign(sentiment) * Math.log(Math.abs(sentiment) + 1) * B).toFixed(
-    2
+  return Number(
+    (Math.sign(sentiment) * Math.log(Math.abs(sentiment) + 1) * B).toFixed(2)
   );
 }
 
 function calculatePrice(stock) {
-  let elo = stock.elo ? stock.elo : 0;
-  let demand = stock.demand ? stock.demand : 0;
-  let sentiment = stock.sentiment ? stock.sentiment : 0;
+  let elo = stock.elo ? Number(stock.elo) : 0;
+  let demand = stock.demand ? Number(stock.demand) : 0;
+  let sentiment = stock.sentiment ? Number(stock.sentiment) : 0;
 
-  let price =
-    calculateEloToPrice(elo) +
-    calculateDemandToPrice(demand) +
-    calculateSentimentToPrice(sentiment);
+  let price = Number(
+    (
+      calculateEloToPrice(Number(elo)) +
+      calculateDemandToPrice(Number(demand)) +
+      calculateSentimentToPrice(Number(sentiment))
+    ).toFixed(2)
+  );
 
   return price;
 }
@@ -166,7 +169,7 @@ async function updateStockAlgorithm(timestamp) {
   try {
     const currentStocks = await getAllStocks();
 
-    const stockUpdates = {};
+    const stockUpdates = [];
 
     // Calculate new stocks
     for (const stock of currentStocks) {
@@ -177,10 +180,8 @@ async function updateStockAlgorithm(timestamp) {
       if (currentStocks.locked == 2) stockUpdate.locked = 0;
 
       stockUpdates.push(stockUpdate);
-    }
 
-    // Archive these new stock prices into database
-    for (const stock of currentStocks) {
+      // Archive this new stock price into database
       const updatedStockPrice = {
         symbol: stock.symbol,
         price: newPrice,
@@ -208,6 +209,69 @@ async function updateStockAlgorithm(timestamp) {
   } catch (error) {
     console.error("Error finding or updating stocks:", error);
   }
+}
+
+function calculateElo(match, elo1, elo2) {
+  // https://stanislav-stankovic.medium.com/elo-rating-system-6196cc59941e#:~:text=After%20each%20match%2C%20the%20Elo,the%20match%20and%20SA%20is
+  const c = 400; // Sensitivity based on Rating difference (higher c -> difference in ratings is less significant)
+  const K = 90; // Sensitivity
+  const L = 40; // Volatility of Score Differential (higher L -> a 3-0 would have way more gain than a 3-2)
+  let V = 16; // Volatility (of Match Outcome, higher V -> higher match importance)
+  let Ra = elo1;
+  let Rb = elo2;
+
+  if (match["match_series"].includes("Quarterfinals")) {
+    V *= 1.25;
+  } else if (match["match_series"].includes("Semifinals")) {
+    V *= 1.5;
+  } else if (
+    match["match_series"].includes("Upper Final") ||
+    match["match_series"].includes("Lower Final")
+  ) {
+    V *= 3;
+  } else if (match["match_series"].includes("Grand Final")) {
+    V *= 6;
+  }
+
+  const Sa = match.team1_score > match.team2_score ? 1 : 0;
+  const Sb = match.team2_score > match.team1_score ? 1 : 0;
+  const Pa = match.team1_score / (match.team1_score + match.team2_score);
+  const Pb = match.team2_score / (match.team1_score + match.team2_score);
+  const Qa = Math.pow(10, Ra / c);
+  const Qb = Math.pow(10, Rb / c);
+  const Ea = Qa / (Qa + Qb);
+  const Eb = Qb / (Qa + Qb);
+
+  let Ka = K;
+  let Kb = K;
+
+  if (Sa - Ea < 0) {
+    if (match["match_series"].includes("Lower Round")) {
+      Ka *= 2;
+    } else if (match["match_series"].includes("Elimination")) {
+      Ka *= 4;
+    } else if (match["match_series"].includes("Lower Final")) {
+      Ka *= 5;
+    }
+  }
+
+  if (Sb - Eb < 0) {
+    if (match["match_series"].includes("Lower Round")) {
+      Kb *= 2;
+    } else if (match["match_series"].includes("Elimination")) {
+      Kb *= 4;
+    } else if (match["match_series"].includes("Lower Final")) {
+      Kb *= 5;
+    }
+  }
+
+  const newRa = Math.round(Ra + K * (Sa - Ea) + L * Pa + Sa * V);
+  const newRb = Math.round(Rb + K * (Sb - Eb) + L * Pb + Sb * V);
+
+  console.log(newRa);
+  console.log(newRb);
+
+  return [newRa, newRb];
 }
 
 async function processCompletedMatch(match) {
@@ -318,66 +382,6 @@ async function processCompletedMatch(match) {
   if (insertScheduleError) {
     console.error("Error adding schedule entry:", insertScheduleError);
   }
-}
-
-async function calculateElo(match, elo1, elo2) {
-  // https://stanislav-stankovic.medium.com/elo-rating-system-6196cc59941e#:~:text=After%20each%20match%2C%20the%20Elo,the%20match%20and%20SA%20is
-  const c = 400; // Sensitivity based on Rating difference (higher c -> difference in ratings is less significant)
-  const K = 90; // Sensitivity
-  const L = 40; // Volatility of Score Differential (higher L -> a 3-0 would have way more gain than a 3-2)
-  let V = 16; // Volatility (of Match Outcome, higher V -> higher match importance)
-  let Ra = elo1;
-  let Rb = elo2;
-
-  if (match["match_series"].includes("Quarterfinals")) {
-    V *= 1.25;
-  } else if (match["match_series"].includes("Semifinals")) {
-    V *= 1.5;
-  } else if (
-    match["match_series"].includes("Upper Final") ||
-    match["match_series"].includes("Lower Final")
-  ) {
-    V *= 3;
-  } else if (match["match_series"].includes("Grand Final")) {
-    V *= 6;
-  }
-
-  const Sa = match.team1_score > match.team2_score ? 1 : 0;
-  const Sb = match.team2_score > match.team1_score ? 1 : 0;
-  const Pa = match.team1_score / (match.team1_score + match.team2_score);
-  const Pb = match.team2_score / (match.team1_score + match.team2_score);
-  const Qa = Math.pow(10, Ra / c);
-  const Qb = Math.pow(10, Rb / c);
-  const Ea = Qa / (Qa + Qb);
-  const Eb = Qb / (Qa + Qb);
-
-  let Ka = K;
-  let Kb = K;
-
-  if (Sa - Ea < 0) {
-    if (match["match_series"].includes("Lower Round")) {
-      Ka *= 2;
-    } else if (match["match_series"].includes("Elimination")) {
-      Ka *= 4;
-    } else if (match["match_series"].includes("Lower Final")) {
-      Ka *= 5;
-    }
-  }
-
-  if (Sb - Eb < 0) {
-    if (match["match_series"].includes("Lower Round")) {
-      Kb *= 2;
-    } else if (match["match_series"].includes("Elimination")) {
-      Kb *= 4;
-    } else if (match["match_series"].includes("Lower Final")) {
-      Kb *= 5;
-    }
-  }
-
-  const newRa = Math.round(Ra + K * (Sa - Ea) + L * Pa + Sa * V);
-  const newRb = Math.round(Rb + K * (Sb - Eb) + L * Pb + Sb * V);
-
-  return [newRa, newRb];
 }
 
 module.exports = {
