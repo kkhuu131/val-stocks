@@ -19,14 +19,13 @@ import {
   useMediaQuery,
 } from '@chakra-ui/react'
 import { supabase } from "../supabase";
+import { Helmet } from "react-helmet-async";
 
 export default function Rankings() {
   const [profiles, setProfiles] = useState([]);
   const [isLargerThan425] = useMediaQuery("(min-width: 425px)")
 
   useEffect(() => {
-    document.title = "VALSTOCKS";
-
     const fetchProfiles = async () => {
       const { data, error } = await supabase
         .from("profiles")
@@ -64,6 +63,11 @@ export default function Rankings() {
 
   return (
     <>
+      <Helmet>
+        <title>ValStocks</title>
+        <meta name="description" content="View top user rankings." />
+        <meta name="keywords" content="ValStocks, rankings, rank, user, net worth" />
+      </Helmet>
       <CSSReset />
       <Box backgroundColor="black" pt={1} pb={1} h="100vh">
         <Box p="5" mx="auto" maxW={["90%", "90%", "90%", "1000px"]} minW={["90%", "90%", "90%", "800px"]} backgroundColor="grayAlpha.700" borderRadius="lg">
