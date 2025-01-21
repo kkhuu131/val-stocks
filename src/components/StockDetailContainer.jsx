@@ -3,13 +3,7 @@ import { supabase } from "../supabase";
 import teamData from "../teamMappings.json";
 import StockGraph from "./StockGraph";
 import BuySellPanel from "./BuySellPanel";
-import { Box, Heading, Text, Grid, Flex, Image, Tabs, TabList, TabPanels, Tab, TabPanel, useMediaQuery,   AlertDialog,
-  AlertDialogBody,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogContent,
-  AlertDialogOverlay,
-  AlertDialogCloseButton,
+import { Box, Heading, Text, Grid, Flex, Image, Tabs, TabList, TabPanels, Tab, TabPanel, useMediaQuery, AlertDialog,
   Button,
   Alert,
   useDisclosure, 
@@ -26,85 +20,15 @@ const StockDetailContainer = ({ symbol }) => {
   const [currStockData, setCurrStockData] = useState({});
   const [timeRange, setTimeRange] = useState(0);
   const [isLargerThan768] = useMediaQuery("(min-width: 1024px)");
-  const [filteredData, setFilteredData] = useState(stockData);
+  const [filteredData, setFilteredData] = useState(stockData[0] || []);
 
   useEffect(() => {
     filterData();
   }, [timeRange, stockData]);
 
   const filterData = () => {
-    const now = new Date();
-    now.setSeconds(0);
-    now.setMilliseconds(0);
-    let filtered;
-
-    const roundToNearest30Minutes = (date) => {
-      const minutes = date.getMinutes();
-      const roundedMinutes = minutes < 15 ? 0 : (minutes < 45 ? 30 : 60);
-      date.setMinutes(roundedMinutes, 0, 0);
-  
-      return date;
-    };
-  
-    const sampleDataPoints = (data, n, interval) => {
-      let points = [];
-      let current = new Date(roundToNearest30Minutes(new Date(now - (n+1) * interval)));
-  
-      for (let i = 0; i <= n; i++) {
-        const dataPoint = data.find(dp => new Date(dp.timestamp).getTime() === current.getTime());
-        if(dataPoint) {
-          points.push(dataPoint);
-        }
-  
-        current = new Date(current.getTime() + interval);
-      }
-  
-      return points;
-    };
-
-    switch (timeRange) {
-      case 0:
-        filtered = stockData.filter(dataPoint =>
-          new Date(dataPoint.timestamp) >= new Date(now - 60 * 60 * 1000)
-        );
-        break;
-      case 1:
-        filtered = stockData.filter(dataPoint =>
-          new Date(dataPoint.timestamp) >= new Date(now - 24 * 60 * 60 * 1000)
-        );
-
-        filtered = sampleDataPoints(filtered, 23, 60 * 60 * 1000);
-
-        const currentDataPoint = stockData.find(
-          dataPoint => new Date(dataPoint.timestamp).getTime() === now.getTime()
-        );
-
-        if (currentDataPoint) {
-          filtered.push(currentDataPoint);
-        }
-
-        break;
-      case 2:
-        filtered = stockData.filter(dataPoint =>
-          new Date(dataPoint.timestamp) >= new Date(now - 7 *24 * 60 * 60 * 1000)
-        );
-
-        filtered = sampleDataPoints(filtered, 6, 24 * 60 * 60 * 1000);
-
-        const point = stockData.find(
-          dataPoint => new Date(dataPoint.timestamp).getTime() === now.getTime()
-        );
-
-        if (point) {
-          filtered.push(point);
-        }
-        break;
-      default:
-        filtered = stockData.filter(dataPoint =>
-          new Date(dataPoint.timestamp) >= new Date(now - 60 * 60 * 1000)
-        );
-    }
-
+    let filtered = stockData[timeRange] || [];
+    console.log(filtered);
     setFilteredData(filtered);
   };
 
@@ -157,21 +81,26 @@ const StockDetailContainer = ({ symbol }) => {
 
     const fetchStockData = async () => {
       try {
-        const { data, error } = await supabase
-        .from("stock_prices")
-        .select("*")
-        .eq("symbol", symbol)
-        .order("timestamp", { ascending: true });
+        const rpcs = ['fetch_within_last_hour', 'fetch_within_last_day', 'fetch_within_last_week']
+        let datasets = []
+        
+        for (const rpc of rpcs) {
+          const { data, error } = await supabase
+          .rpc(rpc, {
+            symbol
+          });
 
-      if (error) {
-        console.error("Error fetching stock data:", error);
-        throw error;
-      }
+          if (error) {
+            console.error("Error running " + rpc + ": ", error);
+            throw error;
+          }
 
-        const localizedData = convertToLocaleTime(data);
-        localizedData.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+          const localizedData = convertToLocaleTime(data);
+          localizedData.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+          datasets.push(localizedData);
+        }
 
-        await setStockData(localizedData);
+        await setStockData(datasets);
         
       } catch (error) {
         console.error("Error fetching stock data:", error);

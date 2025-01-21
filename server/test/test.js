@@ -153,10 +153,10 @@ async function test_simulateDemand() {
 }
 
 async function test_simulateSentiment() {
+  const testValues = [-200, -150, -100, -10, -5, 0, 5, 10, 50, 100, 150, 200];
   const sentimentPrices = new Map();
 
-  for (let i = 0; i < 10; i++) {
-    let sentiment = i - 5;
+  for (const sentiment of testValues) {
     let price = parseFloat(calculateSentimentToPrice(sentiment));
     sentimentPrices.set(sentiment, price);
   }
@@ -169,7 +169,20 @@ async function test_simulateSentiment() {
   console.table(combined);
 }
 
-// test_simulate2024();
-// test_simulateDemand();
-test_simulateSentiment();
-// fetch2024MatchData();
+const testToRun = process.argv[2];
+
+switch (testToRun) {
+  case "2024_elo":
+    test_simulate2024();
+    break;
+  case "simple_demand":
+    test_simulateDemand();
+    break;
+  case "simple_sentiment":
+    test_simulateSentiment();
+    break;
+  default:
+    console.log(
+      "Enter a valid test name: 2024_elo, simple_demand, simple_sentiment"
+    );
+}

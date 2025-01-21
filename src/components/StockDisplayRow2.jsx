@@ -17,30 +17,32 @@ const StockDisplayRow2 = ({ stock }) => {
   const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
   const [hasMounted, setHasMounted] = useState(false);
 
+  const convertToLocaleTime = (data) => {
+    return data.map(item => {
+      return {
+        ...item,
+        localTimestamp: new Date(item.timestamp)
+      };
+    });
+  };
+
   useEffect(() => {
     if(!hasMounted) {
       const fetchStockData = async () => {
         try {
-          const { data, error } = await supabase
-            .from("stock_prices")
-            .select("*")
-            .eq("symbol", stock.symbol)
-            .order("timestamp", { ascending: true });
+          const { data, error } = await supabase.rpc('fetch_within_last_hour', {
+              symbol: stock.symbol,
+          });
 
           if (error) {
             console.error("Error fetching stock data:", error);
             throw error;
           }
 
-          const now = new Date();
-          const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-          const filtered = data.filter(dataPoint =>
-            {
-              const ts = new Date(dataPoint.timestamp)
-              return ts >= oneDayAgo && (ts.getMinutes() === 30 || ts.getMinutes() === 0);
-            }
-          );
-          setStockData(filtered);
+          const localizedData = convertToLocaleTime(data);
+          localizedData.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+
+          setStockData(localizedData);
         } catch (error) {
           console.error("Error fetching stock data:", error);
         }

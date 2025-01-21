@@ -43,19 +43,6 @@ async function createStock(
   return data;
 }
 
-async function getAllSchedules() {
-  const { data, error } = await supabase
-    .from("stock_schedules")
-    .select("symbol, percentage, duration");
-
-  if (error) {
-    console.error("Error fetching schedules:", error);
-    throw error;
-  }
-
-  return data;
-}
-
 async function getAllStocks() {
   const { data, error } = await supabase
     .from("current_stock_prices")
@@ -128,25 +115,32 @@ async function updateStockEloPrice(symbol, elo, price) {
 }
 
 function calculateEloToPrice(elo) {
-  const A = 2.77;
-  const B = 0.000000281;
+  const A = 2.54;
+  const B = 0.00000012;
 
-  return Number((elo ** A * B).toFixed(2));
+  return Number((Math.pow(elo, A) * B).toFixed(2));
 }
 
 function calculateDemandToPrice(demand) {
-  const A = 1.55;
-  const B = 0.04;
+  const A = 1.2;
+  const B = 0.035;
 
-  return Number((demand ** A * B).toFixed(2));
+  return Number(
+    (Math.sign(demand) * Math.pow(Math.abs(demand), A) * B).toFixed(2)
+  );
 }
 
 function calculateSentimentToPrice(sentiment) {
-  const B = 12;
+  const B = 0.3;
 
   return Number(
-    (Math.sign(sentiment) * Math.log(Math.abs(sentiment) + 1) * B).toFixed(2)
+    (Math.sign(sentiment) * (Math.abs(sentiment) + 1) * B).toFixed(2)
   );
+}
+
+function applySoftMax(value, softMax = 120, growthRate = 0.01) {
+  // Soft max function to allow values beyond softMax but at a diminishing rate
+  return softMax * (1 - Math.exp(-growthRate * value));
 }
 
 function calculatePrice(stock) {
@@ -154,59 +148,88 @@ function calculatePrice(stock) {
   let demand = stock.demand ? Number(stock.demand) : 0;
   let sentiment = stock.sentiment ? Number(stock.sentiment) : 0;
 
-  let price = Number(
-    (
-      calculateEloToPrice(Number(elo)) +
-      calculateDemandToPrice(Number(demand)) +
-      calculateSentimentToPrice(Number(sentiment))
-    ).toFixed(2)
-  );
+  // Calculate individual contributions
+  const eloContribution = calculateEloToPrice(elo);
+  const demandContribution = calculateDemandToPrice(demand);
+  const sentimentContribution = calculateSentimentToPrice(sentiment);
 
-  return price;
+  // Combine with weighting
+  const combinedScore =
+    0.5 * eloContribution +
+    0.35 * demandContribution +
+    0.12 * sentimentContribution;
+
+  // Apply soft max to normalize
+  let normalizedPrice = applySoftMax(combinedScore, 120, 0.02); // Adjust growth rate to control extremity
+  let price = Math.max(normalizedPrice, 1.0);
+
+  return Number(price.toFixed(2));
 }
 
+/**
+ * Updates stock data in the database marked by the given timestamp.
+ *
+ * This function fetches all the current stock data, calculates their new prices, updates the
+ * locked status if needed, and inserts the updated stock prices into the `stock_prices`
+ * table with the given timestamp. It also updates the `current_stock_prices` table
+ * with the newest stock price information.
+ *
+ * @param {string} timestamp - The timestamp of when the stock price was updated.
+ */
 async function updateStockAlgorithm(timestamp) {
   try {
+    // Fetch all current stock data from the database
     const currentStocks = await getAllStocks();
 
+    // Updated stock data array
     const stockUpdates = [];
 
-    // Calculate new stocks
+    // Loop through every stock, calculating new updates
     for (const stock of currentStocks) {
+      // Calculate new price based on stock data
       const newPrice = calculatePrice(stock);
-      const stockUpdate = { symbol: stock.symbol, price: newPrice };
 
-      // Unlock stocks waiting to be unlocked
-      if (stock.locked == 2) stockUpdate.locked = 0;
+      // Reset 'locked' status
+      if (stock.locked == 2) stock.locked = 0;
 
+      // Create updated stock object
+      const stockUpdate = {
+        symbol: stock.symbol,
+        price: newPrice,
+        locked: stock.locked,
+      };
       stockUpdates.push(stockUpdate);
 
-      // Archive this new stock price into database
+      // Create updated stock object for 'stock_prices' table
       const updatedStockPrice = {
         symbol: stock.symbol,
         price: newPrice,
         timestamp,
       };
 
+      // Insert updated stock price into 'stock_prices'  table
       const { error } = await supabase
         .from("stock_prices")
         .insert([updatedStockPrice]);
 
+      // Check for errors from insert operation
       if (error) {
         console.error("Error creating new stock timestamp:", error);
         throw error;
       }
     }
 
-    // Update database with these new current stocks
+    // Upsert the stock updates into 'current_stock_prices' table
     const { error: updateError } = await supabase
       .from("current_stock_prices")
       .upsert(stockUpdates, { onConflict: ["symbol"] });
 
+    // Check for errors from upsert operation
     if (updateError) {
       console.error("Error updating stock price:", updateError);
     }
   } catch (error) {
+    // Handle and output any errors during function
     console.error("Error finding or updating stocks:", error);
   }
 }
@@ -301,32 +324,7 @@ async function processCompletedMatch(match) {
 
   let [newRa, newRb] = calculateElo(match, Ra, Rb);
 
-  const updatedSchedule = [];
-  const priceChangeDuration = 60;
-
   if (team1Stock) {
-    const basePriceChange = newRa / Ra - 1;
-
-    updatedSchedule.push({
-      symbol: team1Stock.symbol,
-      percentage:
-        Number((1 + basePriceChange * 2) ** (1 / priceChangeDuration)) - 1,
-      duration: Number(priceChangeDuration),
-    });
-
-    updatedSchedule.push({
-      symbol: team1Stock.symbol,
-      percentage:
-        Number((1 + basePriceChange / 2) ** (1 / priceChangeDuration)) - 1,
-      duration: Number(priceChangeDuration * 2),
-    });
-
-    updatedSchedule.push({
-      symbol: team1Stock.symbol,
-      percentage:
-        Number((1 + basePriceChange / 12) ** (1 / priceChangeDuration)) - 1,
-      duration: Number(priceChangeDuration * 12),
-    });
     const { error } = await supabase
       .from("current_stock_prices")
       .update({ elo: Math.round(newRa) })
@@ -336,33 +334,10 @@ async function processCompletedMatch(match) {
       console.error("Error processing match: ", error);
     }
 
-    console.log("Schedule and elo updated for " + match.team1_name);
+    console.log("Elo updated for " + match.team1_name);
   }
 
   if (team2Stock) {
-    const basePriceChange = newRb / Rb - 1;
-
-    updatedSchedule.push({
-      symbol: team2Stock.symbol,
-      percentage:
-        Number((1 + basePriceChange * 2) ** (1 / priceChangeDuration)) - 1,
-      duration: Number(priceChangeDuration),
-    });
-
-    updatedSchedule.push({
-      symbol: team2Stock.symbol,
-      percentage:
-        Number((1 + basePriceChange / 2) ** (1 / priceChangeDuration)) - 1,
-      duration: Number(priceChangeDuration * 2),
-    });
-
-    updatedSchedule.push({
-      symbol: team2Stock.symbol,
-      percentage:
-        Number((1 + basePriceChange / 12) ** (1 / priceChangeDuration)) - 1,
-      duration: Number(priceChangeDuration * 12),
-    });
-
     const { error } = await supabase
       .from("current_stock_prices")
       .update({ elo: Math.round(newRb) })
@@ -372,21 +347,12 @@ async function processCompletedMatch(match) {
       console.error("Error processing match: ", error);
     }
 
-    console.log("Schedule and elo updated for " + match.team2_name);
-  }
-
-  const { error: insertScheduleError } = await supabase
-    .from("stock_schedules")
-    .insert(updatedSchedule);
-
-  if (insertScheduleError) {
-    console.error("Error adding schedule entry:", insertScheduleError);
+    console.log("Elo updated for " + match.team2_name);
   }
 }
 
 module.exports = {
   createStock,
-  getAllSchedules,
   getStockData,
   getCurrentStockData,
   getAllStocks,

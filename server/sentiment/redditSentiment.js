@@ -180,26 +180,12 @@ const teamKeywords = {
   BLD: ["BLD", "BLEED", "crazyguy", "sscary", "zest", "retla", "deryeon"],
 };
 
-// Fetch the 'limit' most recent comments
-async function fetchComments(limit) {
-  const subreddit = await reddit.getSubreddit(subredditName);
-  const submissions = await subreddit.getNew({ limit });
-  const comments = [];
-
-  for (const submission of submissions) {
-    const submissionComments = await submission.comments.fetchAll();
-    submissionComments.forEach((comment) => comments.push(comment.body));
-  }
-
-  return comments;
-}
-
-// Fetch all comments within the last 'hoursAgo' hours, up to 1000 comments
-async function fetchCommentsFrom(hoursAgo) {
+// Fetch all comments within the last minutes, up to 1000 comments
+async function fetchCommentsFrom(minutes) {
   const comments = [];
   let lastComment;
 
-  const timeFrom = dayjs().subtract(hoursAgo, "hour");
+  const timeFrom = dayjs().subtract(minutes, "minute");
 
   while (true) {
     const options = { limit: 100 };
@@ -213,9 +199,6 @@ async function fetchCommentsFrom(hoursAgo) {
       const commentTime = dayjs.unix(comment.created_utc);
       // Check if the comment is older than the specified time frame
       if (commentTime.isBefore(timeFrom)) {
-        // console.log(
-        //   (Math.floor(Date.now() / 1000) - comment.created_utc) / (60 * 60)
-        // );
         return comments; // Stop fetching if older comments are found
       }
       comments.push(comment.body);
@@ -267,9 +250,9 @@ function calculateSentiments(allSentiments) {
   return calculatedSentiments;
 }
 
-// Fetchs all the comments from the last hourlyInterval and find the current sentiment of each team
-async function getSentiments(hourlyInterval) {
-  const comments = await fetchCommentsFrom(hourlyInterval);
+// Fetchs all the comments from the last 'interval' minutes and find the current sentiment of each team
+async function getSentiments(interval = 1) {
+  const comments = await fetchCommentsFrom(interval);
 
   const allSentiments = Object.keys(teamKeywords).reduce((acc, team) => {
     acc[team] = [];

@@ -34,6 +34,7 @@ const server = http.createServer(app);
 
 async function updateSentiments() {
   const newSentiments = await getSentiments();
+  const decayFactor = 1;
 
   for (const team in newSentiments) {
     const newSentiment = newSentiments[team];
@@ -52,7 +53,7 @@ async function updateSentiments() {
 
     const currentSentiment = data?.sentiment || 0;
     const updatedSentiment = Number(
-      (currentSentiment + newSentiment).toFixed(6)
+      (currentSentiment * decayFactor + newSentiment).toFixed(6)
     );
 
     // Update sentiment in database
@@ -267,6 +268,7 @@ async function updateMatches() {
 
 // CRON SCHEDULE
 updateMatches();
+updateStocks();
 
 cron.schedule("*/10 * * * *", async () => {
   try {
@@ -276,7 +278,7 @@ cron.schedule("*/10 * * * *", async () => {
   }
 });
 
-cron.schedule("0 * * * *", async () => {
+cron.schedule("* * * * *", async () => {
   try {
     await updateStocks();
   } catch (error) {

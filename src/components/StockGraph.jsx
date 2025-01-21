@@ -81,6 +81,7 @@ const StockGraph = ({ symbol, stockData, timeRange }) => {
             return "$" + context.dataset.data[context.dataIndex].toFixed(2);
           },
         },
+        intersect: false,
         displayColors: false,
         titleFont: {
           family: theme.fonts.heading,
@@ -92,19 +93,13 @@ const StockGraph = ({ symbol, stockData, timeRange }) => {
         },
       },
     },
-    elements: {
-      point: {
-        borderWidth: 0,
-        radius: 10,
-        backgroundColor: "rgba(0,0,0,0)",
-      },
-    },
     scales: {
       x: {
         grid: {
           display: false,
         },
         ticks: {
+          display: false,
           font: {
             family: theme.fonts.body
           }
@@ -123,6 +118,22 @@ const StockGraph = ({ symbol, stockData, timeRange }) => {
         },
       }
     },
+    elements: {
+      point: {
+        borderWidth: 0,
+        radius: 20,
+        backgroundColor: "rgba(0,0,0,0)",
+      },
+    },
+    interaction: {
+      mode: 'index', // Hovering over the x-axis triggers the effect on the point(s)
+      axis: 'x', // Effect is triggered based on the x-axis
+    },
+    hover: {
+      mode: 'nearest', // Hover nearest point
+      intersect: false, // Triggers when hovering near any point in the x-axis level
+    },
+
   };
 
   return (
