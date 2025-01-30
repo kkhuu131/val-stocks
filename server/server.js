@@ -37,7 +37,7 @@ async function updateSentiments() {
   const decayFactor = 1;
 
   for (const team in newSentiments) {
-    const newSentiment = newSentiments[team];
+    const newSentiment = newSentiments[team] * 10;
 
     // Fetch the current sentiment from database
     const { data, error } = await supabase
@@ -51,9 +51,11 @@ async function updateSentiments() {
       continue;
     }
 
+    const noise = Math.random() ** 2 * 1.5 - 0.75;
+
     const currentSentiment = data?.sentiment || 0;
     const updatedSentiment = Number(
-      (currentSentiment * decayFactor + newSentiment).toFixed(6)
+      (currentSentiment * decayFactor + newSentiment + noise).toFixed(6)
     );
 
     // Update sentiment in database
