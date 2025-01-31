@@ -138,15 +138,17 @@ async function test_simulate2024() {
 async function test_simulateDemand() {
   const demandPrices = new Map();
 
-  for (let i = 0; i < 20; i++) {
-    let demand = (i + 1) * 10;
+  let demands = [0, 10, 50, 100, 200, 300, 500, 1000, 2000, 5000, 10000];
+
+  for (let i = 0; i < demands.length; i++) {
+    let demand = demands[i];
     let price = parseFloat(calculateDemandToPrice(demand));
     demandPrices.set(demand, price);
   }
 
   const combined = Array.from(demandPrices.keys()).map((key) => ({
     Demand: key,
-    Price: demandPrices.get(key),
+    Price: (demandPrices.get(key) * 0.005).toFixed(2),
   }));
 
   console.table(combined);

@@ -34,10 +34,14 @@ const server = http.createServer(app);
 
 async function updateSentiments() {
   const newSentiments = await getSentiments();
-  const decayFactor = 1;
+  const decayFactor = 0.998;
 
   for (const team in newSentiments) {
-    const newSentiment = newSentiments[team] * 10;
+    const newSentiment = newSentiments[team] * 5;
+
+    if (newSentiment !== 0) {
+      console.log(`New sentiment for ${team}: ${newSentiment}`);
+    }
 
     // Fetch the current sentiment from database
     const { data, error } = await supabase
@@ -51,7 +55,8 @@ async function updateSentiments() {
       continue;
     }
 
-    const noise = Math.random() ** 2 * 1.5 - 0.75;
+    // Add some noise to the sentiment range [-0.5, 0.5]
+    const noise = Math.random() ** 2 * 0.5 * (Math.random() > 0.5 ? 1 : -1);
 
     const currentSentiment = data?.sentiment || 0;
     const updatedSentiment = Number(
@@ -90,12 +95,12 @@ async function updateStocks() {
     await updateStockAlgorithm(now);
 
     // update all user's networths using new stock prices
-    const { error } = await supabase.rpc("update_user_net_worth");
-    if (error) {
-      throw error;
-    } else {
-      console.log("Stock update completed successfully.");
-    }
+    // const { error } = await supabase.rpc("update_user_net_worth");
+    // if (error) {
+    //   throw error;
+    // } else {
+    //   // console.log("Stock update completed successfully.");
+    // }
 
     // delete stock records that are before the delete date
     const { error: deleteError } = await supabase
@@ -106,7 +111,7 @@ async function updateStocks() {
     if (deleteError) {
       console.error("Error deleting old stock prices: ", deleteError);
     } else {
-      console.log("Delete operation completed successfully.");
+      // console.log("Delete operation completed successfully.");
     }
 
     // delete more unneeded records
@@ -115,7 +120,7 @@ async function updateStocks() {
     console.error(`Error updating stocks: `, error);
   }
 
-  console.log("All stock updates completed successfully.");
+  console.log("Stocks updated successfully at ", now);
 }
 
 async function deleteOldNonIntervalRecords() {
@@ -165,10 +170,10 @@ async function deleteOldNonIntervalRecords() {
         );
         throw bulkDeleteError;
       } else {
-        console.log("Non interval records delete successfully");
+        // console.log("Non interval records delete successfully");
       }
     } else {
-      console.log("No old non-interval records found for deletion.");
+      // console.log("No old non-interval records found for deletion.");
     }
   } catch (error) {
     console.error("Error deleting non-interval records", error);
@@ -259,18 +264,18 @@ async function updateMatches() {
     if (deleteError) {
       console.error("Error deleting old matches: ", deleteError);
     } else {
-      console.log("Delete operation completed successfully.");
+      // console.log("Delete operation completed successfully.");
     }
 
-    console.log("Successfully updated matches data!");
+    // console.log("Successfully updated matches data!");
   } catch (error) {
     console.error("Error updating matches:", error);
   }
 }
 
 // CRON SCHEDULE
-updateMatches();
-updateStocks();
+// updateMatches();
+// updateStocks();
 
 cron.schedule("*/10 * * * *", async () => {
   try {

@@ -178,6 +178,7 @@ const teamKeywords = {
   TS: ["TS", "Team Secret", "jessievash", "invy", "wildOreoo", "2ge", "jremy"],
   ZETA: ["ZETA", "laz", "yuran", "hiroronn", "dep", "sugarz3ro"],
   BLD: ["BLD", "BLEED", "crazyguy", "sscary", "zest", "retla", "deryeon"],
+  TLN: ["TLN", "Talon", "primmie"],
 };
 
 // Fetch all comments within the last minutes, up to 1000 comments
@@ -224,7 +225,10 @@ function analyzeComment(comment, teamKeywords) {
     for (const keyword of keywords) {
       const pattern = new RegExp(`\\b${keyword}\\b`, "i");
       if (pattern.test(comment)) {
-        const sentimentScore = sentiment.analyze(comment).comparative - 0.045;
+        const sentimentScore = sentiment.analyze(comment).comparative - 0.02;
+        console.log(
+          `Comment: ${comment} | Team: ${team} | Score: ${sentimentScore}`
+        );
         sentiments[team].push(sentimentScore);
         break;
       }

@@ -131,7 +131,7 @@ function calculateDemandToPrice(demand) {
 }
 
 function calculateSentimentToPrice(sentiment) {
-  const B = 0.3;
+  const B = 0.14;
 
   return Number(
     (Math.sign(sentiment) * (Math.abs(sentiment) + 1) * B).toFixed(2)
@@ -156,7 +156,7 @@ function calculatePrice(stock) {
   // Combine with weighting
   const combinedScore =
     0.5 * eloContribution +
-    0.35 * demandContribution +
+    0.005 * demandContribution +
     0.12 * sentimentContribution;
 
   // Apply soft max to normalize
@@ -180,6 +180,7 @@ async function updateStockAlgorithm(timestamp) {
   try {
     // Fetch all current stock data from the database
     const currentStocks = await getAllStocks();
+    console.log(currentStocks);
 
     // Updated stock data array
     const stockUpdates = [];
