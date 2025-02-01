@@ -147,63 +147,12 @@ async function getVLRMatchData(url) {
   } catch (err) {}
 }
 
-async function performVLRUpcomingScraping(page = 1, teamFilter = []) {
-  try {
-    const { data } = await axios.get(
-      "https://www.vlr.gg/matches/?page=" + page
-    );
-    const $ = cheerio.load(data);
-
-    const divElements = $("div.wf-card");
-
-    const promises = [];
-
-    divElements.each((index, divElement) => {
-      $(divElement)
-        .children()
-        .each((childIndex, childElement) => {
-          promises.push(getMatchData($(childElement).attr("href")));
-        });
-    });
-
-    // Wait for all promises to resolve
-    const result = await Promise.all(promises);
-
-    if (teamFilter.length == 0) {
-      return result;
-    }
-
-    const filteredResult = [];
-
-    result.forEach((match) => {
-      if (match) {
-        let team1_symbol = "";
-        if (teamData.teamByNameMap[match.team1_name]) {
-          team1_symbol = teamData.teamByNameMap[match.team1_name].symbol;
-        }
-
-        let team2_symbol = "";
-        if (teamData.teamByNameMap[match.team2_name]) {
-          team2_symbol = teamData.teamByNameMap[match.team2_name].symbol;
-        }
-
-        if (
-          teamFilter.length == 0 ||
-          teamFilter.includes(match.team1_name) ||
-          teamFilter.includes(match.team2_name) ||
-          teamFilter.includes(team1_symbol) ||
-          teamFilter.includes(team2_symbol)
-        ) {
-          filteredResult.push(match);
-        }
-      }
-    });
-
-    return filteredResult;
-  } catch (err) {
-    console.log(err.message);
-  }
+async function test() {
+  const output = await getMatchData("https://www.vlr.gg/430522");
+  console.log(output);
 }
+
+test();
 
 async function getRelevantUpcomingMatches() {
   try {

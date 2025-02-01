@@ -2,8 +2,8 @@
   "teamByIDMap": {
     "8304": {
       "id": "8304",
-      "url": "https://www.vlr.gg/team/8304/talon-esports",
-      "name": "Talon Esports",
+      "url": "https://www.vlr.gg/team/8304/talon",
+      "name": "TALON",
       "img": "https://owcdn.net/img/6226f3d764e03.png",
       "country": "Indonesia",
       "symbol": "TLN"
@@ -299,7 +299,7 @@
     "2359": {
       "id": "2359",
       "url": "https://www.vlr.gg/team/2359/leviat-n",
-      "name": "Leviatán",
+      "name": "LEVIATÁN",
       "img": "https://owcdn.net/img/61b8888cc3860.png",
       "country": "Chile",
       "symbol": "LEV"
@@ -1098,10 +1098,10 @@
     }
   },
   "teamByNameMap": {
-    "Talon Esports": {
+    "TALON": {
       "id": "8304",
-      "url": "https://www.vlr.gg/team/8304/talon-esports",
-      "name": "Talon Esports",
+      "url": "https://www.vlr.gg/team/8304/talon",
+      "name": "TALON",
       "img": "https://owcdn.net/img/6226f3d764e03.png",
       "country": "Indonesia",
       "symbol": "TLN"
@@ -1746,10 +1746,10 @@
       "country": "Japan",
       "symbol": "VL"
     },
-    "Leviatán": {
+    "LEVIATÁN": {
       "id": "2359",
       "url": "https://www.vlr.gg/team/2359/leviat-n",
-      "name": "Leviatán",
+      "name": "LEVIATÁN",
       "img": "https://owcdn.net/img/61b8888cc3860.png",
       "country": "Chile",
       "symbol": "LEV"
@@ -2214,8 +2214,8 @@
     },
     "TLN": {
       "id": "8304",
-      "url": "https://www.vlr.gg/team/8304/talon-esports",
-      "name": "Talon Esports",
+      "url": "https://www.vlr.gg/team/8304/talon",
+      "name": "TALON",
       "img": "https://owcdn.net/img/6226f3d764e03.png",
       "country": "Indonesia",
       "symbol": "TLN"
@@ -2839,7 +2839,7 @@
     "LEV": {
       "id": "2359",
       "url": "https://www.vlr.gg/team/2359/leviat-n",
-      "name": "Leviatán",
+      "name": "LEVIATÁN",
       "img": "https://owcdn.net/img/61b8888cc3860.png",
       "country": "Chile",
       "symbol": "LEV"
