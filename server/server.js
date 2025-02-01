@@ -94,64 +94,6 @@ async function updateStocks() {
   console.log("Stocks updated successfully at ", now);
 }
 
-async function deleteOldNonIntervalRecords() {
-  // Get current time
-  const now = new Date();
-  now.setSeconds(0);
-  now.setMilliseconds(0);
-
-  const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000).toISOString();
-
-  try {
-    const { data: oldRecords, error } = await supabase
-      .from("stock_prices")
-      .select("symbol, timestamp")
-      .lt("timestamp", oneHourAgo)
-      .order("timestamp", { ascending: false });
-
-    if (error) {
-      throw error;
-    }
-
-    if (!oldRecords || oldRecords.length === 0) {
-      console.log("No old records found for deletion.");
-      return;
-    }
-
-    const recordsToDelete = oldRecords.filter((record) => {
-      const date = new Date(record.timestamp);
-      const minutes = date.getMinutes();
-      return minutes % 30 !== 0;
-    });
-
-    if (recordsToDelete.length > 0) {
-      const deleteConditions = recordsToDelete.map(
-        (record) => record.timestamp
-      );
-
-      const { error: bulkDeleteError } = await supabase
-        .from("stock_prices")
-        .delete()
-        .in("timestamp", deleteConditions);
-
-      if (bulkDeleteError) {
-        console.error(
-          "Error occurred during bulk non-interval deletion: ",
-          bulkDeleteError
-        );
-        throw bulkDeleteError;
-      } else {
-        // console.log("Non interval records delete successfully");
-      }
-    } else {
-      // console.log("No old non-interval records found for deletion.");
-    }
-  } catch (error) {
-    console.error("Error deleting non-interval records", error);
-    throw error;
-  }
-}
-
 async function updateMatches() {
   try {
     // Fetch upcoming matches and union with matches already known

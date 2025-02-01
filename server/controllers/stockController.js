@@ -138,32 +138,23 @@ function calculateSentimentToPrice(sentiment) {
   );
 }
 
-function applySoftMax(value, softMax = 120, growthRate = 0.01) {
-  // Soft max function to allow values beyond softMax but at a diminishing rate
-  return softMax * (1 - Math.exp(-growthRate * value));
-}
-
 function calculatePrice(stock) {
   let elo = stock.elo ? Number(stock.elo) : 0;
   let demand = stock.demand ? Number(stock.demand) : 0;
   let sentiment = stock.sentiment ? Number(stock.sentiment) : 0;
 
-  // Calculate individual contributions
-  const eloContribution = calculateEloToPrice(elo);
-  const demandContribution = calculateDemandToPrice(demand);
-  const sentimentContribution = calculateSentimentToPrice(sentiment);
+  const w1 = 0.5; // Elo Weight
+  const w2 = 0.3; // Demand Weight
+  const w3 = 0.2; // Sentiment Weight
+  const basePrice = 100;
 
-  // Combine with weighting
-  const combinedScore =
-    0.5 * eloContribution +
-    0.005 * demandContribution +
-    0.12 * sentimentContribution;
+  const eloFactor = Math.pow(elo, w1);
+  const demandFactor = Math.pow(1 + demand, w2);
+  const sentimentFactor = Math.pow(Math.exp(sentiment / 20), w3);
 
-  // Apply soft max to normalize
-  let normalizedPrice = applySoftMax(combinedScore, 120, 0.02); // Adjust growth rate to control extremity
-  let price = Math.max(normalizedPrice, 1.0);
+  const price = basePrice * eloFactor * demandFactor * sentimentFactor;
 
-  return Number(price.toFixed(2));
+  return Math.round(price * 100) / 100;
 }
 
 /**
