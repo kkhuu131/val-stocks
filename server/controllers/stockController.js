@@ -146,7 +146,7 @@ function calculatePrice(stock) {
   const w1 = 0.5; // Elo Weight
   const w2 = 0.3; // Demand Weight
   const w3 = 0.2; // Sentiment Weight
-  const basePrice = 100;
+  const basePrice = 3.4;
 
   const eloFactor = Math.pow(elo, w1);
   const demandFactor = Math.pow(1 + demand, w2);
