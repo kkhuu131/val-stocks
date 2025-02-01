@@ -206,6 +206,7 @@ async function updateStockAlgorithm(timestamp) {
         symbol: stock.symbol,
         price: newPrice,
         timestamp,
+        interval_type: "minute",
       };
 
       // Insert updated stock price into 'stock_prices'  table

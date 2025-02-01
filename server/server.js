@@ -81,41 +81,12 @@ async function updateStocks() {
   now.setSeconds(0);
   now.setMilliseconds(0);
 
-  // Get date to start deleting stock records
-  const daysToDeleteStockRecords = 10;
-  const deleteTime = new Date(
-    now - daysToDeleteStockRecords * 24 * 60 * 60 * 1000
-  ).toISOString();
-
   try {
     // update sentiments before prices
     await updateSentiments();
 
     // update stock prices
     await updateStockAlgorithm(now);
-
-    // update all user's networths using new stock prices
-    // const { error } = await supabase.rpc("update_user_net_worth");
-    // if (error) {
-    //   throw error;
-    // } else {
-    //   // console.log("Stock update completed successfully.");
-    // }
-
-    // delete stock records that are before the delete date
-    const { error: deleteError } = await supabase
-      .from("stock_prices")
-      .delete()
-      .lt("timestamp", deleteTime);
-
-    if (deleteError) {
-      console.error("Error deleting old stock prices: ", deleteError);
-    } else {
-      // console.log("Delete operation completed successfully.");
-    }
-
-    // delete more unneeded records
-    await deleteOldNonIntervalRecords();
   } catch (error) {
     console.error(`Error updating stocks: `, error);
   }
