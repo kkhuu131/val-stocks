@@ -14,172 +14,36 @@ const reddit = new Snoowrap({
 
 const subredditName = "ValorantCompetitive";
 
-const teamKeywords = {
-  "100T": [
-    "100T",
-    "100 Thieves",
-    "Boostio",
-    "zander",
-    "cryocells",
-    "cryo",
-    "eeiu",
-    "asuna",
-  ],
-  C9: ["C9", "Cloud9", "cloud 9", "rossy", "xeppaa", "v1c", "moose", "oxy"],
-  EG: ["EG", "Evil Geniuses", "nature", "derrek", "supamen", "potter", "yay"],
-  FUR: ["FUR", "FURIA", "nzr", "kon4n", "xand", "mwzera", "havoc", "khalil"],
-  KRÜ: ["KRÜ", "KRU", "klaus", "shyy", "keznit", "melser", "heat"],
-  LEV: [
-    "LEV",
-    "Leviatán",
-    "Leviatan",
-    "kingg",
-    "tex",
-    "mazino",
-    "aspas",
-    "c0m",
-  ],
-  LOUD: ["LOUD", "saadhak", "less", "tuyz", "cauanzin", "qck"],
-  MIBR: ["MIBR", "jzz", "mazin", "artzin", "rglMeister", "frz"],
-  NRG: [
-    "NRG",
-    "FNS",
-    "finesse",
-    "s0m",
-    "som",
-    "verno",
-    "ethan",
-    "bonkar",
-    "mada",
-  ],
-  SEN: [
-    "SEN",
-    "Sentinels",
-    "johnqt",
-    "narrate",
-    "n4rrate",
-    "zellsis",
-    "zekken",
-    "bang",
-    "kaplan",
-  ],
-  G2: ["G2", "valyn", "icy", "trent", "jonahp", "leaf"],
-  AG: ["AG", "All Gamers", "bunt", "monk", "deLb", "spitfires", "sword9"],
-  BLG: ["BLG", "Bilibili", "b3ar", "whzy", "levius", "nephh", "knight"],
-  EDG: [
-    "EDG",
-    "EDward Gaming",
-    "haodong",
-    "zmjjKK",
-    "nobody",
-    "chichoo",
-    "smoggy",
-  ],
-  FPX: [
-    "FPX",
-    "FunPlus Phoenix",
-    "berlin",
-    "autumn",
-    "life",
-    "aaaay",
-    "lysoar",
-  ],
-  JDG: ["JDG", "JD Gaming", "yhchen", "stew", "viva", "jkuro", "marT1n"],
-  NOVA: ["NOVA", "guang", "o0o0o", "OBONE", "swerl", "cb"],
-  TEC: ["TEC", "Titan Esports Club", "AC", "Rb", "kawaii", "abo", "lockm"],
-  TE: ["TE", "Trace Esports", "fengf", "heybay", "kai", "luok1ng"],
-  TYL: ["TYL", "TYLOO", "aak", "flex1n", "eren", "hfmi0dzjc9z7", "ICEKING"],
-  WOL: [
-    "WOL",
-    "Wolves Esports",
-    "yuicaw",
-    "coldfish",
-    "aluba",
-    "pl1xx",
-    "spring",
-  ],
-  DRG: [
-    "DRG",
-    "Dragon Ranger Gaming",
-    "shion7",
-    "vo0kashu",
-    "tvirusluke",
-    "nicc",
-    "nizhaotzh",
-  ],
-  BBL: ["BBL", "elite", "pAura", "brave", "reazy", "qutionerX"],
-  FNC: ["FNC", "FNATIC", "boaster", "leo", "derke", "chronicle", "alfajer"],
-  FUT: ["FUT", "Mrfalin", "yetujey", "atakaptan", "cNed", "qRaxs"],
-  KC: ["KC", "Karmine Corp", "magnum", "tomaszy", "N4rrate", "marteen", "sh1n"],
-  KOI: ["KOI", "starxo", "kamo", "shadow", "grubinho", "sheydos"],
-  NAVI: [
-    "NAVI",
-    "Natus Vincere",
-    "ange1",
-    "shao",
-    "zyppan",
-    "suygetsu",
-    "ardiis",
-  ],
-  TH: ["TH", "Team Heretics", "boo", "miniboo", "wo0t", "riens", "benjyfishy"],
-  TL: ["TL", "Team Liquid", "enzo", "jamppi", "nats", "mistic", "keiko"],
-  VIT: ["VIT", "Team Vitality", "cender", "trexx", "kicks", "runner", "sayf"],
-  M8: ["M8", "Gentle Mates", "beyaz", "takas", "kadavra", "natank", "wailers"],
-  GX: ["GX", "GIANTX", "redgar", "purp0", "fit1nho", "hoody"],
-  DFM: [
-    "DFM",
-    "DetonatioN FocusMe",
-    "medusa",
-    "neth",
-    "meiy",
-    "ssees",
-    "anthem",
-  ],
-  DRX: ["DRX", "flashback", "buzz", "mako", "foxy9", "beyn"],
-  GEN: [
-    "GEN",
-    "GenG",
-    "Gen.G",
-    "gen g",
-    "munchkin",
-    "t3xture",
-    "meteor",
-    "lakia",
-    "karon",
-  ],
-  GE: [
-    "GE",
-    "Global Esports",
-    "russ",
-    "blazek1ng",
-    "lightningfast",
-    "polvi",
-    "benkai",
-  ],
-  PRX: [
-    "PRX",
-    "Paper Rex",
-    "mindfreak",
-    "jinggg",
-    "f0rsaken",
-    "d4v41",
-    "something",
-  ],
-  RRQ: [
-    "RRQ",
-    "Rex Regum Qeon",
-    "xffero",
-    "monyet",
-    "lmerore",
-    "jemkin",
-    "estrella",
-  ],
-  T1: ["T1", "carpe", "stax", "sayaplayer", "rossy", "iZu", "xccurate"],
-  TS: ["TS", "Team Secret", "jessievash", "invy", "wildOreoo", "2ge", "jremy"],
-  ZETA: ["ZETA", "laz", "yuran", "hiroronn", "dep", "sugarz3ro"],
-  BLD: ["BLD", "BLEED", "crazyguy", "sscary", "zest", "retla", "deryeon"],
-  TLN: ["TLN", "Talon", "primmie"],
-};
+const teams = require("../teams.json");
+const teamMappings = require("../../src/teamMappings.json");
+const { getPlayersOnTeam } = require("../api/webScraper");
+const fs = require("fs");
+const path = require("path");
+const teamKeywords = require("./teamKeywords.json");
+
+async function fetchAllTeamKeywords() {
+  const teamKeywords = {};
+
+  for (const team of teams) {
+    let keywords = [];
+    keywords.push(team);
+
+    if (teamMappings.teamBySymbolMap[team]?.name)
+      keywords.push(teamMappings.teamBySymbolMap[team]?.name);
+
+    if (teamMappings.teamBySymbolMap[team]?.url) {
+      // add all player names to keywords
+      let players = await getPlayersOnTeam(
+        teamMappings.teamBySymbolMap[team].url
+      );
+      keywords = keywords.concat(players);
+    }
+    teamKeywords[team] = keywords.map((keyword) => keyword.toLowerCase());
+  }
+
+  const filePath = path.join(__dirname, "teamKeywords.json");
+  fs.writeFileSync(filePath, JSON.stringify(teamKeywords, null, 2));
+}
 
 // Fetch all comments within the last minutes, up to 1000 comments
 async function fetchCommentsFrom(minutes) {
@@ -220,6 +84,8 @@ function analyzeComment(comment, teamKeywords) {
     return acc;
   }, {});
 
+  comment = comment.toLowerCase();
+
   Object.keys(teamKeywords).forEach((team) => {
     const keywords = teamKeywords[team];
     for (const keyword of keywords) {
@@ -258,7 +124,7 @@ function calculateSentiments(allSentiments) {
 async function getSentiments(interval = 1) {
   const comments = await fetchCommentsFrom(interval);
 
-  const allSentiments = Object.keys(teamKeywords).reduce((acc, team) => {
+  const allSentiments = teams.reduce((acc, team) => {
     acc[team] = [];
     return acc;
   }, {});

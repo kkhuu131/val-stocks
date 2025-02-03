@@ -37,6 +37,23 @@ async function performVLRScraping(page = 1) {
   }
 }
 
+async function getPlayersOnTeam(link) {
+  try {
+    const { data } = await axios.get(link);
+    const $ = cheerio.load(data);
+
+    const players = [];
+    $("div.team-roster-item-name-alias").each((index, element) => {
+      const playerName = $(element).text().trim();
+      players.push(playerName);
+    });
+
+    return players;
+  } catch (err) {
+    console.log(err.message);
+  }
+}
+
 async function getVLRMatchData(url) {
   try {
     const { data } = await axios.get("https://www.vlr.gg" + url);
@@ -147,13 +164,6 @@ async function getVLRMatchData(url) {
   } catch (err) {}
 }
 
-async function test() {
-  const output = await getMatchData("https://www.vlr.gg/430522");
-  console.log(output);
-}
-
-test();
-
 async function getRelevantUpcomingMatches() {
   try {
     const { data } = await axios.get("https://www.vlr.gg/matches/?page=" + 1);
@@ -223,9 +233,7 @@ async function getMatchLinksFromEvent(link) {
     const href_prefix = "https://www.vlr.gg";
 
     const hrefs = [];
-    $(
-      "a.wf-module-item.match-item.mod-color.mod-bg-after-striped_purple.mod-first"
-    ).each((index, element) => {
+    $("a.wf-module-item.match-item.mod-color").each((index, element) => {
       const href = $(element).attr("href");
       if (href) {
         hrefs.push(href_prefix + href);
@@ -262,6 +270,8 @@ async function getMatchData(url) {
       .children()
       .first()
       .text()
+      .trim()
+      .split("\t")[0]
       .trim();
 
     const team1_symbol = teamData.teamByNameMap[team1_name]
@@ -272,6 +282,8 @@ async function getMatchData(url) {
       .children()
       .first()
       .text()
+      .trim()
+      .split("\t")[0]
       .trim();
 
     const team2_symbol = teamData.teamByNameMap[team2_name]
@@ -364,4 +376,5 @@ module.exports = {
   getRelevantUpcomingMatches,
   getMatchData,
   getMatchLinksFromEvent,
+  getPlayersOnTeam,
 };

@@ -1,6 +1,7 @@
 const teams = require("../teams.json");
 const teamData = require("../../src/teamMappings.json");
-const matchesData = require("./matches2024Data.json");
+const matches2024Data = require("./matches2024Data.json");
+const matches2025Data = require("./matches2025Data.json");
 const {
   calculateElo,
   calculateEloToPrice,
@@ -9,53 +10,62 @@ const {
 } = require("../controllers/stockController");
 const { getSentiments } = require("../sentiment/redditSentiment");
 const { getMatchData, getMatchLinksFromEvent } = require("../api/webScraper");
-
 const fs = require("fs");
 
 async function testProcessMatch() {
-  const matchData = await getMatchData("https://www.vlr.gg/312779");
+  const matchData = await getMatchData("https://www.vlr.gg/430857");
   console.log(matchData);
-
-  await testProcessCompletedMatch(matchData);
-  console.log("Done");
 }
 
-async function fetch2024MatchData() {
-  const events2024 = [
-    "https://www.vlr.gg/event/matches/1924/champions-tour-2024-pacific-kickoff/?series_id=all",
-    "https://www.vlr.gg/event/matches/1925/champions-tour-2024-emea-kickoff/?series_id=all",
-    "https://www.vlr.gg/event/matches/1926/champions-tour-2024-china-kickoff/?series_id=all",
-    "https://www.vlr.gg/event/matches/1923/champions-tour-2024-americas-kickoff/?series_id=all",
-    "https://www.vlr.gg/event/matches/1921/champions-tour-2024-masters-madrid/?series_id=all",
-    "https://www.vlr.gg/event/matches/2002/champions-tour-2024-pacific-stage-1/?series_id=all",
-    "https://www.vlr.gg/event/matches/1998/champions-tour-2024-emea-stage-1/?series_id=all",
-    "https://www.vlr.gg/event/matches/2004/champions-tour-2024-americas-stage-1/?series_id=all",
-    "https://www.vlr.gg/event/matches/2006/champions-tour-2024-china-stage-1/?series_id=all",
-    "https://www.vlr.gg/event/matches/1999/champions-tour-2024-masters-shanghai/?series_id=all",
-    "https://www.vlr.gg/event/matches/2094/champions-tour-2024-emea-stage-2/?series_id=all",
-    "https://www.vlr.gg/event/matches/2005/champions-tour-2024-pacific-stage-2/?series_id=all",
-    "https://www.vlr.gg/event/matches/2096/champions-tour-2024-china-stage-2/?series_id=all",
-    "https://www.vlr.gg/event/matches/2095/champions-tour-2024-americas-stage-2/?series_id=all",
-    "https://www.vlr.gg/event/matches/2097/valorant-champions-2024/?series_id=all",
-  ];
+const events2024 = [
+  "https://www.vlr.gg/event/matches/1924/champions-tour-2024-pacific-kickoff/?series_id=all",
+  "https://www.vlr.gg/event/matches/1925/champions-tour-2024-emea-kickoff/?series_id=all",
+  "https://www.vlr.gg/event/matches/1926/champions-tour-2024-china-kickoff/?series_id=all",
+  "https://www.vlr.gg/event/matches/1923/champions-tour-2024-americas-kickoff/?series_id=all",
+  "https://www.vlr.gg/event/matches/1921/champions-tour-2024-masters-madrid/?series_id=all",
+  "https://www.vlr.gg/event/matches/2002/champions-tour-2024-pacific-stage-1/?series_id=all",
+  "https://www.vlr.gg/event/matches/1998/champions-tour-2024-emea-stage-1/?series_id=all",
+  "https://www.vlr.gg/event/matches/2004/champions-tour-2024-americas-stage-1/?series_id=all",
+  "https://www.vlr.gg/event/matches/2006/champions-tour-2024-china-stage-1/?series_id=all",
+  "https://www.vlr.gg/event/matches/1999/champions-tour-2024-masters-shanghai/?series_id=all",
+  "https://www.vlr.gg/event/matches/2094/champions-tour-2024-emea-stage-2/?series_id=all",
+  "https://www.vlr.gg/event/matches/2005/champions-tour-2024-pacific-stage-2/?series_id=all",
+  "https://www.vlr.gg/event/matches/2096/champions-tour-2024-china-stage-2/?series_id=all",
+  "https://www.vlr.gg/event/matches/2095/champions-tour-2024-americas-stage-2/?series_id=all",
+  "https://www.vlr.gg/event/matches/2097/valorant-champions-2024/?series_id=all",
+];
 
-  let matches2024 = [];
+const events2025 = [
+  "https://www.vlr.gg/event/matches/2276/champions-tour-2025-emea-kickoff/?group=completed&series_id=all",
+  "https://www.vlr.gg/event/matches/2274/champions-tour-2025-americas-kickoff/?group=completed&series_id=all",
+  "https://www.vlr.gg/event/matches/2277/champions-tour-2025-pacific-kickoff/?group=completed&series_id=all",
+  "https://www.vlr.gg/event/matches/2275/champions-tour-2025-china-kickoff/?group=completed&series_id=all",
+];
 
-  for (const event of events2024) {
-    matches2024 = matches2024.concat(await getMatchLinksFromEvent(event));
+async function fetchData(events, filePath) {
+  let matchLinks = [];
+
+  for (const event of events) {
+    matchLinks = matchLinks.concat(await getMatchLinksFromEvent(event));
   }
 
-  const matches2024Data = [];
+  console.log("match links:", matchLinks);
 
-  for (const match of matches2024) {
+  const allMatchData = [];
+
+  for (const match of matchLinks) {
     const matchData = await getMatchData(match);
-    matches2024Data.push(matchData);
+    allMatchData.push(matchData);
   }
+
+  await allMatchData.sort(
+    (a, b) => new Date(a.match_date) - new Date(b.match_date)
+  );
+
+  console.log("matches data", allMatchData);
 
   try {
-    const jsonMappings = JSON.stringify(matches2024Data);
-
-    const filePath = "./server/test/matches2024Data.json";
+    const jsonMappings = JSON.stringify(allMatchData);
     fs.writeFileSync(filePath, jsonMappings);
 
     console.log("Mappings saved to", filePath);
@@ -66,13 +76,13 @@ async function fetch2024MatchData() {
 
 const baseElo = 1000;
 
-async function simulate2024() {
+async function simulate(data) {
   const teamElos = new Map();
   for (const team of teams) {
     teamElos.set(team, baseElo);
   }
 
-  for (const matchData of matchesData) {
+  for (const matchData of data) {
     const team1 = matchData.team1_symbol;
     const team2 = matchData.team2_symbol;
 
@@ -90,7 +100,6 @@ async function simulate2024() {
 
     if (teams.includes(team2)) {
       if (!teamElos.has(team2)) {
-        console.log(team2);
         teamElos.set(team2, 1000);
       }
 
@@ -98,6 +107,32 @@ async function simulate2024() {
     }
 
     let [newRa, newRb] = await calculateElo(matchData, Ra, Rb);
+
+    const teamsToTrack = ["EDG", "NRG", "LEV"];
+
+    if (teamsToTrack.includes(team1)) {
+      console.log(
+        team1,
+        "against",
+        team2,
+        Ra,
+        "-->",
+        newRa,
+        matchData.match_link
+      );
+    }
+
+    if (teamsToTrack.includes(team2)) {
+      console.log(
+        team2,
+        "against",
+        team1,
+        Rb,
+        "-->",
+        newRb,
+        matchData.match_link
+      );
+    }
 
     if (teams.includes(team1)) {
       teamElos.set(team1, newRa);
@@ -111,8 +146,8 @@ async function simulate2024() {
   return teamElos;
 }
 
-async function test_simulate2024() {
-  const teamElos = await simulate2024();
+async function test_simulate(data) {
+  const teamElos = await simulate(data);
 
   const teamEloPrices = new Map();
 
@@ -131,7 +166,6 @@ async function test_simulate2024() {
     Price: teamEloPrices.get(key),
   }));
 
-  // Use console.table to print them side by side
   console.table(combined);
 }
 
@@ -172,10 +206,18 @@ async function test_simulateSentiment() {
 }
 
 const testToRun = process.argv[2];
+const yearToRunForSimulation = process.argv[3];
 
 switch (testToRun) {
-  case "2024_elo":
-    test_simulate2024();
+  case "simulate_elo":
+    switch (yearToRunForSimulation) {
+      case "2024":
+        test_simulate(matches2024Data);
+      case "2025":
+        test_simulate(matches2025Data);
+      default:
+        console.log("Enter a valid year: 2024, 2025");
+    }
     break;
   case "simple_demand":
     test_simulateDemand();
@@ -183,8 +225,10 @@ switch (testToRun) {
   case "simple_sentiment":
     test_simulateSentiment();
     break;
+  case "fetch_data_2025":
+    fetchData(events2025, ".server/test/matches2025Data.json");
   default:
     console.log(
-      "Enter a valid test name: 2024_elo, simple_demand, simple_sentiment"
+      "Enter a valid test name: simulate_elo, simple_demand, simple_sentiment"
     );
 }

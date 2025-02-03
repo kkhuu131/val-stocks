@@ -1,5 +1,93 @@
 {
   "teamByIDMap": {
+    "8304": {
+      "id": "8304",
+      "url": "https://www.vlr.gg/team/8304/talon",
+      "name": "TALON",
+      "img": "https://owcdn.net/img/6226f3d764e03.png",
+      "country": "Indonesia",
+      "symbol": "TLN"
+    },
+    "878": {
+      "id": "878",
+      "url": "https://www.vlr.gg/team/878/rex-regum-qeon",
+      "name": "Rex Regum Qeon",
+      "img": "https://owcdn.net/img/629f17f51e7a3.png",
+      "country": "Indonesia",
+      "symbol": "RRQ"
+    },
+    "918": {
+      "id": "918",
+      "url": "https://www.vlr.gg/team/918/global-esports",
+      "name": "Global Esports",
+      "img": "https://owcdn.net/img/657b2f3fcd199.png",
+      "country": "India",
+      "symbol": "GE"
+    },
+    "14419": {
+      "id": "14419",
+      "url": "https://www.vlr.gg/team/14419/giantx",
+      "name": "GIANTX",
+      "img": "https://owcdn.net/img/657b2f3fcd199.png",
+      "country": "Europe",
+      "symbol": "GX"
+    },
+    "2059": {
+      "id": "2059",
+      "url": "https://www.vlr.gg/team/2059/team-vitality",
+      "name": "Team Vitality",
+      "img": "https://owcdn.net/img/6466d79e1ed40.png",
+      "country": "Europe",
+      "symbol": "VIT"
+    },
+    "1001": {
+      "id": "1001",
+      "url": "https://www.vlr.gg/team/1001/team-heretics",
+      "name": "Team Heretics",
+      "img": "https://owcdn.net/img/637b755224c12.png",
+      "country": "Europe",
+      "symbol": "TH"
+    },
+    "7035": {
+      "id": "7035",
+      "url": "https://www.vlr.gg/team/7035/koi",
+      "name": "KOI",
+      "img": "https://owcdn.net/img/660ceac6275cd.png",
+      "country": "Europe",
+      "symbol": "KOI"
+    },
+    "397": {
+      "id": "397",
+      "url": "https://www.vlr.gg/team/397/bbl-esports",
+      "name": "BBL Esports",
+      "img": "https://owcdn.net/img/65b8cce735f26.png",
+      "country": "Turkey",
+      "symbol": "BBL"
+    },
+    "731": {
+      "id": "731",
+      "url": "https://www.vlr.gg/team/731/tyloo",
+      "name": "TYLOO",
+      "img": "https://owcdn.net/img/63eb60fb08390.png",
+      "country": "China",
+      "symbol": "TYL"
+    },
+    "12064": {
+      "id": "12064",
+      "url": "https://www.vlr.gg/team/12064/nova-esports",
+      "name": "Nova Esports",
+      "img": "https://owcdn.net/img/6404c0174250b.png",
+      "country": "China",
+      "symbol": "NOVA"
+    },
+    "5248": {
+      "id": "5248",
+      "url": "https://www.vlr.gg/team/5248/evil-geniuses",
+      "name": "Evil Geniuses",
+      "img": "https://owcdn.net/img/62a409ad29351.png",
+      "country": "United States",
+      "symbol": "EG"
+    },
     "2": {
       "id": "2",
       "url": "https://www.vlr.gg/team/2/sentinels",
@@ -93,16 +181,8 @@
       "url": "https://www.vlr.gg/team/367/9z-team",
       "name": "9z Team",
       "img": "https://owcdn.net/img/65e447b0c2415.png",
-      "country": "Chile",
-      "symbol": "9ZG"
-    },
-    "397": {
-      "id": "397",
-      "url": "https://www.vlr.gg/team/397/bbl-esports",
-      "name": "BBL Esports",
-      "img": "https://owcdn.net/img/65b8cce735f26.png",
-      "country": "Turkey",
-      "symbol": "BBL"
+      "country": "Argentina",
+      "symbol": "9z"
     },
     "466": {
       "id": "466",
@@ -111,14 +191,6 @@
       "img": "https://owcdn.net/img/629f1bdae82ab.png",
       "country": "Indonesia",
       "symbol": "BME"
-    },
-    "474": {
-      "id": "474",
-      "url": "https://www.vlr.gg/team/474/team-liquid",
-      "name": "Team Liquid",
-      "img": "https://owcdn.net/img/640c381f0603f.png",
-      "country": "Europe",
-      "symbol": "TL"
     },
     "516": {
       "id": "516",
@@ -136,14 +208,6 @@
       "country": "Singapore",
       "symbol": "PRX"
     },
-    "719": {
-      "id": "719",
-      "url": "https://www.vlr.gg/team/719/australs",
-      "name": "Australs",
-      "img": "https://owcdn.net/img/6055063c3a691.png",
-      "country": "Chile",
-      "symbol": "AUS"
-    },
     "724": {
       "id": "724",
       "url": "https://www.vlr.gg/team/724/e-xolos-lazer",
@@ -152,38 +216,6 @@
       "country": "Colombia",
       "symbol": "EXL"
     },
-    "731": {
-      "id": "731",
-      "url": "https://www.vlr.gg/team/731/tyloo",
-      "name": "TYLOO",
-      "img": "https://owcdn.net/img/63eb60fb08390.png",
-      "country": "China",
-      "symbol": "TYL"
-    },
-    "878": {
-      "id": "878",
-      "url": "https://www.vlr.gg/team/878/rex-regum-qeon",
-      "name": "Rex Regum Qeon",
-      "img": "https://owcdn.net/img/629f17f51e7a3.png",
-      "country": "Indonesia",
-      "symbol": "RRQ"
-    },
-    "918": {
-      "id": "918",
-      "url": "https://www.vlr.gg/team/918/global-esports",
-      "name": "Global Esports",
-      "img": "https://owcdn.net/img/657b2f3fcd199.png",
-      "country": "India",
-      "symbol": "GE"
-    },
-    "1001": {
-      "id": "1001",
-      "url": "https://www.vlr.gg/team/1001/team-heretics",
-      "name": "Team Heretics",
-      "img": "https://owcdn.net/img/637b755224c12.png",
-      "country": "Europe",
-      "symbol": "TH"
-    },
     "1034": {
       "id": "1034",
       "url": "https://www.vlr.gg/team/1034/nrg-esports",
@@ -191,14 +223,6 @@
       "img": "https://owcdn.net/img/6610f026c1a9e.png",
       "country": "United States",
       "symbol": "NRG"
-    },
-    "1110": {
-      "id": "1110",
-      "url": "https://www.vlr.gg/team/1110/alter-ego",
-      "name": "Alter Ego",
-      "img": "https://owcdn.net/img/62bbed294db68.png",
-      "country": "Indonesia",
-      "symbol": "AE"
     },
     "1119": {
       "id": "1119",
@@ -256,14 +280,6 @@
       "country": "Egypt",
       "symbol": "RAAD"
     },
-    "2059": {
-      "id": "2059",
-      "url": "https://www.vlr.gg/team/2059/team-vitality",
-      "name": "Team Vitality",
-      "img": "https://owcdn.net/img/6466d79e1ed40.png",
-      "country": "Europe",
-      "symbol": "VIT"
-    },
     "2131": {
       "id": "2131",
       "url": "https://www.vlr.gg/team/2131/chivas-esports",
@@ -271,14 +287,6 @@
       "img": "https://owcdn.net/img/63ce2eedbe573.png",
       "country": "Mexico",
       "symbol": "CHI"
-    },
-    "2290": {
-      "id": "2290",
-      "url": "https://www.vlr.gg/team/2290/gamax-esports",
-      "name": "Gamax Esports",
-      "img": "https://owcdn.net/img/64c0df3369bcd.png",
-      "country": "Egypt",
-      "symbol": "GMX"
     },
     "2355": {
       "id": "2355",
@@ -295,14 +303,6 @@
       "img": "https://owcdn.net/img/61b8888cc3860.png",
       "country": "Chile",
       "symbol": "LEV"
-    },
-    "2360": {
-      "id": "2360",
-      "url": "https://www.vlr.gg/team/2360/kaos-latin-gamers",
-      "name": "Kaos Latin Gamers",
-      "img": "https://owcdn.net/img/600b19ed2c674.png",
-      "country": "Chile",
-      "symbol": "KLG"
     },
     "2406": {
       "id": "2406",
@@ -324,7 +324,7 @@
       "id": "2785",
       "url": "https://www.vlr.gg/team/2785/tamu-maroon",
       "name": "TAMU Maroon",
-      "img": "https://owcdn.net/img/663e4f87ad0d9.png",
+      "img": "https://owcdn.net/img/64c2d272558b6.png",
       "country": "United States",
       "symbol": "TAMU"
     },
@@ -392,30 +392,6 @@
       "country": "Europe",
       "symbol": "NAVI"
     },
-    "5038": {
-      "id": "5038",
-      "url": "https://www.vlr.gg/team/5038/yfp",
-      "name": "YFP",
-      "img": "https://owcdn.net/img/677826ad11d3b.png",
-      "country": "United States",
-      "symbol": "YFP"
-    },
-    "5214": {
-      "id": "5214",
-      "url": "https://www.vlr.gg/team/5214/cgn-esports",
-      "name": "CGN Esports",
-      "img": "https://owcdn.net/img/60defafec983c.png",
-      "country": "Germany",
-      "symbol": "CGN"
-    },
-    "5248": {
-      "id": "5248",
-      "url": "https://www.vlr.gg/team/5248/evil-geniuses",
-      "name": "Evil Geniuses",
-      "img": "https://owcdn.net/img/62a409ad29351.png",
-      "country": "United States",
-      "symbol": "EG"
-    },
     "5448": {
       "id": "5448",
       "url": "https://www.vlr.gg/team/5448/zeta-division",
@@ -431,14 +407,6 @@
       "img": "https://owcdn.net/img/64cca8a13521a.png",
       "country": "Saudi Arabia",
       "symbol": "Twis"
-    },
-    "6159": {
-      "id": "6159",
-      "url": "https://www.vlr.gg/team/6159/onyx-ravens",
-      "name": "Onyx Ravens",
-      "img": "https://owcdn.net/img/63ceaab05171d.png",
-      "country": "Saudi Arabia",
-      "symbol": "OXR"
     },
     "6193": {
       "id": "6193",
@@ -480,14 +448,6 @@
       "country": "Singapore",
       "symbol": "BLD"
     },
-    "6456": {
-      "id": "6456",
-      "url": "https://www.vlr.gg/team/6456/flyquest-red",
-      "name": "FlyQuest RED",
-      "img": "https://owcdn.net/img/6478e8607ca46.png",
-      "country": "United States",
-      "symbol": "FLY.R"
-    },
     "6530": {
       "id": "6530",
       "url": "https://www.vlr.gg/team/6530/g2-gozen",
@@ -520,29 +480,13 @@
       "country": "Philippines",
       "symbol": "NAOS"
     },
-    "7035": {
-      "id": "7035",
-      "url": "https://www.vlr.gg/team/7035/koi",
-      "name": "KOI",
-      "img": "https://owcdn.net/img/660ceac6275cd.png",
-      "country": "Europe",
-      "symbol": "KOI"
-    },
-    "7055": {
-      "id": "7055",
-      "url": "https://www.vlr.gg/team/7055/team-liquid-brazil",
-      "name": "Team Liquid Brazil",
+    "474": {
+      "id": "474",
+      "url": "https://www.vlr.gg/team/474/team-liquid",
+      "name": "Team Liquid",
       "img": "https://owcdn.net/img/640c381f0603f.png",
-      "country": "Brazil",
+      "country": "Europe",
       "symbol": "TL"
-    },
-    "7332": {
-      "id": "7332",
-      "url": "https://www.vlr.gg/team/7332/los-grandes",
-      "name": "Los Grandes",
-      "img": "https://owcdn.net/img/6798d84cbb88b.png",
-      "country": "Brazil",
-      "symbol": "LOS"
     },
     "7386": {
       "id": "7386",
@@ -552,19 +496,11 @@
       "country": "Brazil",
       "symbol": "MIBR"
     },
-    "7412": {
-      "id": "7412",
-      "url": "https://www.vlr.gg/team/7412/akave-esports-gc",
-      "name": "Akave Esports GC",
-      "img": "https://owcdn.net/img/61da5f0488060.png",
-      "country": "International",
-      "symbol": "AKV.GC"
-    },
     "7511": {
       "id": "7511",
       "url": "https://www.vlr.gg/team/7511/kr-blaze",
       "name": "KRÜ BLAZE",
-      "img": "https://owcdn.net/img/6704ad6a515a1.png",
+      "img": "https://owcdn.net/img/647db44d5af1d.png",
       "country": "Chile",
       "symbol": "KRÜ.B"
     },
@@ -600,14 +536,6 @@
       "country": "South Korea",
       "symbol": "DRX"
     },
-    "8304": {
-      "id": "8304",
-      "url": "https://www.vlr.gg/team/8304/talon",
-      "name": "TALON",
-      "img": "https://owcdn.net/img/6226f3d764e03.png",
-      "country": "Thailand",
-      "symbol": "TLN"
-    },
     "8448": {
       "id": "8448",
       "url": "https://www.vlr.gg/team/8448/bobo",
@@ -632,22 +560,6 @@
       "country": "Europe",
       "symbol": "KC"
     },
-    "8906": {
-      "id": "8906",
-      "url": "https://www.vlr.gg/team/8906/beyond-stratos-gaming",
-      "name": "Beyond Stratos Gaming",
-      "img": "https://www.vlr.gg/img/vlr/tmp/vlr.png",
-      "country": "South Korea",
-      "symbol": "BSG"
-    },
-    "9285": {
-      "id": "9285",
-      "url": "https://www.vlr.gg/team/9285/9z-team-gc",
-      "name": "9z Team GC",
-      "img": "https://owcdn.net/img/65e447b0c2415.png",
-      "country": "Argentina",
-      "symbol": "9ZG.GC"
-    },
     "9314": {
       "id": "9314",
       "url": "https://www.vlr.gg/team/9314/team-falcons-vega",
@@ -663,14 +575,6 @@
       "img": "https://owcdn.net/img/62a411783d94d.png",
       "country": "Japan",
       "symbol": "ZETA.GC"
-    },
-    "9425": {
-      "id": "9425",
-      "url": "https://www.vlr.gg/team/9425/leviat-n-academy",
-      "name": "LEVIATÁN Academy",
-      "img": "https://owcdn.net/img/61b8888cc3860.png",
-      "country": "Chile",
-      "symbol": "LEV.AC"
     },
     "9427": {
       "id": "9427",
@@ -704,14 +608,6 @@
       "country": "Canada",
       "symbol": "SCC"
     },
-    "10376": {
-      "id": "10376",
-      "url": "https://www.vlr.gg/team/10376/bon-bon-bum-contra",
-      "name": "Bon Bon Bum Contra",
-      "img": "https://owcdn.net/img/66572b1da4d79.png",
-      "country": "Colombia",
-      "symbol": "BBB"
-    },
     "10431": {
       "id": "10431",
       "url": "https://www.vlr.gg/team/10431/underground-gaming",
@@ -742,7 +638,7 @@
       "name": "UST Esports",
       "img": "https://owcdn.net/img/636dafd3a1796.png",
       "country": "United States",
-      "symbol": "UST"
+      "symbol": ""
     },
     "10533": {
       "id": "10533",
@@ -751,14 +647,6 @@
       "img": "https://owcdn.net/img/636c597cd68a7.png",
       "country": "United States",
       "symbol": "NW"
-    },
-    "10563": {
-      "id": "10563",
-      "url": "https://www.vlr.gg/team/10563/ubc-esports",
-      "name": "UBC Esports",
-      "img": "https://owcdn.net/img/637bec2c5158b.png",
-      "country": "Canada",
-      "symbol": "UBC"
     },
     "10568": {
       "id": "10568",
@@ -804,9 +692,9 @@
       "id": "11001",
       "url": "https://www.vlr.gg/team/11001/m80",
       "name": "M80",
-      "img": "https://owcdn.net/img/6793c97263739.png",
+      "img": "https://owcdn.net/img/63d91e60a84bc.png",
       "country": "Canada",
-      "symbol": "M80"
+      "symbol": ""
     },
     "11002": {
       "id": "11002",
@@ -840,22 +728,6 @@
       "country": "Japan",
       "symbol": "VL"
     },
-    "11232": {
-      "id": "11232",
-      "url": "https://www.vlr.gg/team/11232/joblife",
-      "name": "Joblife",
-      "img": "https://owcdn.net/img/63a944e6cbe49.png",
-      "country": "Europe",
-      "symbol": "JL"
-    },
-    "11233": {
-      "id": "11233",
-      "url": "https://www.vlr.gg/team/11233/bc-swell",
-      "name": "BC SWELL",
-      "img": "https://owcdn.net/img/63a9cf9538384.png",
-      "country": "Japan",
-      "symbol": "BCS"
-    },
     "11328": {
       "id": "11328",
       "url": "https://www.vlr.gg/team/11328/funplus-phoenix",
@@ -863,14 +735,6 @@
       "img": "https://owcdn.net/img/65a17b313b131.png",
       "country": "China",
       "symbol": "FPX"
-    },
-    "11479": {
-      "id": "11479",
-      "url": "https://www.vlr.gg/team/11479/apeks",
-      "name": "Apeks",
-      "img": "https://owcdn.net/img/63bd4a379f758.png",
-      "country": "Europe",
-      "symbol": "APK"
     },
     "11539": {
       "id": "11539",
@@ -896,14 +760,6 @@
       "country": "Mexico",
       "symbol": "19"
     },
-    "11947": {
-      "id": "11947",
-      "url": "https://www.vlr.gg/team/11947/next-gen",
-      "name": "Next Gen",
-      "img": "https://owcdn.net/img/6749e4bba8dc6.png",
-      "country": "Australia",
-      "symbol": "NXG"
-    },
     "11981": {
       "id": "11981",
       "url": "https://www.vlr.gg/team/11981/dragon-ranger-gaming",
@@ -912,14 +768,6 @@
       "country": "China",
       "symbol": "DRG"
     },
-    "11985": {
-      "id": "11985",
-      "url": "https://www.vlr.gg/team/11985/rare-atom",
-      "name": "Rare Atom",
-      "img": "https://owcdn.net/img/63eb5aa842f05.png",
-      "country": "China",
-      "symbol": "RA"
-    },
     "12010": {
       "id": "12010",
       "url": "https://www.vlr.gg/team/12010/bilibili-gaming",
@@ -927,14 +775,6 @@
       "img": "https://owcdn.net/img/63f25d72216c1.png",
       "country": "China",
       "symbol": "BLG"
-    },
-    "12064": {
-      "id": "12064",
-      "url": "https://www.vlr.gg/team/12064/nova-esports",
-      "name": "Nova Esports",
-      "img": "https://owcdn.net/img/6404c0174250b.png",
-      "country": "China",
-      "symbol": "NOVA"
     },
     "12446": {
       "id": "12446",
@@ -951,14 +791,6 @@
       "img": "https://owcdn.net/img/64241e527bdaf.png",
       "country": "Europe",
       "symbol": "GN"
-    },
-    "12475": {
-      "id": "12475",
-      "url": "https://www.vlr.gg/team/12475/ucf-gold",
-      "name": "UCF Gold",
-      "img": "https://owcdn.net/img/663e4cf0237f7.png",
-      "country": "United States",
-      "symbol": "UCF.G"
     },
     "12566": {
       "id": "12566",
@@ -984,14 +816,6 @@
       "country": "France",
       "symbol": "M8"
     },
-    "12900": {
-      "id": "12900",
-      "url": "https://www.vlr.gg/team/12900/maryville-university",
-      "name": "Maryville University",
-      "img": "https://owcdn.net/img/6457181dc433a.png",
-      "country": "United States",
-      "symbol": "MU"
-    },
     "13164": {
       "id": "13164",
       "url": "https://www.vlr.gg/team/13164/chao-hui-edward-gaming",
@@ -1016,14 +840,6 @@
       "country": "Europe",
       "symbol": "O1O"
     },
-    "13301": {
-      "id": "13301",
-      "url": "https://www.vlr.gg/team/13301/yfp-x",
-      "name": "YFP X",
-      "img": "https://owcdn.net/img/679dea8b44b77.png",
-      "country": "United States",
-      "symbol": ""
-    },
     "13576": {
       "id": "13576",
       "url": "https://www.vlr.gg/team/13576/jd-gaming",
@@ -1032,27 +848,11 @@
       "country": "China",
       "symbol": "JDG"
     },
-    "13579": {
-      "id": "13579",
-      "url": "https://www.vlr.gg/team/13579/chosen-clique-gaming",
-      "name": "Chosen Clique Gaming",
-      "img": "https://owcdn.net/img/651d2ecf7605a.png",
-      "country": "China",
-      "symbol": "CCG"
-    },
-    "13581": {
-      "id": "13581",
-      "url": "https://www.vlr.gg/team/13581/xi-lai-gaming",
-      "name": "Xi Lai Gaming",
-      "img": "https://owcdn.net/img/671742f863b9b.png",
-      "country": "China",
-      "symbol": "XLG"
-    },
     "13683": {
       "id": "13683",
       "url": "https://www.vlr.gg/team/13683/sagaz",
       "name": "SAGAZ",
-      "img": "https://owcdn.net/img/663b1b74f32c5.png",
+      "img": "https://owcdn.net/img/6526061a28bc6.png",
       "country": "Brazil",
       "symbol": "SGZ"
     },
@@ -1088,14 +888,6 @@
       "country": "Australia",
       "symbol": ""
     },
-    "13863": {
-      "id": "13863",
-      "url": "https://www.vlr.gg/team/13863/estio-esports",
-      "name": "Estio eSports",
-      "img": "https://owcdn.net/img/65e6d8b98a606.png",
-      "country": "Australia",
-      "symbol": "EST"
-    },
     "13920": {
       "id": "13920",
       "url": "https://www.vlr.gg/team/13920/sad-esports",
@@ -1112,21 +904,13 @@
       "country": "China",
       "symbol": "TEC"
     },
-    "14277": {
-      "id": "14277",
-      "url": "https://www.vlr.gg/team/14277/team-flash",
-      "name": "Team Flash",
-      "img": "https://owcdn.net/img/65561b4d674c3.png",
-      "country": "Vietnam",
-      "symbol": "FPT"
-    },
     "14278": {
       "id": "14278",
-      "url": "https://www.vlr.gg/team/14278/shopify-rebellion-gold",
-      "name": "Shopify Rebellion Gold",
-      "img": "https://owcdn.net/img/679314e3d25f4.png",
+      "url": "https://www.vlr.gg/team/14278/shopify-rebellion",
+      "name": "Shopify Rebellion",
+      "img": "https://owcdn.net/img/62ba0611a4912.png",
       "country": "Canada",
-      "symbol": "SRG"
+      "symbol": "SR"
     },
     "14281": {
       "id": "14281",
@@ -1152,30 +936,6 @@
       "country": "Egypt",
       "symbol": "tgz"
     },
-    "14375": {
-      "id": "14375",
-      "url": "https://www.vlr.gg/team/14375/riddle-order",
-      "name": "RIDDLE ORDER",
-      "img": "https://owcdn.net/img/6569a81625295.png",
-      "country": "Japan",
-      "symbol": "RID"
-    },
-    "14383": {
-      "id": "14383",
-      "url": "https://www.vlr.gg/team/14383/noez-foxx",
-      "name": "NOEZ FOXX",
-      "img": "https://owcdn.net/img/65717b5a27b9f.png",
-      "country": "Japan",
-      "symbol": "NFX"
-    },
-    "14419": {
-      "id": "14419",
-      "url": "https://www.vlr.gg/team/14419/giantx",
-      "name": "GIANTX",
-      "img": "https://owcdn.net/img/657b2f3fcd199.png",
-      "country": "Europe",
-      "symbol": "GX"
-    },
     "14469": {
       "id": "14469",
       "url": "https://www.vlr.gg/team/14469/jijiehao",
@@ -1191,22 +951,6 @@
       "img": "https://owcdn.net/img/65c89a8a1f301.png",
       "country": "Brazil",
       "symbol": "OLP"
-    },
-    "14547": {
-      "id": "14547",
-      "url": "https://www.vlr.gg/team/14547/a-nova-onda-do-imperador",
-      "name": "A nova onda do Imperador",
-      "img": "https://owcdn.net/img/673c176d97b1c.png",
-      "country": "Brazil",
-      "symbol": "IMP"
-    },
-    "14584": {
-      "id": "14584",
-      "url": "https://www.vlr.gg/team/14584/frozen-3",
-      "name": "Frozen 3",
-      "img": "https://owcdn.net/img/65bbe9c3793f2.png",
-      "country": "South Korea",
-      "symbol": ""
     },
     "14590": {
       "id": "14590",
@@ -1231,14 +975,6 @@
       "img": "https://owcdn.net/img/65cb17cb74c3a.png",
       "country": "South Korea",
       "symbol": "IAM"
-    },
-    "14689": {
-      "id": "14689",
-      "url": "https://www.vlr.gg/team/14689/peace-and-love",
-      "name": "Peace And Love",
-      "img": "https://www.vlr.gg/img/vlr/tmp/vlr.png",
-      "country": "Australia",
-      "symbol": ""
     },
     "14805": {
       "id": "14805",
@@ -1268,7 +1004,7 @@
       "id": "15072",
       "url": "https://www.vlr.gg/team/15072/2game-esports",
       "name": "2Game Esports",
-      "img": "https://owcdn.net/img/67725c368d524.png",
+      "img": "https://owcdn.net/img/65c8a4efe745a.png",
       "country": "Brazil",
       "symbol": "2G"
     },
@@ -1296,14 +1032,6 @@
       "country": "International",
       "symbol": ""
     },
-    "15119": {
-      "id": "15119",
-      "url": "https://www.vlr.gg/team/15119/giantx-gc",
-      "name": "GIANTX GC",
-      "img": "https://owcdn.net/img/657b2f3fcd199.png",
-      "country": "Europe",
-      "symbol": "GX.GC"
-    },
     "15120": {
       "id": "15120",
       "url": "https://www.vlr.gg/team/15120/r8-esports",
@@ -1312,21 +1040,13 @@
       "country": "Saudi Arabia",
       "symbol": "R8"
     },
-    "15197": {
-      "id": "15197",
-      "url": "https://www.vlr.gg/team/15197/ipgn",
-      "name": "iPGN",
-      "img": "https://owcdn.net/img/65e6d797c2391.png",
-      "country": "Australia",
-      "symbol": ""
-    },
     "15208": {
       "id": "15208",
-      "url": "https://www.vlr.gg/team/15208/hornswogglers",
-      "name": "Hornswogglers",
+      "url": "https://www.vlr.gg/team/15208/edge",
+      "name": "EDGE",
       "img": "https://www.vlr.gg/img/vlr/tmp/vlr.png",
       "country": "Australia",
-      "symbol": "HSW"
+      "symbol": ""
     },
     "15210": {
       "id": "15210",
@@ -1375,198 +1095,6 @@
       "img": "https://www.vlr.gg/img/vlr/tmp/vlr.png",
       "country": "Thailand",
       "symbol": "MNF"
-    },
-    "15624": {
-      "id": "15624",
-      "url": "https://www.vlr.gg/team/15624/ktana-esports",
-      "name": "KTANA Esports",
-      "img": "https://owcdn.net/img/67174040b82f5.png",
-      "country": "Mexico",
-      "symbol": "KTN"
-    },
-    "16028": {
-      "id": "16028",
-      "url": "https://www.vlr.gg/team/16028/ufoxskalle",
-      "name": "UFOXSkalle",
-      "img": "https://www.vlr.gg/img/vlr/tmp/vlr.png",
-      "country": "Ecuador",
-      "symbol": "UFS"
-    },
-    "16068": {
-      "id": "16068",
-      "url": "https://www.vlr.gg/team/16068/f4tality",
-      "name": "F4TALITY",
-      "img": "https://owcdn.net/img/673b3c4a53aaf.png",
-      "country": "Brazil",
-      "symbol": "F4T"
-    },
-    "16071": {
-      "id": "16071",
-      "url": "https://www.vlr.gg/team/16071/peek",
-      "name": "PEEK",
-      "img": "https://owcdn.net/img/669049dd17504.png",
-      "country": "Brazil",
-      "symbol": ""
-    },
-    "16072": {
-      "id": "16072",
-      "url": "https://www.vlr.gg/team/16072/og",
-      "name": "OG",
-      "img": "https://www.vlr.gg/img/vlr/tmp/vlr.png",
-      "country": "International",
-      "symbol": ""
-    },
-    "16142": {
-      "id": "16142",
-      "url": "https://www.vlr.gg/team/16142/united-gaming",
-      "name": "United Gaming",
-      "img": "https://owcdn.net/img/66a15e84b9afb.png",
-      "country": "Kuwait",
-      "symbol": "UNT"
-    },
-    "16598": {
-      "id": "16598",
-      "url": "https://www.vlr.gg/team/16598/al-qadsiah-esports",
-      "name": "Al-Qadsiah Esports",
-      "img": "https://owcdn.net/img/672b6e5ef0749.png",
-      "country": "Saudi Arabia",
-      "symbol": "QAD"
-    },
-    "16616": {
-      "id": "16616",
-      "url": "https://www.vlr.gg/team/16616/bbl-pcific",
-      "name": "BBL PCIFIC",
-      "img": "https://owcdn.net/img/6712e0d973b7b.png",
-      "country": "Turkey",
-      "symbol": "BCF"
-    },
-    "16676": {
-      "id": "16676",
-      "url": "https://www.vlr.gg/team/16676/kebab-clan",
-      "name": "Kebab Clan",
-      "img": "https://www.vlr.gg/img/vlr/tmp/vlr.png",
-      "country": "Australia",
-      "symbol": "KBC"
-    },
-    "16753": {
-      "id": "16753",
-      "url": "https://www.vlr.gg/team/16753/acai-underworld",
-      "name": "Acai Underworld",
-      "img": "https://www.vlr.gg/img/vlr/tmp/vlr.png",
-      "country": "Australia",
-      "symbol": "ACU"
-    },
-    "16806": {
-      "id": "16806",
-      "url": "https://www.vlr.gg/team/16806/rankers",
-      "name": "RANKERS",
-      "img": "https://owcdn.net/img/676794acc1f6d.png",
-      "country": "United States",
-      "symbol": "RANK"
-    },
-    "16898": {
-      "id": "16898",
-      "url": "https://www.vlr.gg/team/16898/trust-in-plug",
-      "name": "Trust In Plug",
-      "img": "https://owcdn.net/img/6738f9386fa8d.png",
-      "country": "United States",
-      "symbol": "PLUG"
-    },
-    "16899": {
-      "id": "16899",
-      "url": "https://www.vlr.gg/team/16899/cubert-academy",
-      "name": "Cubert Academy",
-      "img": "https://owcdn.net/img/6793cafca1a9c.png",
-      "country": "United States",
-      "symbol": "CUBE"
-    },
-    "16953": {
-      "id": "16953",
-      "url": "https://www.vlr.gg/team/16953/onedamn",
-      "name": "Onedamn",
-      "img": "https://www.vlr.gg/img/vlr/tmp/vlr.png",
-      "country": "Taiwan",
-      "symbol": ""
-    },
-    "17032": {
-      "id": "17032",
-      "url": "https://www.vlr.gg/team/17032/mixpe",
-      "name": "MixPe",
-      "img": "https://www.vlr.gg/img/vlr/tmp/vlr.png",
-      "country": "Chile",
-      "symbol": "MIX"
-    },
-    "17179": {
-      "id": "17179",
-      "url": "https://www.vlr.gg/team/17179/dnsty",
-      "name": "DNSTY",
-      "img": "https://owcdn.net/img/677c92a911f07.png",
-      "country": "Italy",
-      "symbol": "DSY"
-    },
-    "17255": {
-      "id": "17255",
-      "url": "https://www.vlr.gg/team/17255/solovinos",
-      "name": "Solovinos",
-      "img": "https://www.vlr.gg/img/vlr/tmp/vlr.png",
-      "country": "International",
-      "symbol": "SLV"
-    },
-    "17262": {
-      "id": "17262",
-      "url": "https://www.vlr.gg/team/17262/farmakas",
-      "name": "Farmakas",
-      "img": "https://www.vlr.gg/img/vlr/tmp/vlr.png",
-      "country": "International",
-      "symbol": ""
-    },
-    "17271": {
-      "id": "17271",
-      "url": "https://www.vlr.gg/team/17271/sadhub-esports",
-      "name": "SadHub Esports",
-      "img": "https://www.vlr.gg/img/vlr/tmp/vlr.png",
-      "country": "International",
-      "symbol": ""
-    },
-    "17282": {
-      "id": "17282",
-      "url": "https://www.vlr.gg/team/17282/exotick-esports",
-      "name": "EXOTICK ESPORTS",
-      "img": "https://www.vlr.gg/img/vlr/tmp/vlr.png",
-      "country": "Colombia",
-      "symbol": "EXT"
-    },
-    "17289": {
-      "id": "17289",
-      "url": "https://www.vlr.gg/team/17289/ab3-esports",
-      "name": "AB3 Esports",
-      "img": "https://owcdn.net/img/679061092d445.png",
-      "country": "Mexico",
-      "symbol": "AB3"
-    },
-    "17310": {
-      "id": "17310",
-      "url": "https://www.vlr.gg/team/17310/retiraos",
-      "name": "Retiraos",
-      "img": "https://www.vlr.gg/img/vlr/tmp/vlr.png",
-      "country": "International",
-      "symbol": ""
-    },
-    "17313": {
-      "id": "17313",
-      "url": "https://www.vlr.gg/team/17313/dolphins-gaming",
-      "name": "Dolphins Gaming",
-      "img": "https://www.vlr.gg/img/vlr/tmp/vlr.png",
-      "country": "International",
-      "symbol": ""
-    },
-    "17353": {
-      "id": "17353",
-      "url": "https://www.vlr.gg/team/17353/kimmy-kittens",
-      "name": "KIMMY KITTENS",
-      "img": "https://www.vlr.gg/img/vlr/tmp/vlr.png",
-      "country": "Singapore",
-      "symbol": "KK"
     }
   },
   "teamByNameMap": {
@@ -1575,7 +1103,7 @@
       "url": "https://www.vlr.gg/team/8304/talon",
       "name": "TALON",
       "img": "https://owcdn.net/img/6226f3d764e03.png",
-      "country": "Thailand",
+      "country": "Indonesia",
       "symbol": "TLN"
     },
     "Rex Regum Qeon": {
@@ -1682,6 +1210,14 @@
       "country": "Turkey",
       "symbol": "FUT"
     },
+    "DSYRE": {
+      "id": "6538",
+      "url": "https://www.vlr.gg/team/6538/dsyre",
+      "name": "DSYRE",
+      "img": "https://owcdn.net/img/639b017f8d1fd.png",
+      "country": "Europe",
+      "symbol": "DSY"
+    },
     "Natus Vincere": {
       "id": "4915",
       "url": "https://www.vlr.gg/team/4915/natus-vincere",
@@ -1734,9 +1270,9 @@
       "id": "11001",
       "url": "https://www.vlr.gg/team/11001/m80",
       "name": "M80",
-      "img": "https://owcdn.net/img/6793c97263739.png",
+      "img": "https://owcdn.net/img/63d91e60a84bc.png",
       "country": "Canada",
-      "symbol": "M80"
+      "symbol": ""
     },
     "Sentinels": {
       "id": "2",
@@ -1826,11 +1362,19 @@
       "country": "Brazil",
       "symbol": "HERO"
     },
+    "MIBR": {
+      "id": "7386",
+      "url": "https://www.vlr.gg/team/7386/mibr",
+      "name": "MIBR",
+      "img": "https://owcdn.net/img/632be7626d6d9.png",
+      "country": "Brazil",
+      "symbol": "MIBR"
+    },
     "2Game Esports": {
       "id": "15072",
       "url": "https://www.vlr.gg/team/15072/2game-esports",
       "name": "2Game Esports",
-      "img": "https://owcdn.net/img/67725c368d524.png",
+      "img": "https://owcdn.net/img/65c8a4efe745a.png",
       "country": "Brazil",
       "symbol": "2G"
     },
@@ -1878,7 +1422,7 @@
       "id": "13683",
       "url": "https://www.vlr.gg/team/13683/sagaz",
       "name": "SAGAZ",
-      "img": "https://owcdn.net/img/663b1b74f32c5.png",
+      "img": "https://owcdn.net/img/6526061a28bc6.png",
       "country": "Brazil",
       "symbol": "SGZ"
     },
@@ -2033,6 +1577,14 @@
       "img": "https://owcdn.net/img/61ffa2bad3de7.png",
       "country": "South Korea",
       "symbol": "CNJ"
+    },
+    "OLY": {
+      "id": "14596",
+      "url": "https://www.vlr.gg/team/14596/oly",
+      "name": "OLY",
+      "img": "https://www.vlr.gg/img/vlr/tmp/vlr.png",
+      "country": "South Korea",
+      "symbol": ""
     },
     "EDward Gaming": {
       "id": "1120",
@@ -2207,8 +1759,8 @@
       "url": "https://www.vlr.gg/team/367/9z-team",
       "name": "9z Team",
       "img": "https://owcdn.net/img/65e447b0c2415.png",
-      "country": "Chile",
-      "symbol": "9ZG"
+      "country": "Argentina",
+      "symbol": "9z"
     },
     "KRÜ Esports": {
       "id": "2355",
@@ -2354,6 +1906,22 @@
       "country": "Australia",
       "symbol": "FOC"
     },
+    "BOBO": {
+      "id": "8448",
+      "url": "https://www.vlr.gg/team/8448/bobo",
+      "name": "BOBO",
+      "img": "https://www.vlr.gg/img/vlr/tmp/vlr.png",
+      "country": "Australia",
+      "symbol": ""
+    },
+    "EDGE": {
+      "id": "15208",
+      "url": "https://www.vlr.gg/team/15208/edge",
+      "name": "EDGE",
+      "img": "https://www.vlr.gg/img/vlr/tmp/vlr.png",
+      "country": "Australia",
+      "symbol": ""
+    },
     "Crim's Kittens": {
       "id": "15118",
       "url": "https://www.vlr.gg/team/15118/crims-kittens",
@@ -2410,6 +1978,14 @@
       "country": "Saudi Arabia",
       "symbol": "R8"
     },
+    "Unity Esports": {
+      "id": "9545",
+      "url": "https://www.vlr.gg/team/9545/unity-esports",
+      "name": "Unity Esports",
+      "img": "https://owcdn.net/img/62ea6bbff0ccd.png",
+      "country": "Kuwait",
+      "symbol": "UNT"
+    },
     "The Ultimates": {
       "id": "1458",
       "url": "https://www.vlr.gg/team/1458/the-ultimates",
@@ -2458,6 +2034,14 @@
       "country": "Egypt",
       "symbol": "tgz"
     },
+    "Shopify Rebellion": {
+      "id": "14278",
+      "url": "https://www.vlr.gg/team/14278/shopify-rebellion",
+      "name": "Shopify Rebellion",
+      "img": "https://owcdn.net/img/62ba0611a4912.png",
+      "country": "Canada",
+      "symbol": "SR"
+    },
     "Xipto Esports": {
       "id": "15317",
       "url": "https://www.vlr.gg/team/15317/xipto-esports",
@@ -2466,11 +2050,19 @@
       "country": "Philippines",
       "symbol": "XIP"
     },
+    "Team Liquid": {
+      "id": "474",
+      "url": "https://www.vlr.gg/team/474/team-liquid",
+      "name": "Team Liquid",
+      "img": "https://owcdn.net/img/640c381f0603f.png",
+      "country": "Europe",
+      "symbol": "TL"
+    },
     "KRÜ BLAZE": {
       "id": "7511",
       "url": "https://www.vlr.gg/team/7511/kr-blaze",
       "name": "KRÜ BLAZE",
-      "img": "https://owcdn.net/img/6704ad6a515a1.png",
+      "img": "https://owcdn.net/img/647db44d5af1d.png",
       "country": "Chile",
       "symbol": "KRÜ.B"
     },
@@ -2558,7 +2150,7 @@
       "id": "2785",
       "url": "https://www.vlr.gg/team/2785/tamu-maroon",
       "name": "TAMU Maroon",
-      "img": "https://owcdn.net/img/663e4f87ad0d9.png",
+      "img": "https://owcdn.net/img/64c2d272558b6.png",
       "country": "United States",
       "symbol": "TAMU"
     },
@@ -2576,7 +2168,7 @@
       "name": "UST Esports",
       "img": "https://owcdn.net/img/636dafd3a1796.png",
       "country": "United States",
-      "symbol": "UST"
+      "symbol": ""
     },
     "Mizzou Esports": {
       "id": "8614",
@@ -2601,441 +2193,9 @@
       "img": "https://owcdn.net/img/636d5918e8554.png",
       "country": "United States",
       "symbol": "SJSU"
-    },
-    "DNSTY": {
-      "id": "17179",
-      "url": "https://www.vlr.gg/team/17179/dnsty",
-      "name": "DNSTY",
-      "img": "https://owcdn.net/img/677c92a911f07.png",
-      "country": "Italy",
-      "symbol": "DSY"
-    },
-    "Apeks": {
-      "id": "11479",
-      "url": "https://www.vlr.gg/team/11479/apeks",
-      "name": "Apeks",
-      "img": "https://owcdn.net/img/63bd4a379f758.png",
-      "country": "Europe",
-      "symbol": "APK"
-    },
-    "CGN Esports": {
-      "id": "5214",
-      "url": "https://www.vlr.gg/team/5214/cgn-esports",
-      "name": "CGN Esports",
-      "img": "https://owcdn.net/img/60defafec983c.png",
-      "country": "Germany",
-      "symbol": "CGN"
-    },
-    "BBL PCIFIC": {
-      "id": "16616",
-      "url": "https://www.vlr.gg/team/16616/bbl-pcific",
-      "name": "BBL PCIFIC",
-      "img": "https://owcdn.net/img/6712e0d973b7b.png",
-      "country": "Turkey",
-      "symbol": "BCF"
-    },
-    "Joblife": {
-      "id": "11232",
-      "url": "https://www.vlr.gg/team/11232/joblife",
-      "name": "Joblife",
-      "img": "https://owcdn.net/img/63a944e6cbe49.png",
-      "country": "Europe",
-      "symbol": "JL"
-    },
-    "Cubert Academy": {
-      "id": "16899",
-      "url": "https://www.vlr.gg/team/16899/cubert-academy",
-      "name": "Cubert Academy",
-      "img": "https://owcdn.net/img/6793cafca1a9c.png",
-      "country": "United States",
-      "symbol": "CUBE"
-    },
-    "Trust In Plug": {
-      "id": "16898",
-      "url": "https://www.vlr.gg/team/16898/trust-in-plug",
-      "name": "Trust In Plug",
-      "img": "https://owcdn.net/img/6738f9386fa8d.png",
-      "country": "United States",
-      "symbol": "PLUG"
-    },
-    "RANKERS": {
-      "id": "16806",
-      "url": "https://www.vlr.gg/team/16806/rankers",
-      "name": "RANKERS",
-      "img": "https://owcdn.net/img/676794acc1f6d.png",
-      "country": "United States",
-      "symbol": "RANK"
-    },
-    "YFP": {
-      "id": "5038",
-      "url": "https://www.vlr.gg/team/5038/yfp",
-      "name": "YFP",
-      "img": "https://owcdn.net/img/677826ad11d3b.png",
-      "country": "United States",
-      "symbol": "YFP"
-    },
-    "A nova onda do Imperador": {
-      "id": "14547",
-      "url": "https://www.vlr.gg/team/14547/a-nova-onda-do-imperador",
-      "name": "A nova onda do Imperador",
-      "img": "https://owcdn.net/img/673c176d97b1c.png",
-      "country": "Brazil",
-      "symbol": "IMP"
-    },
-    "Los Grandes": {
-      "id": "7332",
-      "url": "https://www.vlr.gg/team/7332/los-grandes",
-      "name": "Los Grandes",
-      "img": "https://owcdn.net/img/6798d84cbb88b.png",
-      "country": "Brazil",
-      "symbol": "LOS"
-    },
-    "F4TALITY": {
-      "id": "16068",
-      "url": "https://www.vlr.gg/team/16068/f4tality",
-      "name": "F4TALITY",
-      "img": "https://owcdn.net/img/673b3c4a53aaf.png",
-      "country": "Brazil",
-      "symbol": "F4T"
-    },
-    "Alter Ego": {
-      "id": "1110",
-      "url": "https://www.vlr.gg/team/1110/alter-ego",
-      "name": "Alter Ego",
-      "img": "https://owcdn.net/img/62bbed294db68.png",
-      "country": "Indonesia",
-      "symbol": "AE"
-    },
-    "KIMMY KITTENS": {
-      "id": "17353",
-      "url": "https://www.vlr.gg/team/17353/kimmy-kittens",
-      "name": "KIMMY KITTENS",
-      "img": "https://www.vlr.gg/img/vlr/tmp/vlr.png",
-      "country": "Singapore",
-      "symbol": "KK"
-    },
-    "Team Flash": {
-      "id": "14277",
-      "url": "https://www.vlr.gg/team/14277/team-flash",
-      "name": "Team Flash",
-      "img": "https://owcdn.net/img/65561b4d674c3.png",
-      "country": "Vietnam",
-      "symbol": "FPT"
-    },
-    "Onedamn": {
-      "id": "16953",
-      "url": "https://www.vlr.gg/team/16953/onedamn",
-      "name": "Onedamn",
-      "img": "https://www.vlr.gg/img/vlr/tmp/vlr.png",
-      "country": "Taiwan",
-      "symbol": ""
-    },
-    "Beyond Stratos Gaming": {
-      "id": "8906",
-      "url": "https://www.vlr.gg/team/8906/beyond-stratos-gaming",
-      "name": "Beyond Stratos Gaming",
-      "img": "https://www.vlr.gg/img/vlr/tmp/vlr.png",
-      "country": "South Korea",
-      "symbol": "BSG"
-    },
-    "Xi Lai Gaming": {
-      "id": "13581",
-      "url": "https://www.vlr.gg/team/13581/xi-lai-gaming",
-      "name": "Xi Lai Gaming",
-      "img": "https://owcdn.net/img/671742f863b9b.png",
-      "country": "China",
-      "symbol": "XLG"
-    },
-    "Rare Atom": {
-      "id": "11985",
-      "url": "https://www.vlr.gg/team/11985/rare-atom",
-      "name": "Rare Atom",
-      "img": "https://owcdn.net/img/63eb5aa842f05.png",
-      "country": "China",
-      "symbol": "RA"
-    },
-    "Chosen Clique Gaming": {
-      "id": "13579",
-      "url": "https://www.vlr.gg/team/13579/chosen-clique-gaming",
-      "name": "Chosen Clique Gaming",
-      "img": "https://owcdn.net/img/651d2ecf7605a.png",
-      "country": "China",
-      "symbol": "CCG"
-    },
-    "RIDDLE ORDER": {
-      "id": "14375",
-      "url": "https://www.vlr.gg/team/14375/riddle-order",
-      "name": "RIDDLE ORDER",
-      "img": "https://owcdn.net/img/6569a81625295.png",
-      "country": "Japan",
-      "symbol": "RID"
-    },
-    "NOEZ FOXX": {
-      "id": "14383",
-      "url": "https://www.vlr.gg/team/14383/noez-foxx",
-      "name": "NOEZ FOXX",
-      "img": "https://owcdn.net/img/65717b5a27b9f.png",
-      "country": "Japan",
-      "symbol": "NFX"
-    },
-    "BC SWELL": {
-      "id": "11233",
-      "url": "https://www.vlr.gg/team/11233/bc-swell",
-      "name": "BC SWELL",
-      "img": "https://owcdn.net/img/63a9cf9538384.png",
-      "country": "Japan",
-      "symbol": "BCS"
-    },
-    "LEVIATÁN Academy": {
-      "id": "9425",
-      "url": "https://www.vlr.gg/team/9425/leviat-n-academy",
-      "name": "LEVIATÁN Academy",
-      "img": "https://owcdn.net/img/61b8888cc3860.png",
-      "country": "Chile",
-      "symbol": "LEV.AC"
-    },
-    "MixPe": {
-      "id": "17032",
-      "url": "https://www.vlr.gg/team/17032/mixpe",
-      "name": "MixPe",
-      "img": "https://www.vlr.gg/img/vlr/tmp/vlr.png",
-      "country": "Chile",
-      "symbol": "MIX"
-    },
-    "Australs": {
-      "id": "719",
-      "url": "https://www.vlr.gg/team/719/australs",
-      "name": "Australs",
-      "img": "https://owcdn.net/img/6055063c3a691.png",
-      "country": "Chile",
-      "symbol": "AUS"
-    },
-    "Kaos Latin Gamers": {
-      "id": "2360",
-      "url": "https://www.vlr.gg/team/2360/kaos-latin-gamers",
-      "name": "Kaos Latin Gamers",
-      "img": "https://owcdn.net/img/600b19ed2c674.png",
-      "country": "Chile",
-      "symbol": "KLG"
-    },
-    "AB3 Esports": {
-      "id": "17289",
-      "url": "https://www.vlr.gg/team/17289/ab3-esports",
-      "name": "AB3 Esports",
-      "img": "https://owcdn.net/img/679061092d445.png",
-      "country": "Mexico",
-      "symbol": "AB3"
-    },
-    "KTANA Esports": {
-      "id": "15624",
-      "url": "https://www.vlr.gg/team/15624/ktana-esports",
-      "name": "KTANA Esports",
-      "img": "https://owcdn.net/img/67174040b82f5.png",
-      "country": "Mexico",
-      "symbol": "KTN"
-    },
-    "UFOXSkalle": {
-      "id": "16028",
-      "url": "https://www.vlr.gg/team/16028/ufoxskalle",
-      "name": "UFOXSkalle",
-      "img": "https://www.vlr.gg/img/vlr/tmp/vlr.png",
-      "country": "Ecuador",
-      "symbol": "UFS"
-    },
-    "Bon Bon Bum Contra": {
-      "id": "10376",
-      "url": "https://www.vlr.gg/team/10376/bon-bon-bum-contra",
-      "name": "Bon Bon Bum Contra",
-      "img": "https://owcdn.net/img/66572b1da4d79.png",
-      "country": "Colombia",
-      "symbol": "BBB"
-    },
-    "EXOTICK ESPORTS": {
-      "id": "17282",
-      "url": "https://www.vlr.gg/team/17282/exotick-esports",
-      "name": "EXOTICK ESPORTS",
-      "img": "https://www.vlr.gg/img/vlr/tmp/vlr.png",
-      "country": "Colombia",
-      "symbol": "EXT"
-    },
-    "Solovinos": {
-      "id": "17255",
-      "url": "https://www.vlr.gg/team/17255/solovinos",
-      "name": "Solovinos",
-      "img": "https://www.vlr.gg/img/vlr/tmp/vlr.png",
-      "country": "International",
-      "symbol": "SLV"
-    },
-    "SadHub Esports": {
-      "id": "17271",
-      "url": "https://www.vlr.gg/team/17271/sadhub-esports",
-      "name": "SadHub Esports",
-      "img": "https://www.vlr.gg/img/vlr/tmp/vlr.png",
-      "country": "International",
-      "symbol": ""
-    },
-    "Next Gen": {
-      "id": "11947",
-      "url": "https://www.vlr.gg/team/11947/next-gen",
-      "name": "Next Gen",
-      "img": "https://owcdn.net/img/6749e4bba8dc6.png",
-      "country": "Australia",
-      "symbol": "NXG"
-    },
-    "Kebab Clan": {
-      "id": "16676",
-      "url": "https://www.vlr.gg/team/16676/kebab-clan",
-      "name": "Kebab Clan",
-      "img": "https://www.vlr.gg/img/vlr/tmp/vlr.png",
-      "country": "Australia",
-      "symbol": "KBC"
-    },
-    "Hornswogglers": {
-      "id": "15208",
-      "url": "https://www.vlr.gg/team/15208/hornswogglers",
-      "name": "Hornswogglers",
-      "img": "https://www.vlr.gg/img/vlr/tmp/vlr.png",
-      "country": "Australia",
-      "symbol": "HSW"
-    },
-    "Acai Underworld": {
-      "id": "16753",
-      "url": "https://www.vlr.gg/team/16753/acai-underworld",
-      "name": "Acai Underworld",
-      "img": "https://www.vlr.gg/img/vlr/tmp/vlr.png",
-      "country": "Australia",
-      "symbol": "ACU"
-    },
-    "Estio eSports": {
-      "id": "13863",
-      "url": "https://www.vlr.gg/team/13863/estio-esports",
-      "name": "Estio eSports",
-      "img": "https://owcdn.net/img/65e6d8b98a606.png",
-      "country": "Australia",
-      "symbol": "EST"
-    },
-    "United Gaming": {
-      "id": "16142",
-      "url": "https://www.vlr.gg/team/16142/united-gaming",
-      "name": "United Gaming",
-      "img": "https://owcdn.net/img/66a15e84b9afb.png",
-      "country": "Kuwait",
-      "symbol": "UNT"
-    },
-    "Al-Qadsiah Esports": {
-      "id": "16598",
-      "url": "https://www.vlr.gg/team/16598/al-qadsiah-esports",
-      "name": "Al-Qadsiah Esports",
-      "img": "https://owcdn.net/img/672b6e5ef0749.png",
-      "country": "Saudi Arabia",
-      "symbol": "QAD"
-    },
-    "Gamax Esports": {
-      "id": "2290",
-      "url": "https://www.vlr.gg/team/2290/gamax-esports",
-      "name": "Gamax Esports",
-      "img": "https://owcdn.net/img/64c0df3369bcd.png",
-      "country": "Egypt",
-      "symbol": "GMX"
-    },
-    "Onyx Ravens": {
-      "id": "6159",
-      "url": "https://www.vlr.gg/team/6159/onyx-ravens",
-      "name": "Onyx Ravens",
-      "img": "https://owcdn.net/img/63ceaab05171d.png",
-      "country": "Saudi Arabia",
-      "symbol": "OXR"
-    },
-    "Shopify Rebellion Gold": {
-      "id": "14278",
-      "url": "https://www.vlr.gg/team/14278/shopify-rebellion-gold",
-      "name": "Shopify Rebellion Gold",
-      "img": "https://owcdn.net/img/679314e3d25f4.png",
-      "country": "Canada",
-      "symbol": "SRG"
-    },
-    "Team Liquid Brazil": {
-      "id": "7055",
-      "url": "https://www.vlr.gg/team/7055/team-liquid-brazil",
-      "name": "Team Liquid Brazil",
-      "img": "https://owcdn.net/img/640c381f0603f.png",
-      "country": "Brazil",
-      "symbol": "TL"
-    },
-    "Akave Esports GC": {
-      "id": "7412",
-      "url": "https://www.vlr.gg/team/7412/akave-esports-gc",
-      "name": "Akave Esports GC",
-      "img": "https://owcdn.net/img/61da5f0488060.png",
-      "country": "International",
-      "symbol": "AKV.GC"
-    },
-    "FlyQuest RED": {
-      "id": "6456",
-      "url": "https://www.vlr.gg/team/6456/flyquest-red",
-      "name": "FlyQuest RED",
-      "img": "https://owcdn.net/img/6478e8607ca46.png",
-      "country": "United States",
-      "symbol": "FLY.R"
-    },
-    "YFP X": {
-      "id": "13301",
-      "url": "https://www.vlr.gg/team/13301/yfp-x",
-      "name": "YFP X",
-      "img": "https://owcdn.net/img/679dea8b44b77.png",
-      "country": "United States",
-      "symbol": ""
-    },
-    "GIANTX GC": {
-      "id": "15119",
-      "url": "https://www.vlr.gg/team/15119/giantx-gc",
-      "name": "GIANTX GC",
-      "img": "https://owcdn.net/img/657b2f3fcd199.png",
-      "country": "Europe",
-      "symbol": "GX.GC"
-    },
-    "9z Team GC": {
-      "id": "9285",
-      "url": "https://www.vlr.gg/team/9285/9z-team-gc",
-      "name": "9z Team GC",
-      "img": "https://owcdn.net/img/65e447b0c2415.png",
-      "country": "Argentina",
-      "symbol": "9ZG.GC"
-    },
-    "UCF Gold": {
-      "id": "12475",
-      "url": "https://www.vlr.gg/team/12475/ucf-gold",
-      "name": "UCF Gold",
-      "img": "https://owcdn.net/img/663e4cf0237f7.png",
-      "country": "United States",
-      "symbol": "UCF.G"
-    },
-    "Maryville University": {
-      "id": "12900",
-      "url": "https://www.vlr.gg/team/12900/maryville-university",
-      "name": "Maryville University",
-      "img": "https://owcdn.net/img/6457181dc433a.png",
-      "country": "United States",
-      "symbol": "MU"
-    },
-    "UBC Esports": {
-      "id": "10563",
-      "url": "https://www.vlr.gg/team/10563/ubc-esports",
-      "name": "UBC Esports",
-      "img": "https://owcdn.net/img/637bec2c5158b.png",
-      "country": "Canada",
-      "symbol": "UBC"
     }
   },
   "teamBySymbolMap": {
-    "19": {
-      "id": "11896",
-      "url": "https://www.vlr.gg/team/11896/19esports",
-      "name": "19esports",
-      "img": "https://owcdn.net/img/6394492dce0e3.png",
-      "country": "Mexico",
-      "symbol": "19"
-    },
     "T1": {
       "id": "14",
       "url": "https://www.vlr.gg/team/14/t1",
@@ -3057,7 +2217,7 @@
       "url": "https://www.vlr.gg/team/8304/talon",
       "name": "TALON",
       "img": "https://owcdn.net/img/6226f3d764e03.png",
-      "country": "Thailand",
+      "country": "Indonesia",
       "symbol": "TLN"
     },
     "RRQ": {
@@ -3140,6 +2300,14 @@
       "country": "United States",
       "symbol": "EG"
     },
+    "19": {
+      "id": "11896",
+      "url": "https://www.vlr.gg/team/11896/19esports",
+      "name": "19esports",
+      "img": "https://owcdn.net/img/6394492dce0e3.png",
+      "country": "Mexico",
+      "symbol": "19"
+    },
     "FNC": {
       "id": "2593",
       "url": "https://www.vlr.gg/team/2593/fnatic",
@@ -3165,11 +2333,11 @@
       "symbol": "FUT"
     },
     "DSY": {
-      "id": "17179",
-      "url": "https://www.vlr.gg/team/17179/dnsty",
-      "name": "DNSTY",
-      "img": "https://owcdn.net/img/677c92a911f07.png",
-      "country": "Italy",
+      "id": "6538",
+      "url": "https://www.vlr.gg/team/6538/dsyre",
+      "name": "DSYRE",
+      "img": "https://owcdn.net/img/639b017f8d1fd.png",
+      "country": "Europe",
       "symbol": "DSY"
     },
     "NAVI": {
@@ -3221,10 +2389,10 @@
       "symbol": "ACE"
     },
     "": {
-      "id": "13301",
-      "url": "https://www.vlr.gg/team/13301/yfp-x",
-      "name": "YFP X",
-      "img": "https://owcdn.net/img/679dea8b44b77.png",
+      "id": "10505",
+      "url": "https://www.vlr.gg/team/10505/ust-esports",
+      "name": "UST Esports",
+      "img": "https://owcdn.net/img/636dafd3a1796.png",
       "country": "United States",
       "symbol": ""
     },
@@ -3328,7 +2496,7 @@
       "id": "15072",
       "url": "https://www.vlr.gg/team/15072/2game-esports",
       "name": "2Game Esports",
-      "img": "https://owcdn.net/img/67725c368d524.png",
+      "img": "https://owcdn.net/img/65c8a4efe745a.png",
       "country": "Brazil",
       "symbol": "2G"
     },
@@ -3376,7 +2544,7 @@
       "id": "13683",
       "url": "https://www.vlr.gg/team/13683/sagaz",
       "name": "SAGAZ",
-      "img": "https://owcdn.net/img/663b1b74f32c5.png",
+      "img": "https://owcdn.net/img/6526061a28bc6.png",
       "country": "Brazil",
       "symbol": "SGZ"
     },
@@ -3829,10 +2997,10 @@
       "symbol": "R8"
     },
     "UNT": {
-      "id": "16142",
-      "url": "https://www.vlr.gg/team/16142/united-gaming",
-      "name": "United Gaming",
-      "img": "https://owcdn.net/img/66a15e84b9afb.png",
+      "id": "9545",
+      "url": "https://www.vlr.gg/team/9545/unity-esports",
+      "name": "Unity Esports",
+      "img": "https://owcdn.net/img/62ea6bbff0ccd.png",
       "country": "Kuwait",
       "symbol": "UNT"
     },
@@ -3901,18 +3069,18 @@
       "symbol": "XIP"
     },
     "TL": {
-      "id": "7055",
-      "url": "https://www.vlr.gg/team/7055/team-liquid-brazil",
-      "name": "Team Liquid Brazil",
+      "id": "474",
+      "url": "https://www.vlr.gg/team/474/team-liquid",
+      "name": "Team Liquid",
       "img": "https://owcdn.net/img/640c381f0603f.png",
-      "country": "Brazil",
+      "country": "Europe",
       "symbol": "TL"
     },
     "KRÜ.B": {
       "id": "7511",
       "url": "https://www.vlr.gg/team/7511/kr-blaze",
       "name": "KRÜ BLAZE",
-      "img": "https://owcdn.net/img/6704ad6a515a1.png",
+      "img": "https://owcdn.net/img/647db44d5af1d.png",
       "country": "Chile",
       "symbol": "KRÜ.B"
     },
@@ -4000,7 +3168,7 @@
       "id": "2785",
       "url": "https://www.vlr.gg/team/2785/tamu-maroon",
       "name": "TAMU Maroon",
-      "img": "https://owcdn.net/img/663e4f87ad0d9.png",
+      "img": "https://owcdn.net/img/64c2d272558b6.png",
       "country": "United States",
       "symbol": "TAMU"
     },
@@ -4035,398 +3203,6 @@
       "img": "https://owcdn.net/img/636d5918e8554.png",
       "country": "United States",
       "symbol": "SJSU"
-    },
-    "APK": {
-      "id": "11479",
-      "url": "https://www.vlr.gg/team/11479/apeks",
-      "name": "Apeks",
-      "img": "https://owcdn.net/img/63bd4a379f758.png",
-      "country": "Europe",
-      "symbol": "APK"
-    },
-    "CGN": {
-      "id": "5214",
-      "url": "https://www.vlr.gg/team/5214/cgn-esports",
-      "name": "CGN Esports",
-      "img": "https://owcdn.net/img/60defafec983c.png",
-      "country": "Germany",
-      "symbol": "CGN"
-    },
-    "BCF": {
-      "id": "16616",
-      "url": "https://www.vlr.gg/team/16616/bbl-pcific",
-      "name": "BBL PCIFIC",
-      "img": "https://owcdn.net/img/6712e0d973b7b.png",
-      "country": "Turkey",
-      "symbol": "BCF"
-    },
-    "JL": {
-      "id": "11232",
-      "url": "https://www.vlr.gg/team/11232/joblife",
-      "name": "Joblife",
-      "img": "https://owcdn.net/img/63a944e6cbe49.png",
-      "country": "Europe",
-      "symbol": "JL"
-    },
-    "CUBE": {
-      "id": "16899",
-      "url": "https://www.vlr.gg/team/16899/cubert-academy",
-      "name": "Cubert Academy",
-      "img": "https://owcdn.net/img/6793cafca1a9c.png",
-      "country": "United States",
-      "symbol": "CUBE"
-    },
-    "PLUG": {
-      "id": "16898",
-      "url": "https://www.vlr.gg/team/16898/trust-in-plug",
-      "name": "Trust In Plug",
-      "img": "https://owcdn.net/img/6738f9386fa8d.png",
-      "country": "United States",
-      "symbol": "PLUG"
-    },
-    "RANK": {
-      "id": "16806",
-      "url": "https://www.vlr.gg/team/16806/rankers",
-      "name": "RANKERS",
-      "img": "https://owcdn.net/img/676794acc1f6d.png",
-      "country": "United States",
-      "symbol": "RANK"
-    },
-    "YFP": {
-      "id": "5038",
-      "url": "https://www.vlr.gg/team/5038/yfp",
-      "name": "YFP",
-      "img": "https://owcdn.net/img/677826ad11d3b.png",
-      "country": "United States",
-      "symbol": "YFP"
-    },
-    "IMP": {
-      "id": "14547",
-      "url": "https://www.vlr.gg/team/14547/a-nova-onda-do-imperador",
-      "name": "A nova onda do Imperador",
-      "img": "https://owcdn.net/img/673c176d97b1c.png",
-      "country": "Brazil",
-      "symbol": "IMP"
-    },
-    "LOS": {
-      "id": "7332",
-      "url": "https://www.vlr.gg/team/7332/los-grandes",
-      "name": "Los Grandes",
-      "img": "https://owcdn.net/img/6798d84cbb88b.png",
-      "country": "Brazil",
-      "symbol": "LOS"
-    },
-    "F4T": {
-      "id": "16068",
-      "url": "https://www.vlr.gg/team/16068/f4tality",
-      "name": "F4TALITY",
-      "img": "https://owcdn.net/img/673b3c4a53aaf.png",
-      "country": "Brazil",
-      "symbol": "F4T"
-    },
-    "AE": {
-      "id": "1110",
-      "url": "https://www.vlr.gg/team/1110/alter-ego",
-      "name": "Alter Ego",
-      "img": "https://owcdn.net/img/62bbed294db68.png",
-      "country": "Indonesia",
-      "symbol": "AE"
-    },
-    "KK": {
-      "id": "17353",
-      "url": "https://www.vlr.gg/team/17353/kimmy-kittens",
-      "name": "KIMMY KITTENS",
-      "img": "https://www.vlr.gg/img/vlr/tmp/vlr.png",
-      "country": "Singapore",
-      "symbol": "KK"
-    },
-    "FPT": {
-      "id": "14277",
-      "url": "https://www.vlr.gg/team/14277/team-flash",
-      "name": "Team Flash",
-      "img": "https://owcdn.net/img/65561b4d674c3.png",
-      "country": "Vietnam",
-      "symbol": "FPT"
-    },
-    "BSG": {
-      "id": "8906",
-      "url": "https://www.vlr.gg/team/8906/beyond-stratos-gaming",
-      "name": "Beyond Stratos Gaming",
-      "img": "https://www.vlr.gg/img/vlr/tmp/vlr.png",
-      "country": "South Korea",
-      "symbol": "BSG"
-    },
-    "XLG": {
-      "id": "13581",
-      "url": "https://www.vlr.gg/team/13581/xi-lai-gaming",
-      "name": "Xi Lai Gaming",
-      "img": "https://owcdn.net/img/671742f863b9b.png",
-      "country": "China",
-      "symbol": "XLG"
-    },
-    "RA": {
-      "id": "11985",
-      "url": "https://www.vlr.gg/team/11985/rare-atom",
-      "name": "Rare Atom",
-      "img": "https://owcdn.net/img/63eb5aa842f05.png",
-      "country": "China",
-      "symbol": "RA"
-    },
-    "CCG": {
-      "id": "13579",
-      "url": "https://www.vlr.gg/team/13579/chosen-clique-gaming",
-      "name": "Chosen Clique Gaming",
-      "img": "https://owcdn.net/img/651d2ecf7605a.png",
-      "country": "China",
-      "symbol": "CCG"
-    },
-    "RID": {
-      "id": "14375",
-      "url": "https://www.vlr.gg/team/14375/riddle-order",
-      "name": "RIDDLE ORDER",
-      "img": "https://owcdn.net/img/6569a81625295.png",
-      "country": "Japan",
-      "symbol": "RID"
-    },
-    "NFX": {
-      "id": "14383",
-      "url": "https://www.vlr.gg/team/14383/noez-foxx",
-      "name": "NOEZ FOXX",
-      "img": "https://owcdn.net/img/65717b5a27b9f.png",
-      "country": "Japan",
-      "symbol": "NFX"
-    },
-    "BCS": {
-      "id": "11233",
-      "url": "https://www.vlr.gg/team/11233/bc-swell",
-      "name": "BC SWELL",
-      "img": "https://owcdn.net/img/63a9cf9538384.png",
-      "country": "Japan",
-      "symbol": "BCS"
-    },
-    "9ZG": {
-      "id": "367",
-      "url": "https://www.vlr.gg/team/367/9z-team",
-      "name": "9z Team",
-      "img": "https://owcdn.net/img/65e447b0c2415.png",
-      "country": "Chile",
-      "symbol": "9ZG"
-    },
-    "LEV.AC": {
-      "id": "9425",
-      "url": "https://www.vlr.gg/team/9425/leviat-n-academy",
-      "name": "LEVIATÁN Academy",
-      "img": "https://owcdn.net/img/61b8888cc3860.png",
-      "country": "Chile",
-      "symbol": "LEV.AC"
-    },
-    "MIX": {
-      "id": "17032",
-      "url": "https://www.vlr.gg/team/17032/mixpe",
-      "name": "MixPe",
-      "img": "https://www.vlr.gg/img/vlr/tmp/vlr.png",
-      "country": "Chile",
-      "symbol": "MIX"
-    },
-    "AUS": {
-      "id": "719",
-      "url": "https://www.vlr.gg/team/719/australs",
-      "name": "Australs",
-      "img": "https://owcdn.net/img/6055063c3a691.png",
-      "country": "Chile",
-      "symbol": "AUS"
-    },
-    "KLG": {
-      "id": "2360",
-      "url": "https://www.vlr.gg/team/2360/kaos-latin-gamers",
-      "name": "Kaos Latin Gamers",
-      "img": "https://owcdn.net/img/600b19ed2c674.png",
-      "country": "Chile",
-      "symbol": "KLG"
-    },
-    "AB3": {
-      "id": "17289",
-      "url": "https://www.vlr.gg/team/17289/ab3-esports",
-      "name": "AB3 Esports",
-      "img": "https://owcdn.net/img/679061092d445.png",
-      "country": "Mexico",
-      "symbol": "AB3"
-    },
-    "KTN": {
-      "id": "15624",
-      "url": "https://www.vlr.gg/team/15624/ktana-esports",
-      "name": "KTANA Esports",
-      "img": "https://owcdn.net/img/67174040b82f5.png",
-      "country": "Mexico",
-      "symbol": "KTN"
-    },
-    "UFS": {
-      "id": "16028",
-      "url": "https://www.vlr.gg/team/16028/ufoxskalle",
-      "name": "UFOXSkalle",
-      "img": "https://www.vlr.gg/img/vlr/tmp/vlr.png",
-      "country": "Ecuador",
-      "symbol": "UFS"
-    },
-    "BBB": {
-      "id": "10376",
-      "url": "https://www.vlr.gg/team/10376/bon-bon-bum-contra",
-      "name": "Bon Bon Bum Contra",
-      "img": "https://owcdn.net/img/66572b1da4d79.png",
-      "country": "Colombia",
-      "symbol": "BBB"
-    },
-    "EXT": {
-      "id": "17282",
-      "url": "https://www.vlr.gg/team/17282/exotick-esports",
-      "name": "EXOTICK ESPORTS",
-      "img": "https://www.vlr.gg/img/vlr/tmp/vlr.png",
-      "country": "Colombia",
-      "symbol": "EXT"
-    },
-    "SLV": {
-      "id": "17255",
-      "url": "https://www.vlr.gg/team/17255/solovinos",
-      "name": "Solovinos",
-      "img": "https://www.vlr.gg/img/vlr/tmp/vlr.png",
-      "country": "International",
-      "symbol": "SLV"
-    },
-    "NXG": {
-      "id": "11947",
-      "url": "https://www.vlr.gg/team/11947/next-gen",
-      "name": "Next Gen",
-      "img": "https://owcdn.net/img/6749e4bba8dc6.png",
-      "country": "Australia",
-      "symbol": "NXG"
-    },
-    "KBC": {
-      "id": "16676",
-      "url": "https://www.vlr.gg/team/16676/kebab-clan",
-      "name": "Kebab Clan",
-      "img": "https://www.vlr.gg/img/vlr/tmp/vlr.png",
-      "country": "Australia",
-      "symbol": "KBC"
-    },
-    "HSW": {
-      "id": "15208",
-      "url": "https://www.vlr.gg/team/15208/hornswogglers",
-      "name": "Hornswogglers",
-      "img": "https://www.vlr.gg/img/vlr/tmp/vlr.png",
-      "country": "Australia",
-      "symbol": "HSW"
-    },
-    "ACU": {
-      "id": "16753",
-      "url": "https://www.vlr.gg/team/16753/acai-underworld",
-      "name": "Acai Underworld",
-      "img": "https://www.vlr.gg/img/vlr/tmp/vlr.png",
-      "country": "Australia",
-      "symbol": "ACU"
-    },
-    "EST": {
-      "id": "13863",
-      "url": "https://www.vlr.gg/team/13863/estio-esports",
-      "name": "Estio eSports",
-      "img": "https://owcdn.net/img/65e6d8b98a606.png",
-      "country": "Australia",
-      "symbol": "EST"
-    },
-    "QAD": {
-      "id": "16598",
-      "url": "https://www.vlr.gg/team/16598/al-qadsiah-esports",
-      "name": "Al-Qadsiah Esports",
-      "img": "https://owcdn.net/img/672b6e5ef0749.png",
-      "country": "Saudi Arabia",
-      "symbol": "QAD"
-    },
-    "GMX": {
-      "id": "2290",
-      "url": "https://www.vlr.gg/team/2290/gamax-esports",
-      "name": "Gamax Esports",
-      "img": "https://owcdn.net/img/64c0df3369bcd.png",
-      "country": "Egypt",
-      "symbol": "GMX"
-    },
-    "OXR": {
-      "id": "6159",
-      "url": "https://www.vlr.gg/team/6159/onyx-ravens",
-      "name": "Onyx Ravens",
-      "img": "https://owcdn.net/img/63ceaab05171d.png",
-      "country": "Saudi Arabia",
-      "symbol": "OXR"
-    },
-    "SRG": {
-      "id": "14278",
-      "url": "https://www.vlr.gg/team/14278/shopify-rebellion-gold",
-      "name": "Shopify Rebellion Gold",
-      "img": "https://owcdn.net/img/679314e3d25f4.png",
-      "country": "Canada",
-      "symbol": "SRG"
-    },
-    "AKV.GC": {
-      "id": "7412",
-      "url": "https://www.vlr.gg/team/7412/akave-esports-gc",
-      "name": "Akave Esports GC",
-      "img": "https://owcdn.net/img/61da5f0488060.png",
-      "country": "International",
-      "symbol": "AKV.GC"
-    },
-    "FLY.R": {
-      "id": "6456",
-      "url": "https://www.vlr.gg/team/6456/flyquest-red",
-      "name": "FlyQuest RED",
-      "img": "https://owcdn.net/img/6478e8607ca46.png",
-      "country": "United States",
-      "symbol": "FLY.R"
-    },
-    "GX.GC": {
-      "id": "15119",
-      "url": "https://www.vlr.gg/team/15119/giantx-gc",
-      "name": "GIANTX GC",
-      "img": "https://owcdn.net/img/657b2f3fcd199.png",
-      "country": "Europe",
-      "symbol": "GX.GC"
-    },
-    "9ZG.GC": {
-      "id": "9285",
-      "url": "https://www.vlr.gg/team/9285/9z-team-gc",
-      "name": "9z Team GC",
-      "img": "https://owcdn.net/img/65e447b0c2415.png",
-      "country": "Argentina",
-      "symbol": "9ZG.GC"
-    },
-    "UST": {
-      "id": "10505",
-      "url": "https://www.vlr.gg/team/10505/ust-esports",
-      "name": "UST Esports",
-      "img": "https://owcdn.net/img/636dafd3a1796.png",
-      "country": "United States",
-      "symbol": "UST"
-    },
-    "UCF.G": {
-      "id": "12475",
-      "url": "https://www.vlr.gg/team/12475/ucf-gold",
-      "name": "UCF Gold",
-      "img": "https://owcdn.net/img/663e4cf0237f7.png",
-      "country": "United States",
-      "symbol": "UCF.G"
-    },
-    "MU": {
-      "id": "12900",
-      "url": "https://www.vlr.gg/team/12900/maryville-university",
-      "name": "Maryville University",
-      "img": "https://owcdn.net/img/6457181dc433a.png",
-      "country": "United States",
-      "symbol": "MU"
-    },
-    "UBC": {
-      "id": "10563",
-      "url": "https://www.vlr.gg/team/10563/ubc-esports",
-      "name": "UBC Esports",
-      "img": "https://owcdn.net/img/637bec2c5158b.png",
-      "country": "Canada",
-      "symbol": "UBC"
     }
   }
 }
