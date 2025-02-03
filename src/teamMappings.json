@@ -1570,6 +1570,14 @@
     }
   },
   "teamByNameMap": {
+    "MIBR": {
+      "id": "7386",
+      "url": "https://www.vlr.gg/team/7386/mibr",
+      "name": "MIBR",
+      "img": "https://owcdn.net/img/632be7626d6d9.png",
+      "country": "Brazil",
+      "symbol": "MIBR"
+    },
     "TALON": {
       "id": "8304",
       "url": "https://www.vlr.gg/team/8304/talon",
@@ -2953,6 +2961,14 @@
       "img": "https://owcdn.net/img/679314e3d25f4.png",
       "country": "Canada",
       "symbol": "SRG"
+    },
+    "Team Liquid": {
+      "id": "474",
+      "url": "https://www.vlr.gg/team/474/team-liquid",
+      "name": "Team Liquid",
+      "img": "https://owcdn.net/img/640c381f0603f.png",
+      "country": "Europe",
+      "symbol": "TL"
     },
     "Team Liquid Brazil": {
       "id": "7055",
