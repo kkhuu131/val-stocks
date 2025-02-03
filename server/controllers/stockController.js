@@ -284,8 +284,8 @@ function calculateElo(match, elo1, elo2) {
   const newRa = Math.round(Ra + K * (Sa - Ea) + L * Pa + Sa * V);
   const newRb = Math.round(Rb + K * (Sb - Eb) + L * Pb + Sb * V);
 
-  // console.log(newRa);
-  // console.log(newRb);
+  console.log(match.team1_symbol, Ra, "->", newRa, match.match_link);
+  console.log(match.team2_symbol, Rb, "->", newRb, match.match_link);
 
   return [newRa, newRb];
 }

@@ -135,8 +135,6 @@ async function updateMatches() {
       (match) => !finishedMatches.has(match.match_link)
     );
 
-    console.log(matchesData);
-
     // update existing or insert new matches
     const { error: upsertError } = await supabase
       .from("matches")

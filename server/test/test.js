@@ -108,31 +108,31 @@ async function simulate(data) {
 
     let [newRa, newRb] = await calculateElo(matchData, Ra, Rb);
 
-    const teamsToTrack = ["EDG", "NRG", "LEV"];
+    // const teamsToTrack = ["EDG", "NRG", "LEV"];
 
-    if (teamsToTrack.includes(team1)) {
-      console.log(
-        team1,
-        "against",
-        team2,
-        Ra,
-        "-->",
-        newRa,
-        matchData.match_link
-      );
-    }
+    // if (teamsToTrack.includes(team1)) {
+    //   console.log(
+    //     team1,
+    //     "against",
+    //     team2,
+    //     Ra,
+    //     "-->",
+    //     newRa,
+    //     matchData.match_link
+    //   );
+    // }
 
-    if (teamsToTrack.includes(team2)) {
-      console.log(
-        team2,
-        "against",
-        team1,
-        Rb,
-        "-->",
-        newRb,
-        matchData.match_link
-      );
-    }
+    // if (teamsToTrack.includes(team2)) {
+    //   console.log(
+    //     team2,
+    //     "against",
+    //     team1,
+    //     Rb,
+    //     "-->",
+    //     newRb,
+    //     matchData.match_link
+    //   );
+    // }
 
     if (teams.includes(team1)) {
       teamElos.set(team1, newRa);
@@ -163,7 +163,6 @@ async function test_simulate(data) {
   const combined = Array.from(sortedMap.keys()).map((key) => ({
     Team: key,
     Elo: sortedMap.get(key),
-    Price: teamEloPrices.get(key),
   }));
 
   console.table(combined);
