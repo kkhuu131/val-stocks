@@ -34,7 +34,7 @@ const server = http.createServer(app);
 
 async function updateSentiments() {
   const newSentiments = await getSentiments();
-  const decayFactor = 0.998;
+  const decayFactor = 0.99999;
 
   for (const team in newSentiments) {
     const newSentiment = newSentiments[team] * 5;
