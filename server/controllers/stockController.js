@@ -150,7 +150,7 @@ function calculatePrice(stock) {
 
   const eloFactor = Math.pow(elo, w1);
   const demandFactor =
-    0.005 * (1 + 0.0005 * demand + 0.5 * Math.pow(demand / 2000, w2));
+    1 + 0.005 * (0.0005 * demand + 0.5 * Math.pow(demand / 2000, w2));
   const sentimentFactor = Math.pow(Math.exp(sentiment / 20), w3);
 
   const price = basePrice * eloFactor * demandFactor * sentimentFactor;
